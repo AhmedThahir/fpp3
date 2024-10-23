@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7.5 Selecting predictors | Forecasting: Principles and Practice (3rd ed)</title>
+  <meta name="description" content="3rd edition" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7.5 Selecting predictors | Forecasting: Principles and Practice (3rd ed)" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+  <meta property="og:description" content="3rd edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7.5 Selecting predictors | Forecasting: Principles and Practice (3rd ed)" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="3rd edition" />
+  <meta name="twitter:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="useful-predictors.html"/>
+<link rel="next" href="forecasting-regression.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27933797-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-27933797-2');
+  gtag('config', 'G-JKBLG3XQGY');
+</script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Merriweather" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css">
+<script>
+  /*
+   * Light YouTube Embeds by @labnol
+   * Credit: https://www.labnol.org/
+   */
+
+  function labnolIframe(div) {
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('src', 'https://www.youtube.com/embed/' + div.dataset.id + '?autoplay=1');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowfullscreen', '1');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
+    div.parentNode.replaceChild(iframe, div);
+  }
+
+  function initYouTubeVideos() {
+    var playerElements = document.querySelectorAll('.youtube-player');
+    for (var n = 0; n < playerElements.length; n++) {
+      var videoId = playerElements[n].dataset.id;
+      var div = document.createElement('div');
+      div.setAttribute('data-id', videoId);
+      var thumbNode = document.createElement('img');
+      thumbNode.src = '//i.ytimg.com/vi/ID/hqdefault.jpg'.replace('ID', videoId);
+      div.appendChild(thumbNode);
+      var playButton = document.createElement('div');
+      playButton.setAttribute('class', 'play');
+      div.appendChild(playButton);
+      div.onclick = function () {
+        labnolIframe(this);
+      };
+      playerElements[n].appendChild(div);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initYouTubeVideos);
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="what-can-be-forecast.html"><a href="what-can-be-forecast.html"><i class="fa fa-check"></i><b>1.1</b> What can be forecast?</a></li>
+<li class="chapter" data-level="1.2" data-path="planning.html"><a href="planning.html"><i class="fa fa-check"></i><b>1.2</b> Forecasting, goals and planning</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> Determining what to forecast</a></li>
+<li class="chapter" data-level="1.4" data-path="data-methods.html"><a href="data-methods.html"><i class="fa fa-check"></i><b>1.4</b> Forecasting data and methods</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Some case studies</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-steps.html"><a href="basic-steps.html"><i class="fa fa-check"></i><b>1.6</b> The basic steps in a forecasting task</a></li>
+<li class="chapter" data-level="1.7" data-path="perspective.html"><a href="perspective.html"><i class="fa fa-check"></i><b>1.7</b> The statistical forecasting perspective</a></li>
+<li class="chapter" data-level="1.8" data-path="intro-exercises.html"><a href="intro-exercises.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+<li class="chapter" data-level="1.9" data-path="intro-reading.html"><a href="intro-reading.html"><i class="fa fa-check"></i><b>1.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>2</b> Time series graphics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tsibbles.html"><a href="tsibbles.html"><i class="fa fa-check"></i><b>2.1</b> <code>tsibble</code> objects</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots.html"><a href="time-plots.html"><i class="fa fa-check"></i><b>2.2</b> Time plots</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Time series patterns</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots.html"><a href="seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> Seasonal plots</a></li>
+<li class="chapter" data-level="2.5" data-path="subseries.html"><a href="subseries.html"><i class="fa fa-check"></i><b>2.5</b> Seasonal subseries plots</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots.html"><a href="scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> Scatterplots</a></li>
+<li class="chapter" data-level="2.7" data-path="lag-plots.html"><a href="lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> Lag plots</a></li>
+<li class="chapter" data-level="2.8" data-path="acf.html"><a href="acf.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelation</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise</a></li>
+<li class="chapter" data-level="2.10" data-path="graphics-exercises.html"><a href="graphics-exercises.html"><i class="fa fa-check"></i><b>2.10</b> Exercises</a></li>
+<li class="chapter" data-level="2.11" data-path="graphics-reading.html"><a href="graphics-reading.html"><i class="fa fa-check"></i><b>2.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="decomposition.html"><a href="decomposition.html"><i class="fa fa-check"></i><b>3</b> Time series decomposition</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.1</b> Transformations and adjustments</a></li>
+<li class="chapter" data-level="3.2" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>3.2</b> Time series components</a></li>
+<li class="chapter" data-level="3.3" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>3.3</b> Moving averages</a></li>
+<li class="chapter" data-level="3.4" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>3.4</b> Classical decomposition</a></li>
+<li class="chapter" data-level="3.5" data-path="methods-used-by-official-statistics-agencies.html"><a href="methods-used-by-official-statistics-agencies.html"><i class="fa fa-check"></i><b>3.5</b> Methods used by official statistics agencies</a></li>
+<li class="chapter" data-level="3.6" data-path="stl.html"><a href="stl.html"><i class="fa fa-check"></i><b>3.6</b> STL decomposition</a></li>
+<li class="chapter" data-level="3.7" data-path="decomposition-exercises.html"><a href="decomposition-exercises.html"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+<li class="chapter" data-level="3.8" data-path="decomposition-reading.html"><a href="decomposition-reading.html"><i class="fa fa-check"></i><b>3.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="features.html"><a href="features.html"><i class="fa fa-check"></i><b>4</b> Time series features</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="some-simple-statistics.html"><a href="some-simple-statistics.html"><i class="fa fa-check"></i><b>4.1</b> Some simple statistics</a></li>
+<li class="chapter" data-level="4.2" data-path="acf-features.html"><a href="acf-features.html"><i class="fa fa-check"></i><b>4.2</b> ACF features</a></li>
+<li class="chapter" data-level="4.3" data-path="stlfeatures.html"><a href="stlfeatures.html"><i class="fa fa-check"></i><b>4.3</b> STL Features</a></li>
+<li class="chapter" data-level="4.4" data-path="other-features.html"><a href="other-features.html"><i class="fa fa-check"></i><b>4.4</b> Other features</a></li>
+<li class="chapter" data-level="4.5" data-path="exploring-australian-tourism-data.html"><a href="exploring-australian-tourism-data.html"><i class="fa fa-check"></i><b>4.5</b> Exploring Australian tourism data</a></li>
+<li class="chapter" data-level="4.6" data-path="feast-exercises.html"><a href="feast-exercises.html"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+<li class="chapter" data-level="4.7" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>4.7</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="toolbox.html"><a href="toolbox.html"><i class="fa fa-check"></i><b>5</b> The forecaster’s toolbox</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="a-tidy-forecasting-workflow.html"><a href="a-tidy-forecasting-workflow.html"><i class="fa fa-check"></i><b>5.1</b> A tidy forecasting workflow</a></li>
+<li class="chapter" data-level="5.2" data-path="simple-methods.html"><a href="simple-methods.html"><i class="fa fa-check"></i><b>5.2</b> Some simple forecasting methods</a></li>
+<li class="chapter" data-level="5.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>5.3</b> Fitted values and residuals</a></li>
+<li class="chapter" data-level="5.4" data-path="diagnostics.html"><a href="diagnostics.html"><i class="fa fa-check"></i><b>5.4</b> Residual diagnostics</a></li>
+<li class="chapter" data-level="5.5" data-path="prediction-intervals.html"><a href="prediction-intervals.html"><i class="fa fa-check"></i><b>5.5</b> Distributional forecasts and prediction intervals</a></li>
+<li class="chapter" data-level="5.6" data-path="ftransformations.html"><a href="ftransformations.html"><i class="fa fa-check"></i><b>5.6</b> Forecasting using transformations</a></li>
+<li class="chapter" data-level="5.7" data-path="forecasting-decomposition.html"><a href="forecasting-decomposition.html"><i class="fa fa-check"></i><b>5.7</b> Forecasting with decomposition</a></li>
+<li class="chapter" data-level="5.8" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>5.8</b> Evaluating point forecast accuracy</a></li>
+<li class="chapter" data-level="5.9" data-path="distaccuracy.html"><a href="distaccuracy.html"><i class="fa fa-check"></i><b>5.9</b> Evaluating distributional forecast accuracy</a></li>
+<li class="chapter" data-level="5.10" data-path="tscv.html"><a href="tscv.html"><i class="fa fa-check"></i><b>5.10</b> Time series cross-validation</a></li>
+<li class="chapter" data-level="5.11" data-path="toolbox-exercises.html"><a href="toolbox-exercises.html"><i class="fa fa-check"></i><b>5.11</b> Exercises</a></li>
+<li class="chapter" data-level="5.12" data-path="basics-reading.html"><a href="basics-reading.html"><i class="fa fa-check"></i><b>5.12</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="judgmental.html"><a href="judgmental.html"><i class="fa fa-check"></i><b>6</b> Judgmental forecasts</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="judgmental-limitations.html"><a href="judgmental-limitations.html"><i class="fa fa-check"></i><b>6.1</b> Beware of limitations</a></li>
+<li class="chapter" data-level="6.2" data-path="judgmental-principles.html"><a href="judgmental-principles.html"><i class="fa fa-check"></i><b>6.2</b> Key principles</a></li>
+<li class="chapter" data-level="6.3" data-path="delphimethod.html"><a href="delphimethod.html"><i class="fa fa-check"></i><b>6.3</b> The Delphi method</a></li>
+<li class="chapter" data-level="6.4" data-path="analogies.html"><a href="analogies.html"><i class="fa fa-check"></i><b>6.4</b> Forecasting by analogy</a></li>
+<li class="chapter" data-level="6.5" data-path="scenarios.html"><a href="scenarios.html"><i class="fa fa-check"></i><b>6.5</b> Scenario forecasting</a></li>
+<li class="chapter" data-level="6.6" data-path="new-products.html"><a href="new-products.html"><i class="fa fa-check"></i><b>6.6</b> New product forecasting</a></li>
+<li class="chapter" data-level="6.7" data-path="judgmental-adjustments.html"><a href="judgmental-adjustments.html"><i class="fa fa-check"></i><b>6.7</b> Judgmental adjustments</a></li>
+<li class="chapter" data-level="6.8" data-path="judgmental-reading.html"><a href="judgmental-reading.html"><i class="fa fa-check"></i><b>6.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> Time series regression models</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="regression-intro.html"><a href="regression-intro.html"><i class="fa fa-check"></i><b>7.1</b> The linear model</a></li>
+<li class="chapter" data-level="7.2" data-path="least-squares.html"><a href="least-squares.html"><i class="fa fa-check"></i><b>7.2</b> Least squares estimation</a></li>
+<li class="chapter" data-level="7.3" data-path="regression-evaluation.html"><a href="regression-evaluation.html"><i class="fa fa-check"></i><b>7.3</b> Evaluating the regression model</a></li>
+<li class="chapter" data-level="7.4" data-path="useful-predictors.html"><a href="useful-predictors.html"><i class="fa fa-check"></i><b>7.4</b> Some useful predictors</a></li>
+<li class="chapter" data-level="7.5" data-path="selecting-predictors.html"><a href="selecting-predictors.html"><i class="fa fa-check"></i><b>7.5</b> Selecting predictors</a></li>
+<li class="chapter" data-level="7.6" data-path="forecasting-regression.html"><a href="forecasting-regression.html"><i class="fa fa-check"></i><b>7.6</b> Forecasting with regression</a></li>
+<li class="chapter" data-level="7.7" data-path="nonlinear-regression.html"><a href="nonlinear-regression.html"><i class="fa fa-check"></i><b>7.7</b> Nonlinear regression</a></li>
+<li class="chapter" data-level="7.8" data-path="causality.html"><a href="causality.html"><i class="fa fa-check"></i><b>7.8</b> Correlation, causation and forecasting</a></li>
+<li class="chapter" data-level="7.9" data-path="regression-matrices.html"><a href="regression-matrices.html"><i class="fa fa-check"></i><b>7.9</b> Matrix formulation</a></li>
+<li class="chapter" data-level="7.10" data-path="regression-exercises.html"><a href="regression-exercises.html"><i class="fa fa-check"></i><b>7.10</b> Exercises</a></li>
+<li class="chapter" data-level="7.11" data-path="regression-reading.html"><a href="regression-reading.html"><i class="fa fa-check"></i><b>7.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="expsmooth.html"><a href="expsmooth.html"><i class="fa fa-check"></i><b>8</b> Exponential smoothing</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ses.html"><a href="ses.html"><i class="fa fa-check"></i><b>8.1</b> Simple exponential smoothing</a></li>
+<li class="chapter" data-level="8.2" data-path="holt.html"><a href="holt.html"><i class="fa fa-check"></i><b>8.2</b> Methods with trend</a></li>
+<li class="chapter" data-level="8.3" data-path="holt-winters.html"><a href="holt-winters.html"><i class="fa fa-check"></i><b>8.3</b> Methods with seasonality</a></li>
+<li class="chapter" data-level="8.4" data-path="taxonomy.html"><a href="taxonomy.html"><i class="fa fa-check"></i><b>8.4</b> A taxonomy of exponential smoothing methods</a></li>
+<li class="chapter" data-level="8.5" data-path="ets.html"><a href="ets.html"><i class="fa fa-check"></i><b>8.5</b> Innovations state space models for exponential smoothing</a></li>
+<li class="chapter" data-level="8.6" data-path="ets-estimation.html"><a href="ets-estimation.html"><i class="fa fa-check"></i><b>8.6</b> Estimation and model selection</a></li>
+<li class="chapter" data-level="8.7" data-path="ets-forecasting.html"><a href="ets-forecasting.html"><i class="fa fa-check"></i><b>8.7</b> Forecasting with ETS models</a></li>
+<li class="chapter" data-level="8.8" data-path="expsmooth-exercises.html"><a href="expsmooth-exercises.html"><i class="fa fa-check"></i><b>8.8</b> Exercises</a></li>
+<li class="chapter" data-level="8.9" data-path="expsmooth-reading.html"><a href="expsmooth-reading.html"><i class="fa fa-check"></i><b>8.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="arima.html"><a href="arima.html"><i class="fa fa-check"></i><b>9</b> ARIMA models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="stationarity.html"><a href="stationarity.html"><i class="fa fa-check"></i><b>9.1</b> Stationarity and differencing</a></li>
+<li class="chapter" data-level="9.2" data-path="backshift.html"><a href="backshift.html"><i class="fa fa-check"></i><b>9.2</b> Backshift notation</a></li>
+<li class="chapter" data-level="9.3" data-path="AR.html"><a href="AR.html"><i class="fa fa-check"></i><b>9.3</b> Autoregressive models</a></li>
+<li class="chapter" data-level="9.4" data-path="MA.html"><a href="MA.html"><i class="fa fa-check"></i><b>9.4</b> Moving average models</a></li>
+<li class="chapter" data-level="9.5" data-path="non-seasonal-arima.html"><a href="non-seasonal-arima.html"><i class="fa fa-check"></i><b>9.5</b> Non-seasonal ARIMA models</a></li>
+<li class="chapter" data-level="9.6" data-path="arima-estimation.html"><a href="arima-estimation.html"><i class="fa fa-check"></i><b>9.6</b> Estimation and order selection</a></li>
+<li class="chapter" data-level="9.7" data-path="arima-r.html"><a href="arima-r.html"><i class="fa fa-check"></i><b>9.7</b> ARIMA modelling in <code>fable</code></a></li>
+<li class="chapter" data-level="9.8" data-path="arima-forecasting.html"><a href="arima-forecasting.html"><i class="fa fa-check"></i><b>9.8</b> Forecasting</a></li>
+<li class="chapter" data-level="9.9" data-path="seasonal-arima.html"><a href="seasonal-arima.html"><i class="fa fa-check"></i><b>9.9</b> Seasonal ARIMA models</a></li>
+<li class="chapter" data-level="9.10" data-path="arima-ets.html"><a href="arima-ets.html"><i class="fa fa-check"></i><b>9.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="9.11" data-path="arima-exercises.html"><a href="arima-exercises.html"><i class="fa fa-check"></i><b>9.11</b> Exercises</a></li>
+<li class="chapter" data-level="9.12" data-path="arima-reading.html"><a href="arima-reading.html"><i class="fa fa-check"></i><b>9.12</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dynamic.html"><a href="dynamic.html"><i class="fa fa-check"></i><b>10</b> Dynamic regression models</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>10.1</b> Estimation</a></li>
+<li class="chapter" data-level="10.2" data-path="regarima.html"><a href="regarima.html"><i class="fa fa-check"></i><b>10.2</b> Regression with ARIMA errors using <code>fable</code></a></li>
+<li class="chapter" data-level="10.3" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>10.3</b> Forecasting</a></li>
+<li class="chapter" data-level="10.4" data-path="stochastic-and-deterministic-trends.html"><a href="stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>10.4</b> Stochastic and deterministic trends</a></li>
+<li class="chapter" data-level="10.5" data-path="dhr.html"><a href="dhr.html"><i class="fa fa-check"></i><b>10.5</b> Dynamic harmonic regression</a></li>
+<li class="chapter" data-level="10.6" data-path="lagged-predictors.html"><a href="lagged-predictors.html"><i class="fa fa-check"></i><b>10.6</b> Lagged predictors</a></li>
+<li class="chapter" data-level="10.7" data-path="dynamic-exercises.html"><a href="dynamic-exercises.html"><i class="fa fa-check"></i><b>10.7</b> Exercises</a></li>
+<li class="chapter" data-level="10.8" data-path="dynamic-reading.html"><a href="dynamic-reading.html"><i class="fa fa-check"></i><b>10.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>11</b> Forecasting hierarchical and grouped time series</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hts.html"><a href="hts.html"><i class="fa fa-check"></i><b>11.1</b> Hierarchical and grouped time series</a></li>
+<li class="chapter" data-level="11.2" data-path="single-level.html"><a href="single-level.html"><i class="fa fa-check"></i><b>11.2</b> Single level approaches</a></li>
+<li class="chapter" data-level="11.3" data-path="reconciliation.html"><a href="reconciliation.html"><i class="fa fa-check"></i><b>11.3</b> Forecast reconciliation</a></li>
+<li class="chapter" data-level="11.4" data-path="tourism.html"><a href="tourism.html"><i class="fa fa-check"></i><b>11.4</b> Forecasting Australian domestic tourism</a></li>
+<li class="chapter" data-level="11.5" data-path="rec-prob.html"><a href="rec-prob.html"><i class="fa fa-check"></i><b>11.5</b> Reconciled distributional forecasts</a></li>
+<li class="chapter" data-level="11.6" data-path="prison.html"><a href="prison.html"><i class="fa fa-check"></i><b>11.6</b> Forecasting Australian prison population</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-exercises.html"><a href="hierarchical-exercises.html"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-reading.html"><a href="hierarchical-reading.html"><i class="fa fa-check"></i><b>11.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="advanced.html"><a href="advanced.html"><i class="fa fa-check"></i><b>12</b> Advanced forecasting methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="complexseasonality.html"><a href="complexseasonality.html"><i class="fa fa-check"></i><b>12.1</b> Complex seasonality</a></li>
+<li class="chapter" data-level="12.2" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>12.2</b> Prophet model</a></li>
+<li class="chapter" data-level="12.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>12.3</b> Vector autoregressions</a></li>
+<li class="chapter" data-level="12.4" data-path="nnetar.html"><a href="nnetar.html"><i class="fa fa-check"></i><b>12.4</b> Neural network models</a></li>
+<li class="chapter" data-level="12.5" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.5</b> Bootstrapping and bagging</a></li>
+<li class="chapter" data-level="12.6" data-path="advanced-exercises.html"><a href="advanced-exercises.html"><i class="fa fa-check"></i><b>12.6</b> Exercises</a></li>
+<li class="chapter" data-level="12.7" data-path="advanced-reading.html"><a href="advanced-reading.html"><i class="fa fa-check"></i><b>12.7</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="practical.html"><a href="practical.html"><i class="fa fa-check"></i><b>13</b> Some practical forecasting issues</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>13.1</b> Weekly, daily and sub-daily data</a></li>
+<li class="chapter" data-level="13.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>13.2</b> Time series of counts</a></li>
+<li class="chapter" data-level="13.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>13.3</b> Ensuring forecasts stay within limits</a></li>
+<li class="chapter" data-level="13.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>13.4</b> Forecast combinations</a></li>
+<li class="chapter" data-level="13.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>13.5</b> Prediction intervals for aggregates</a></li>
+<li class="chapter" data-level="13.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>13.6</b> Backcasting</a></li>
+<li class="chapter" data-level="13.7" data-path="long-short-ts.html"><a href="long-short-ts.html"><i class="fa fa-check"></i><b>13.7</b> Very long and very short time series</a></li>
+<li class="chapter" data-level="13.8" data-path="training-test.html"><a href="training-test.html"><i class="fa fa-check"></i><b>13.8</b> Forecasting on training and test sets</a></li>
+<li class="chapter" data-level="13.9" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>13.9</b> Dealing with outliers and missing values</a></li>
+<li class="chapter" data-level="13.10" data-path="further-reading-1.html"><a href="further-reading-1.html"><i class="fa fa-check"></i><b>13.10</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="appendix-using-r.html"><a href="appendix-using-r.html"><i class="fa fa-check"></i>Appendix: Using R</a></li>
+<li class="chapter" data-level="" data-path="appendix-for-instructors.html"><a href="appendix-for-instructors.html"><i class="fa fa-check"></i>Appendix: For instructors</a></li>
+<li class="chapter" data-level="" data-path="appendix-reviews.html"><a href="appendix-reviews.html"><i class="fa fa-check"></i>Appendix: Reviews</a></li>
+<li class="chapter" data-level="" data-path="translations.html"><a href="translations.html"><i class="fa fa-check"></i>Translations</a></li>
+<li class="chapter" data-level="" data-path="about-the-authors.html"><a href="about-the-authors.html"><i class="fa fa-check"></i>About the authors</a></li>
+<li class="chapter" data-level="" data-path="buy-a-print-version.html"><a href="buy-a-print-version.html"><i class="fa fa-check"></i>Buy a print version</a></li>
+<li class="chapter" data-level="" data-path="report-an-error.html"><a href="report-an-error.html"><i class="fa fa-check"></i>Report an error</a></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.com" target="blank">Published by OTexts™ with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice <font size=-1>(3rd ed)</font></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="selecting-predictors" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Selecting predictors<a href="selecting-predictors.html#selecting-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="youtube-player" data-id="ZHNGxVwvnN0">
+
+</div>
+<p>When there are many possible predictors, we need some strategy for selecting the best predictors to use in a regression model.</p>
+<p>A common approach that is <em>not recommended</em> is to plot the forecast variable against a particular predictor and if there is no noticeable relationship, drop that predictor from the model. This is invalid because it is not always possible to see the relationship from a scatterplot, especially when the effects of other predictors have not been accounted for.</p>
+<p>Another common approach which is also invalid is to do a multiple linear regression on all the predictors and disregard all variables whose <span class="math inline">\(p\)</span>-values are greater than 0.05. To start with, statistical significance does not always indicate predictive value. Even if forecasting is not the goal, this is not a good strategy because the <span class="math inline">\(p\)</span>-values can be misleading when two or more predictors are correlated with each other (see Section <a href="causality.html#causality">7.8</a>).</p>
+<p>Instead, we will use a measure of predictive accuracy. Five such measures are introduced in this section. They can be shown using the <code>glance()</code> function, here applied to the model for US consumption:</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="selecting-predictors.html#cb152-1" tabindex="-1"></a><span class="fu">glance</span>(fit_consMR) <span class="sc">|&gt;</span></span>
+<span id="cb152-2"><a href="selecting-predictors.html#cb152-2" tabindex="-1"></a>  <span class="fu">select</span>(adj_r_squared, CV, AIC, AICc, BIC)</span>
+<span id="cb152-3"><a href="selecting-predictors.html#cb152-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 5</span></span>
+<span id="cb152-4"><a href="selecting-predictors.html#cb152-4" tabindex="-1"></a><span class="co">#&gt;   adj_r_squared    CV   AIC  AICc   BIC</span></span>
+<span id="cb152-5"><a href="selecting-predictors.html#cb152-5" tabindex="-1"></a><span class="co">#&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb152-6"><a href="selecting-predictors.html#cb152-6" tabindex="-1"></a><span class="co">#&gt; 1         0.763 0.104 -457. -456. -437.</span></span></code></pre></div>
+<p>We compare these values against the corresponding values from other models. For the CV, AIC, AICc and BIC measures, we want to find the model with the lowest value; for Adjusted <span class="math inline">\(R^2\)</span>, we seek the model with the highest value.</p>
+<div id="adjusted-r2" class="section level3 unnumbered hasAnchor">
+<h3>Adjusted R<span class="math inline">\(^2\)</span><a href="selecting-predictors.html#adjusted-r2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Computer output for a regression will always give the <span class="math inline">\(R^2\)</span> value, discussed in Section <a href="least-squares.html#least-squares">7.2</a>. However, it is not a good measure of the predictive ability of a model. It measures how well the model fits the historical data, but not how well the model will forecast future data.</p>
+<p>In addition, <span class="math inline">\(R^2\)</span> does not allow for “degrees of freedom”. Adding <em>any</em> variable tends to increase the value of <span class="math inline">\(R^2\)</span>, even if that variable is irrelevant. For these reasons, forecasters should not use <span class="math inline">\(R^2\)</span> to determine whether a model will give good predictions, as it will lead to overfitting.</p>
+<p>An equivalent idea is to select the model which gives the minimum sum of squared errors (SSE), given by
+<span class="math display">\[
+  \text{SSE} = \sum_{t=1}^T e_{t}^2.
+\]</span></p>
+<p>Minimising the SSE is equivalent to maximising <span class="math inline">\(R^2\)</span> and will always choose the model with the most variables, and so is not a valid way of selecting predictors.</p>
+<p>An alternative which is designed to overcome these problems is the adjusted <span class="math inline">\(R^2\)</span> (also called “R-bar-squared”):
+<span class="math display">\[
+  \bar{R}^2 = 1-(1-R^2)\frac{T-1}{T-k-1},
+\]</span>
+where <span class="math inline">\(T\)</span> is the number of observations and <span class="math inline">\(k\)</span> is the number of predictors. This is an improvement on <span class="math inline">\(R^2\)</span>, as it will no longer increase with each added predictor. Using this measure, the best model will be the one with the largest value of <span class="math inline">\(\bar{R}^2\)</span>. Maximising <span class="math inline">\(\bar{R}^2\)</span> is equivalent to minimising the standard error <span class="math inline">\(\hat{\sigma}_e\)</span> given in Equation <a href="least-squares.html#eq:Regr-se">(7.3)</a>.</p>
+<p>Maximising <span class="math inline">\(\bar{R}^2\)</span> works quite well as a method of selecting predictors,
+although it does tend to err on the side of selecting too many predictors.</p>
+</div>
+<div id="cross-validation" class="section level3 unnumbered hasAnchor">
+<h3>Cross-validation<a href="selecting-predictors.html#cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Time series cross-validation was introduced in Section <a href="tscv.html#tscv">5.10</a> as a general tool for determining the predictive ability of a model. For regression models, it is also possible to use classical leave-one-out cross-validation to select predictors <span class="citation">(<a href="#ref-BHK15">Bergmeir et al., 2018</a>)</span>. This is faster and makes more efficient use of the data. The procedure uses the following steps:</p>
+<ol style="list-style-type: decimal">
+<li>Remove observation <span class="math inline">\(t\)</span> from the data set, and fit the model using the remaining data. Then compute the error (<span class="math inline">\(e_{t}^*=y_{t}-\hat{y}_{t}\)</span>) for the omitted observation. (This is not the same as the residual because the <span class="math inline">\(t\)</span>th observation was not used in estimating the value of <span class="math inline">\(\hat{y}_{t}\)</span>.)</li>
+<li>Repeat step 1 for <span class="math inline">\(t=1,\dots,T\)</span>.</li>
+<li>Compute the MSE from <span class="math inline">\(e_{1}^*,\dots,e_{T}^*\)</span>. We shall call this the <strong>CV</strong>.</li>
+</ol>
+<p>Although this looks like a time-consuming procedure, there are fast methods of calculating CV, so that it takes no longer than fitting one model to the full data set. The equation for computing CV efficiently is given in Section <a href="regression-matrices.html#regression-matrices">7.9</a>. Under this criterion, the best model is the one with the smallest value of CV.</p>
+</div>
+<div id="akaikes-information-criterion" class="section level3 unnumbered hasAnchor">
+<h3>Akaike’s Information Criterion<a href="selecting-predictors.html#akaikes-information-criterion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A closely-related method is Akaike’s Information Criterion, which we define as
+<span class="math display">\[
+  \text{AIC} = T\log\left(\frac{\text{SSE}}{T}\right) + 2(k+2),
+\]</span>
+where <span class="math inline">\(T\)</span> is the number of observations used for estimation and <span class="math inline">\(k\)</span> is the number of predictors in the model. Different computer packages use slightly different definitions for the AIC, although they should all lead to the same model being selected. The <span class="math inline">\(k+2\)</span> part of the equation occurs because there are <span class="math inline">\(k+2\)</span> parameters in the model: the <span class="math inline">\(k\)</span> coefficients for the predictors, the intercept and the variance of the residuals. The idea here is to penalise the fit of the model (SSE) with the number of parameters that need to be estimated.</p>
+<p>The model with the minimum value of the AIC is often the best model for forecasting. For large values of <span class="math inline">\(T\)</span>, minimising the AIC is equivalent to minimising the CV value.</p>
+</div>
+<div id="corrected-akaikes-information-criterion" class="section level3 unnumbered hasAnchor">
+<h3>Corrected Akaike’s Information Criterion<a href="selecting-predictors.html#corrected-akaikes-information-criterion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For small values of <span class="math inline">\(T\)</span>, the AIC tends to select too many predictors, and so a bias-corrected version of the AIC has been developed,
+<span class="math display">\[
+  \text{AIC}_{\text{c}} = \text{AIC} + \frac{2(k+2)(k+3)}{T-k-3}.
+\]</span>
+As with the AIC, the AICc should be minimised.</p>
+</div>
+<div id="schwarzs-bayesian-information-criterion" class="section level3 unnumbered hasAnchor">
+<h3>Schwarz’s Bayesian Information Criterion<a href="selecting-predictors.html#schwarzs-bayesian-information-criterion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A related measure is Schwarz’s Bayesian Information Criterion (usually abbreviated to BIC, SBIC or SC):
+<span class="math display">\[
+  \text{BIC} = T\log\left(\frac{\text{SSE}}{T}\right) + (k+2)\log(T).
+\]</span>
+As with the AIC, minimising the BIC is intended to give the best model. The model chosen by the BIC is either the same as that chosen by the AIC, or one with fewer terms. This is because the BIC penalises the number of parameters more heavily than the AIC. For large values of <span class="math inline">\(T\)</span>, minimising BIC is similar to leave-<span class="math inline">\(v\)</span>-out cross-validation when <span class="math inline">\(v = T[1-1/(\log(T)-1)]\)</span>.</p>
+</div>
+<div id="which-measure-should-we-use" class="section level3 unnumbered hasAnchor">
+<h3>Which measure should we use?<a href="selecting-predictors.html#which-measure-should-we-use" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>While <span class="math inline">\(\bar{R}^2\)</span> is widely used, and has been around longer than the other measures, its tendency to select too many predictor variables makes it less suitable for forecasting.</p>
+<p>Many statisticians like to use the BIC because it has the feature that if there is a true underlying model, the BIC will select that model given enough data. However, in reality, there is rarely, if ever, a true underlying model, and even if there was a true underlying model, selecting that model will not necessarily give the best forecasts (because the parameter estimates may not be accurate).</p>
+<p>Consequently, we recommend that one of the AICc, AIC, or CV statistics be used, each of which has forecasting as their objective. If the value of <span class="math inline">\(T\)</span> is large enough, they will all lead to the same model. In most of the examples in this book, we use the AICc value to select the forecasting model.</p>
+</div>
+<div id="example-us-consumption" class="section level3 unnumbered hasAnchor">
+<h3>Example: US consumption<a href="selecting-predictors.html#example-us-consumption" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In the multiple regression example for forecasting US consumption we considered four predictors. With four predictors, there are <span class="math inline">\(2^4=16\)</span> possible models. Now we can check if all four predictors are actually useful, or whether we can drop one or more of them. All 16 models were fitted and the results are summarised in Table <a href="selecting-predictors.html#tab:tblusMR">7.1</a>. A “⬤” indicates that the predictor was included in the model. Hence the first row shows the measures of predictive accuracy for a model including all four predictors.</p>
+<p>The results have been sorted according to the AICc. Therefore the best models are given at the top of the table, and the worst at the bottom of the table.</p>
+<table>
+<caption>
+<span id="tab:tblusMR">Table 7.1: </span>All 16 possible models for forecasting US consumption with 4 predictors.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Income
+</th>
+<th style="text-align:center;">
+Production
+</th>
+<th style="text-align:center;">
+Savings
+</th>
+<th style="text-align:center;">
+Unemployment
+</th>
+<th style="text-align:center;">
+AdjR2
+</th>
+<th style="text-align:center;">
+CV
+</th>
+<th style="text-align:center;">
+AIC
+</th>
+<th style="text-align:center;">
+AICc
+</th>
+<th style="text-align:center;">
+BIC
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.763
+</td>
+<td style="text-align:center;">
+0.104
+</td>
+<td style="text-align:center;">
+-456.6
+</td>
+<td style="text-align:center;">
+-456.1
+</td>
+<td style="text-align:center;">
+-436.9
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.761
+</td>
+<td style="text-align:center;">
+0.105
+</td>
+<td style="text-align:center;">
+-455.2
+</td>
+<td style="text-align:center;">
+-454.9
+</td>
+<td style="text-align:center;">
+-438.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.760
+</td>
+<td style="text-align:center;">
+0.104
+</td>
+<td style="text-align:center;">
+-454.4
+</td>
+<td style="text-align:center;">
+-454.1
+</td>
+<td style="text-align:center;">
+-437.9
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.735
+</td>
+<td style="text-align:center;">
+0.114
+</td>
+<td style="text-align:center;">
+-435.7
+</td>
+<td style="text-align:center;">
+-435.5
+</td>
+<td style="text-align:center;">
+-422.6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.366
+</td>
+<td style="text-align:center;">
+0.271
+</td>
+<td style="text-align:center;">
+-262.3
+</td>
+<td style="text-align:center;">
+-262.0
+</td>
+<td style="text-align:center;">
+-245.8
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.349
+</td>
+<td style="text-align:center;">
+0.279
+</td>
+<td style="text-align:center;">
+-257.1
+</td>
+<td style="text-align:center;">
+-256.8
+</td>
+<td style="text-align:center;">
+-240.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.345
+</td>
+<td style="text-align:center;">
+0.276
+</td>
+<td style="text-align:center;">
+-256.9
+</td>
+<td style="text-align:center;">
+-256.6
+</td>
+<td style="text-align:center;">
+-243.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.336
+</td>
+<td style="text-align:center;">
+0.282
+</td>
+<td style="text-align:center;">
+-254.2
+</td>
+<td style="text-align:center;">
+-254.0
+</td>
+<td style="text-align:center;">
+-241.0
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.324
+</td>
+<td style="text-align:center;">
+0.287
+</td>
+<td style="text-align:center;">
+-250.7
+</td>
+<td style="text-align:center;">
+-250.5
+</td>
+<td style="text-align:center;">
+-237.5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.311
+</td>
+<td style="text-align:center;">
+0.291
+</td>
+<td style="text-align:center;">
+-246.9
+</td>
+<td style="text-align:center;">
+-246.7
+</td>
+<td style="text-align:center;">
+-233.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.308
+</td>
+<td style="text-align:center;">
+0.293
+</td>
+<td style="text-align:center;">
+-246.1
+</td>
+<td style="text-align:center;">
+-245.9
+</td>
+<td style="text-align:center;">
+-232.9
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.276
+</td>
+<td style="text-align:center;">
+0.304
+</td>
+<td style="text-align:center;">
+-238.1
+</td>
+<td style="text-align:center;">
+-238.0
+</td>
+<td style="text-align:center;">
+-228.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+0.274
+</td>
+<td style="text-align:center;">
+0.303
+</td>
+<td style="text-align:center;">
+-237.4
+</td>
+<td style="text-align:center;">
+-237.3
+</td>
+<td style="text-align:center;">
+-227.5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.143
+</td>
+<td style="text-align:center;">
+0.356
+</td>
+<td style="text-align:center;">
+-204.6
+</td>
+<td style="text-align:center;">
+-204.5
+</td>
+<td style="text-align:center;">
+-194.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+⬤
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.061
+</td>
+<td style="text-align:center;">
+0.388
+</td>
+<td style="text-align:center;">
+-186.5
+</td>
+<td style="text-align:center;">
+-186.4
+</td>
+<td style="text-align:center;">
+-176.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+</td>
+<td style="text-align:center;">
+0.000
+</td>
+<td style="text-align:center;">
+0.409
+</td>
+<td style="text-align:center;">
+-175.1
+</td>
+<td style="text-align:center;">
+-175.0
+</td>
+<td style="text-align:center;">
+-168.5
+</td>
+</tr>
+</tbody>
+</table>
+<p>The best model contains all four predictors. However, a closer look at the results reveals some interesting features. There is clear separation between the models in the first four rows and the ones below. This indicates that <code>Income</code> and <code>Savings</code> are both more important variables than <code>Production</code> and <code>Unemployment</code>. Also, the first three rows have almost identical values of CV, AIC and AICc. So we could possibly drop either the <code>Production</code> variable, or the <code>Unemployment</code> variable, and get similar forecasts. Note that <code>Production</code> and <code>Unemployment</code> are highly (negatively) correlated, as shown in Figure <a href="regression-intro.html#fig:ScatterMatrix">7.5</a>, so most of the predictive information in <code>Production</code> is also contained in the <code>Unemployment</code> variable.</p>
+</div>
+<div id="best-subset-regression" class="section level3 unnumbered hasAnchor">
+<h3>Best subset regression<a href="selecting-predictors.html#best-subset-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Where possible, all potential regression models should be fitted (as was done in the example above) and the best model should be selected based on one of the measures discussed. This is known as “best subsets” regression or “all possible subsets” regression.</p>
+</div>
+<div id="stepwise-regression" class="section level3 unnumbered hasAnchor">
+<h3>Stepwise regression<a href="selecting-predictors.html#stepwise-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If there are a large number of predictors, it is not possible to fit all possible models. For example, 40 predictors leads to <span class="math inline">\(2^{40} &gt;\)</span> 1 trillion possible models! Consequently, a strategy is required to limit the number of models to be explored.</p>
+<p>An approach that works quite well is <em>backwards stepwise regression</em>:</p>
+<ul>
+<li>Start with the model containing all potential predictors.</li>
+<li>Remove one predictor at a time. Keep the model if it improves the measure of predictive accuracy.</li>
+<li>Iterate until no further improvement.</li>
+</ul>
+<p>If the number of potential predictors is too large, then the backwards stepwise regression will not work and <em>forward stepwise regression</em> can be used instead. This procedure starts with a model that includes only the intercept. Predictors are added one at a time, and the one that most improves the measure of predictive accuracy is retained in the model. The procedure is repeated until no further improvement can be achieved.</p>
+<p>Alternatively for either the backward or forward direction, a starting model can be one that includes a subset of potential predictors. In this case, an extra step needs to be included. For the backwards procedure we should also consider adding a predictor with each step, and for the forward procedure we should also consider dropping a predictor with each step. These are referred to as <em>hybrid</em> procedures.</p>
+<p>It is important to realise that any stepwise approach is not guaranteed to lead to the best possible model, but it almost always leads to a good model. For further details see <span class="citation">James et al. (<a href="#ref-ISLR">2014</a>)</span>.</p>
+</div>
+<div id="beware-of-inference-after-selecting-predictors" class="section level3 unnumbered hasAnchor">
+<h3>Beware of inference after selecting predictors<a href="selecting-predictors.html#beware-of-inference-after-selecting-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We do not discuss statistical inference of the predictors in this book (e.g., looking at <span class="math inline">\(p\)</span>-values associated with each predictor). If you do wish to look at the statistical significance of the predictors, beware that <em>any</em> procedure involving selecting predictors first will invalidate the assumptions behind the <span class="math inline">\(p\)</span>-values. The procedures we recommend for selecting predictors are helpful when the model is used for forecasting; they are not helpful if you wish to study the effect of any predictor on the forecast variable.</p>
+</div>
+</div>
+<h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-BHK15" class="csl-entry">
+Bergmeir, C., Hyndman, R. J., &amp; Koo, B. (2018). A note on the validity of cross-validation for evaluating autoregressive time series prediction. <em>Computational Statistics and Data Analysis</em>, <em>120</em>, 70–83. <a href="https://doi.org/10.1016/j.csda.2017.11.003">[DOI]</a>
+</div>
+<div id="ref-ISLR" class="csl-entry">
+James, G., Witten, D., Hastie, T., &amp; Tibshirani, R. (2014). <em>An introduction to statistical learning: With applications in <span>R</span></em>. Springer. <a href="http://buy.geni.us/Proxy.ashx?TSID=140570&GR_URL=http%3A%2F%2Fwww.amazon.com%2Fdp%2F1461471370">[Amazon]</a>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="useful-predictors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="forecasting-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

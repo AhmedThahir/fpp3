@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>预测：方法与实践（第三版）</title>
+  <meta name="description" content="第三版" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="预测：方法与实践（第三版）" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://Otexts.com/fpp3cn///figs/fpp3_front_cover.jpg" />
+  <meta property="og:description" content="第三版" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="预测：方法与实践（第三版）" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="第三版" />
+  <meta name="twitter:image" content="https://Otexts.com/fpp3cn///figs/fpp3_front_cover.jpg" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="intro-cn.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27933797-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-27933797-2');
+  gtag('config', 'G-JKBLG3XQGY');
+</script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Merriweather" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css">
+<script>
+  /*
+   * Light YouTube Embeds by @labnol
+   * Credit: https://www.labnol.org/
+   */
+
+  function labnolIframe(div) {
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('src', 'https://www.youtube.com/embed/' + div.dataset.id + '?autoplay=1');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowfullscreen', '1');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
+    div.parentNode.replaceChild(iframe, div);
+  }
+
+  function initYouTubeVideos() {
+    var playerElements = document.querySelectorAll('.youtube-player');
+    for (var n = 0; n < playerElements.length; n++) {
+      var videoId = playerElements[n].dataset.id;
+      var div = document.createElement('div');
+      div.setAttribute('data-id', videoId);
+      var thumbNode = document.createElement('img');
+      thumbNode.src = '//i.ytimg.com/vi/ID/hqdefault.jpg'.replace('ID', videoId);
+      div.appendChild(thumbNode);
+      var playButton = document.createElement('div');
+      playButton.setAttribute('class', 'play');
+      div.appendChild(playButton);
+      div.onclick = function () {
+        labnolIframe(this);
+      };
+      playerElements[n].appendChild(div);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initYouTubeVideos);
+</script>
+<script type="text/javascript">
+  // JavaScript code for Bilibili video embedding
+document.addEventListener('DOMContentLoaded', function () {
+  var bilibiliDivs = document.querySelectorAll('.bilibili-player');
+  bilibiliDivs.forEach(function (div) {
+    var videoId = div.getAttribute('data-id');
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://player.bilibili.com/player.html?bvid=' + videoId + '&autoplay=0';
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowfullscreen', '1');
+    div.appendChild(iframe);
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">预测：方法与实践</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E5%BC%95%E8%A8%80"><i class="fa fa-check"></i>引言</a></li>
+<li class="chapter" data-level="1" data-path="intro-cn.html"><a href="intro-cn.html"><i class="fa fa-check"></i><b>1</b> 入门</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="#%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E8%A2%AB%E9%A2%84%E6%B5%8B"><i class="fa fa-check"></i><b>1.1</b> 什么可以被预测？</a></li>
+<li class="chapter" data-level="1.2" data-path="planning.html"><a href="planning.html"><i class="fa fa-check"></i><b>1.2</b> 预测、计划和目标</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> 决定预测什么</a></li>
+<li class="chapter" data-level="1.4" data-path="data-methods.html"><a href="data-methods.html"><i class="fa fa-check"></i><b>1.4</b> 预测数据和方法</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> 案例</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-steps.html"><a href="basic-steps.html"><i class="fa fa-check"></i><b>1.6</b> 预测过程的主要步骤</a></li>
+<li class="chapter" data-level="1.7" data-path="perspective-cn.html"><a href="perspective-cn.html"><i class="fa fa-check"></i><b>1.7</b> 统计预测观点</a></li>
+<li class="chapter" data-level="1.8" data-path="intro-exercises.html"><a href="intro-exercises.html"><i class="fa fa-check"></i><b>1.8</b> 练习</a></li>
+<li class="chapter" data-level="1.9" data-path="intro-reading.html"><a href="intro-reading.html"><i class="fa fa-check"></i><b>1.9</b> 扩展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="graphics-cn.html"><a href="graphics-cn.html"><i class="fa fa-check"></i><b>2</b> 时间序列图形</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tsibbles-cn.html"><a href="tsibbles-cn.html"><i class="fa fa-check"></i><b>2.1</b> <code>tsibble</code> 对象</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots-cn.html"><a href="time-plots-cn.html"><i class="fa fa-check"></i><b>2.2</b> 时间图</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns-cn.html"><a href="tspatterns-cn.html"><i class="fa fa-check"></i><b>2.3</b> 时间序列模式</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots-cn.html"><a href="seasonal-plots-cn.html"><i class="fa fa-check"></i><b>2.4</b> 季节图</a></li>
+<li class="chapter" data-level="2.5" data-path="subseries-cn.html"><a href="subseries-cn.html"><i class="fa fa-check"></i><b>2.5</b> 子序列季节图</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots-cn.html"><a href="scatterplots-cn.html"><i class="fa fa-check"></i><b>2.6</b> 散点图</a></li>
+<li class="chapter" data-level="2.7" data-path="index.html"><a href="#%E6%BB%9E%E5%90%8E%E5%9B%BE"><i class="fa fa-check"></i><b>2.7</b> 滞后图</a></li>
+<li class="chapter" data-level="2.8" data-path="acf-cn.html"><a href="acf-cn.html"><i class="fa fa-check"></i><b>2.8</b> 自相关</a></li>
+<li class="chapter" data-level="2.9" data-path="wn-cn.html"><a href="wn-cn.html"><i class="fa fa-check"></i><b>2.9</b> 白噪声</a></li>
+<li class="chapter" data-level="2.10" data-path="graphics-exercises-cn.html"><a href="graphics-exercises-cn.html"><i class="fa fa-check"></i><b>2.10</b> 练习</a></li>
+<li class="chapter" data-level="2.11" data-path="graphics-reading-cn.html"><a href="graphics-reading-cn.html"><i class="fa fa-check"></i><b>2.11</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="decomposition-cn.html"><a href="decomposition-cn.html"><i class="fa fa-check"></i><b>3</b> 时间序列分解</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="transformations-cn.html"><a href="transformations-cn.html"><i class="fa fa-check"></i><b>3.1</b> 变换和调整</a></li>
+<li class="chapter" data-level="3.2" data-path="components-cn.html"><a href="components-cn.html"><i class="fa fa-check"></i><b>3.2</b> 时间序列成分</a></li>
+<li class="chapter" data-level="3.3" data-path="moving-averages-cn.html"><a href="moving-averages-cn.html"><i class="fa fa-check"></i><b>3.3</b> 移动平均</a></li>
+<li class="chapter" data-level="3.4" data-path="classical-decomposition-cn.html"><a href="classical-decomposition-cn.html"><i class="fa fa-check"></i><b>3.4</b> 经典时间序列分解</a></li>
+<li class="chapter" data-level="3.5" data-path="index.html"><a href="#%E5%AE%98%E6%96%B9%E7%BB%9F%E8%AE%A1%E6%9C%BA%E6%9E%84%E4%BD%BF%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><i class="fa fa-check"></i><b>3.5</b> 官方统计机构使用的方法</a></li>
+<li class="chapter" data-level="3.6" data-path="stl-cn.html"><a href="stl-cn.html"><i class="fa fa-check"></i><b>3.6</b> STL分解法</a></li>
+<li class="chapter" data-level="3.7" data-path="decomposition-exercises-cn.html"><a href="decomposition-exercises-cn.html"><i class="fa fa-check"></i><b>3.7</b> 练习</a></li>
+<li class="chapter" data-level="3.8" data-path="decomposition-reading-cn.html"><a href="decomposition-reading-cn.html"><i class="fa fa-check"></i><b>3.8</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="features-cn.html"><a href="features-cn.html"><i class="fa fa-check"></i><b>4</b> 时间序列特征</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="index.html"><a href="#%E7%AE%80%E5%8D%95%E7%9A%84%E6%8F%8F%E8%BF%B0%E7%BB%9F%E8%AE%A1"><i class="fa fa-check"></i><b>4.1</b> 简单的描述统计</a></li>
+<li class="chapter" data-level="4.2" data-path="index.html"><a href="#acf-%E7%89%B9%E5%BE%81"><i class="fa fa-check"></i><b>4.2</b> ACF 特征</a></li>
+<li class="chapter" data-level="4.3" data-path="stlfeatures-cn.html"><a href="stlfeatures-cn.html"><i class="fa fa-check"></i><b>4.3</b> STL特征</a></li>
+<li class="chapter" data-level="4.4" data-path="index.html"><a href="#%E5%85%B6%E4%BB%96%E7%89%B9%E5%BE%81"><i class="fa fa-check"></i><b>4.4</b> 其他特征</a></li>
+<li class="chapter" data-level="4.5" data-path="index.html"><a href="#%E6%8E%A2%E7%B4%A2%E6%BE%B3%E5%A4%A7%E5%88%A9%E4%BA%9A%E6%97%85%E6%B8%B8%E6%95%B0%E6%8D%AE"><i class="fa fa-check"></i><b>4.5</b> 探索澳大利亚旅游数据</a></li>
+<li class="chapter" data-level="4.6" data-path="feast-exercises-cn.html"><a href="feast-exercises-cn.html"><i class="fa fa-check"></i><b>4.6</b> 练习</a></li>
+<li class="chapter" data-level="4.7" data-path="index.html"><a href="#%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB"><i class="fa fa-check"></i><b>4.7</b> 延伸阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="toolbox-cn.html"><a href="toolbox-cn.html"><i class="fa fa-check"></i><b>5</b> 预测者的工具集</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="index.html"><a href="#%E8%A7%84%E6%95%B4%E7%9A%84%E9%A2%84%E6%B5%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><i class="fa fa-check"></i><b>5.1</b> 规整的预测工作流程</a></li>
+<li class="chapter" data-level="5.2" data-path="simple-methods-cn.html"><a href="simple-methods-cn.html"><i class="fa fa-check"></i><b>5.2</b> 一些简单的预测方法</a></li>
+<li class="chapter" data-level="5.3" data-path="residuals-cn.html"><a href="residuals-cn.html"><i class="fa fa-check"></i><b>5.3</b> 拟合值与残差</a></li>
+<li class="chapter" data-level="5.4" data-path="diagnostics-cn.html"><a href="diagnostics-cn.html"><i class="fa fa-check"></i><b>5.4</b> 残差诊断</a></li>
+<li class="chapter" data-level="5.5" data-path="prediction-intervals-cn.html"><a href="prediction-intervals-cn.html"><i class="fa fa-check"></i><b>5.5</b> 预测分布和预测区间</a></li>
+<li class="chapter" data-level="5.6" data-path="ftransformations-cn.html"><a href="ftransformations-cn.html"><i class="fa fa-check"></i><b>5.6</b> 使用变换进行预测</a></li>
+<li class="chapter" data-level="5.7" data-path="forecasting-decomposition-cn.html"><a href="forecasting-decomposition-cn.html"><i class="fa fa-check"></i><b>5.7</b> 分解预测</a></li>
+<li class="chapter" data-level="5.8" data-path="accuracy-cn.html"><a href="accuracy-cn.html"><i class="fa fa-check"></i><b>5.8</b> 评估预测精度</a></li>
+<li class="chapter" data-level="5.9" data-path="distaccuracy-cn.html"><a href="distaccuracy-cn.html"><i class="fa fa-check"></i><b>5.9</b> 评估分布预测准确性</a></li>
+<li class="chapter" data-level="5.10" data-path="tscv-cn.html"><a href="tscv-cn.html"><i class="fa fa-check"></i><b>5.10</b> 时间序列交叉验证</a></li>
+<li class="chapter" data-level="5.11" data-path="toolbox-exercises-cn.html"><a href="toolbox-exercises-cn.html"><i class="fa fa-check"></i><b>5.11</b> 练习</a></li>
+<li class="chapter" data-level="5.12" data-path="basics-reading-cn.html"><a href="basics-reading-cn.html"><i class="fa fa-check"></i><b>5.12</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="judgmental-cn.html"><a href="judgmental-cn.html"><i class="fa fa-check"></i><b>6</b> 判断预测</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="judgmental-limitations.html"><a href="judgmental-limitations.html"><i class="fa fa-check"></i><b>6.1</b> 谨防局限性</a></li>
+<li class="chapter" data-level="6.2" data-path="judgmental-principles.html"><a href="judgmental-principles.html"><i class="fa fa-check"></i><b>6.2</b> 主要原则</a></li>
+<li class="chapter" data-level="6.3" data-path="delphimethod.html"><a href="delphimethod.html"><i class="fa fa-check"></i><b>6.3</b> 德尔菲法</a></li>
+<li class="chapter" data-level="6.4" data-path="analogies.html"><a href="analogies.html"><i class="fa fa-check"></i><b>6.4</b> 类比预测</a></li>
+<li class="chapter" data-level="6.5" data-path="scenarios-cn.html"><a href="scenarios-cn.html"><i class="fa fa-check"></i><b>6.5</b> 情景预测</a></li>
+<li class="chapter" data-level="6.6" data-path="new-products.html"><a href="new-products.html"><i class="fa fa-check"></i><b>6.6</b> 新产品预测</a></li>
+<li class="chapter" data-level="6.7" data-path="judgmental-adjustments.html"><a href="judgmental-adjustments.html"><i class="fa fa-check"></i><b>6.7</b> 判断性调整</a></li>
+<li class="chapter" data-level="6.8" data-path="judgmental-reading.html"><a href="judgmental-reading.html"><i class="fa fa-check"></i><b>6.8</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression-cn.html"><a href="regression-cn.html"><i class="fa fa-check"></i><b>7</b> 时间序列回归模型</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="regression-intro-cn.html"><a href="regression-intro-cn.html"><i class="fa fa-check"></i><b>7.1</b> 线性模型</a></li>
+<li class="chapter" data-level="7.2" data-path="least-squares-cn.html"><a href="least-squares-cn.html"><i class="fa fa-check"></i><b>7.2</b> 最小二乘估计</a></li>
+<li class="chapter" data-level="7.3" data-path="regression-evaluation-cn.html"><a href="regression-evaluation-cn.html"><i class="fa fa-check"></i><b>7.3</b> 回归模型的评估</a></li>
+<li class="chapter" data-level="7.4" data-path="useful-predictors-cn.html"><a href="useful-predictors-cn.html"><i class="fa fa-check"></i><b>7.4</b> 一些有用的预测变量</a></li>
+<li class="chapter" data-level="7.5" data-path="selecting-predictors-cn.html"><a href="selecting-predictors-cn.html"><i class="fa fa-check"></i><b>7.5</b> 预测变量的筛选</a></li>
+<li class="chapter" data-level="7.6" data-path="forecasting-regression-cn.html"><a href="forecasting-regression-cn.html"><i class="fa fa-check"></i><b>7.6</b> 回归预测</a></li>
+<li class="chapter" data-level="7.7" data-path="nonlinear-regression-cn.html"><a href="nonlinear-regression-cn.html"><i class="fa fa-check"></i><b>7.7</b> 非线性回归</a></li>
+<li class="chapter" data-level="7.8" data-path="causality-cn.html"><a href="causality-cn.html"><i class="fa fa-check"></i><b>7.8</b> 相关关系、因果关系和预测</a></li>
+<li class="chapter" data-level="7.9" data-path="regression-matrices-cn.html"><a href="regression-matrices-cn.html"><i class="fa fa-check"></i><b>7.9</b> 矩阵方程</a></li>
+<li class="chapter" data-level="7.10" data-path="regression-exercises-cn.html"><a href="regression-exercises-cn.html"><i class="fa fa-check"></i><b>7.10</b> 练习</a></li>
+<li class="chapter" data-level="7.11" data-path="regression-reading.html"><a href="regression-reading.html"><i class="fa fa-check"></i><b>7.11</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="expsmooth-cn.html"><a href="expsmooth-cn.html"><i class="fa fa-check"></i><b>8</b> 指数平滑</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ses-cn.html"><a href="ses-cn.html"><i class="fa fa-check"></i><b>8.1</b> 简单的指数平滑</a></li>
+<li class="chapter" data-level="8.2" data-path="holt-cn.html"><a href="holt-cn.html"><i class="fa fa-check"></i><b>8.2</b> 趋势性方法</a></li>
+<li class="chapter" data-level="8.3" data-path="holt-winters-cn.html"><a href="holt-winters-cn.html"><i class="fa fa-check"></i><b>8.3</b> 季节性方法</a></li>
+<li class="chapter" data-level="8.4" data-path="taxonomy-cn.html"><a href="taxonomy-cn.html"><i class="fa fa-check"></i><b>8.4</b> 指数平滑法的分类</a></li>
+<li class="chapter" data-level="8.5" data-path="ets-cn.html"><a href="ets-cn.html"><i class="fa fa-check"></i><b>8.5</b> 新息指数平滑状态空间模型</a></li>
+<li class="chapter" data-level="8.6" data-path="ets-estimation-cn.html"><a href="ets-estimation-cn.html"><i class="fa fa-check"></i><b>8.6</b> 模型估计和选择</a></li>
+<li class="chapter" data-level="8.7" data-path="ets-forecasting-cn.html"><a href="ets-forecasting-cn.html"><i class="fa fa-check"></i><b>8.7</b> 使用ETS模型预测</a></li>
+<li class="chapter" data-level="8.8" data-path="expsmooth-exercises-cn.html"><a href="expsmooth-exercises-cn.html"><i class="fa fa-check"></i><b>8.8</b> 练习</a></li>
+<li class="chapter" data-level="8.9" data-path="expsmooth-reading-cn.html"><a href="expsmooth-reading-cn.html"><i class="fa fa-check"></i><b>8.9</b> 扩展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="arima-cn.html"><a href="arima-cn.html"><i class="fa fa-check"></i><b>9</b> ARIMA模型</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="stationarity-cn.html"><a href="stationarity-cn.html"><i class="fa fa-check"></i><b>9.1</b> 平稳性和差分</a></li>
+<li class="chapter" data-level="9.2" data-path="backshift-cn.html"><a href="backshift-cn.html"><i class="fa fa-check"></i><b>9.2</b> 延迟算子</a></li>
+<li class="chapter" data-level="9.3" data-path="AR-cn.html"><a href="AR-cn.html"><i class="fa fa-check"></i><b>9.3</b> 自回归模型</a></li>
+<li class="chapter" data-level="9.4" data-path="MA.html"><a href="MA.html"><i class="fa fa-check"></i><b>9.4</b> 移动平均模型</a></li>
+<li class="chapter" data-level="9.5" data-path="non-seasonal-arima-cn.html"><a href="non-seasonal-arima-cn.html"><i class="fa fa-check"></i><b>9.5</b> 非季节性ARIMA模型</a></li>
+<li class="chapter" data-level="9.6" data-path="arima-estimation-cn.html"><a href="arima-estimation-cn.html"><i class="fa fa-check"></i><b>9.6</b> 估计和阶数选择</a></li>
+<li class="chapter" data-level="9.7" data-path="arima-r-cn.html"><a href="arima-r-cn.html"><i class="fa fa-check"></i><b>9.7</b> <code>fable</code>包建立ARIMA模型</a></li>
+<li class="chapter" data-level="9.8" data-path="arima-forecasting-cn.html"><a href="arima-forecasting-cn.html"><i class="fa fa-check"></i><b>9.8</b> 预测</a></li>
+<li class="chapter" data-level="9.9" data-path="seasonal-arima-cn.html"><a href="seasonal-arima-cn.html"><i class="fa fa-check"></i><b>9.9</b> 季节性ARIMA模型</a></li>
+<li class="chapter" data-level="9.10" data-path="arima-ets-cn.html"><a href="arima-ets-cn.html"><i class="fa fa-check"></i><b>9.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="9.11" data-path="arima-exercises-cn.html"><a href="arima-exercises-cn.html"><i class="fa fa-check"></i><b>9.11</b> 练习</a></li>
+<li class="chapter" data-level="9.12" data-path="arima-reading-cn.html"><a href="arima-reading-cn.html"><i class="fa fa-check"></i><b>9.12</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dynamic-cn.html"><a href="dynamic-cn.html"><i class="fa fa-check"></i><b>10</b> 动态回归模型</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="estimation-cn.html"><a href="estimation-cn.html"><i class="fa fa-check"></i><b>10.1</b> 模型估计</a></li>
+<li class="chapter" data-level="10.2" data-path="regarima-cn.html"><a href="regarima-cn.html"><i class="fa fa-check"></i><b>10.2</b> 用<code>fable</code>实现ARIMA误差回归</a></li>
+<li class="chapter" data-level="10.3" data-path="forecasting-cn.html"><a href="forecasting-cn.html"><i class="fa fa-check"></i><b>10.3</b> 模型预测</a></li>
+<li class="chapter" data-level="10.4" data-path="stochastic-and-deterministic-trends-cn.html"><a href="stochastic-and-deterministic-trends-cn.html"><i class="fa fa-check"></i><b>10.4</b> 随机趋势和确定性趋势</a></li>
+<li class="chapter" data-level="10.5" data-path="dhr-cn.html"><a href="dhr-cn.html"><i class="fa fa-check"></i><b>10.5</b> 动态谐波回归</a></li>
+<li class="chapter" data-level="10.6" data-path="lagged-predictors-cn.html"><a href="lagged-predictors-cn.html"><i class="fa fa-check"></i><b>10.6</b> 滞后预测变量</a></li>
+<li class="chapter" data-level="10.7" data-path="dynamic-exercises-cn.html"><a href="dynamic-exercises-cn.html"><i class="fa fa-check"></i><b>10.7</b> 练习</a></li>
+<li class="chapter" data-level="10.8" data-path="dynamic-reading-cn.html"><a href="dynamic-reading-cn.html"><i class="fa fa-check"></i><b>10.8</b> 扩展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical-cn.html"><a href="hierarchical-cn.html"><i class="fa fa-check"></i><b>11</b> 预测分层或分组时间序列</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hts-cn.html"><a href="hts-cn.html"><i class="fa fa-check"></i><b>11.1</b> 分层与分组时间序列</a></li>
+<li class="chapter" data-level="11.2" data-path="single-level-cn.html"><a href="single-level-cn.html"><i class="fa fa-check"></i><b>11.2</b> 单一层次的方法</a></li>
+<li class="chapter" data-level="11.3" data-path="reconciliation-cn.html"><a href="reconciliation-cn.html"><i class="fa fa-check"></i><b>11.3</b> 预测调和</a></li>
+<li class="chapter" data-level="11.4" data-path="tourism-cn.html"><a href="tourism-cn.html"><i class="fa fa-check"></i><b>11.4</b> 预测澳大利亚国内旅游情况</a></li>
+<li class="chapter" data-level="11.5" data-path="rec-prob-cn.html"><a href="rec-prob-cn.html"><i class="fa fa-check"></i><b>11.5</b> 调和预测分布</a></li>
+<li class="chapter" data-level="11.6" data-path="prison-cn.html"><a href="prison-cn.html"><i class="fa fa-check"></i><b>11.6</b> 预测澳大利亚监狱人口</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-exercises-cn.html"><a href="hierarchical-exercises-cn.html"><i class="fa fa-check"></i><b>11.7</b> 练习</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-reading-cn.html"><a href="hierarchical-reading-cn.html"><i class="fa fa-check"></i><b>11.8</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="advanced-cn.html"><a href="advanced-cn.html"><i class="fa fa-check"></i><b>12</b> 高级预测方法</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="complexseasonality-cn.html"><a href="complexseasonality-cn.html"><i class="fa fa-check"></i><b>12.1</b> 复杂季节性</a></li>
+<li class="chapter" data-level="12.2" data-path="prophet-cn.html"><a href="prophet-cn.html"><i class="fa fa-check"></i><b>12.2</b> Prophet模型</a></li>
+<li class="chapter" data-level="12.3" data-path="VAR-cn.html"><a href="VAR-cn.html"><i class="fa fa-check"></i><b>12.3</b> 向量自回归</a></li>
+<li class="chapter" data-level="12.4" data-path="nnetar-cn.html"><a href="nnetar-cn.html"><i class="fa fa-check"></i><b>12.4</b> 神经网络模型</a></li>
+<li class="chapter" data-level="12.5" data-path="bootstrap-cn.html"><a href="bootstrap-cn.html"><i class="fa fa-check"></i><b>12.5</b> Bootstrapping 和 bagging</a></li>
+<li class="chapter" data-level="12.6" data-path="advanced-exercises-cn.html"><a href="advanced-exercises-cn.html"><i class="fa fa-check"></i><b>12.6</b> 练习</a></li>
+<li class="chapter" data-level="12.7" data-path="advanced-reading-cn.html"><a href="advanced-reading-cn.html"><i class="fa fa-check"></i><b>12.7</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="practical-cn.html"><a href="practical-cn.html"><i class="fa fa-check"></i><b>13</b> 实际预测问题</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="weekly-cn.html"><a href="weekly-cn.html"><i class="fa fa-check"></i><b>13.1</b> 周数据，日数据及日以下数据</a></li>
+<li class="chapter" data-level="13.2" data-path="counts-cn.html"><a href="counts-cn.html"><i class="fa fa-check"></i><b>13.2</b> 计数时间序列</a></li>
+<li class="chapter" data-level="13.3" data-path="limits-cn.html"><a href="limits-cn.html"><i class="fa fa-check"></i><b>13.3</b> 限定预测值范围</a></li>
+<li class="chapter" data-level="13.4" data-path="combination-cn.html"><a href="combination-cn.html"><i class="fa fa-check"></i><b>13.4</b> 预测组合</a></li>
+<li class="chapter" data-level="13.5" data-path="aggregates-cn.html"><a href="aggregates-cn.html"><i class="fa fa-check"></i><b>13.5</b> 时间聚合的区间预测</a></li>
+<li class="chapter" data-level="13.6" data-path="backcasting-cn.html"><a href="backcasting-cn.html"><i class="fa fa-check"></i><b>13.6</b> 反向预测</a></li>
+<li class="chapter" data-level="13.7" data-path="long-short-ts-cn.html"><a href="long-short-ts-cn.html"><i class="fa fa-check"></i><b>13.7</b> 长期和短期的时间序列</a></li>
+<li class="chapter" data-level="13.8" data-path="training-test-cn.html"><a href="training-test-cn.html"><i class="fa fa-check"></i><b>13.8</b> 训练集和测试集预测</a></li>
+<li class="chapter" data-level="13.9" data-path="missing-outliers-cn.html"><a href="missing-outliers-cn.html"><i class="fa fa-check"></i><b>13.9</b> 处理离群值和缺失值</a></li>
+<li class="chapter" data-level="13.10" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>13.10</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E9%99%84%E5%BD%95%E4%BD%BF%E7%94%A8-r"><i class="fa fa-check"></i>附录：使用 R</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E9%99%84%E5%BD%95%E4%BE%9B%E6%95%99%E5%B8%88%E4%BD%BF%E7%94%A8"><i class="fa fa-check"></i>附录：供教师使用</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E9%99%84%E5%BD%95%E8%AF%84%E8%AE%BA"><i class="fa fa-check"></i>附录：评论</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E8%AF%91%E8%91%97"><i class="fa fa-check"></i>译著</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85"><i class="fa fa-check"></i>关于作者</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E5%85%B3%E4%BA%8E%E8%AF%91%E8%80%85"><i class="fa fa-check"></i>关于译者</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E8%B4%AD%E4%B9%B0%E6%89%93%E5%8D%B0%E7%89%88"><i class="fa fa-check"></i>购买打印版</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E6%8A%A5%E5%91%8A%E9%94%99%E8%AF%AF"><i class="fa fa-check"></i>报告错误</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><i class="fa fa-check"></i>参考文献</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.com" target="blank">本书采用 bookdown 由 OTexts™ 出版</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">预测：方法与实践（第三版）</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">预测：方法与实践（第三版）</h1>
+<p class="author multi-author"><em>Rob J Hyndman 和 George Athanasopoulos</em></p>
+<address class="author_afil">
+澳大利亚莫纳什大学<br>
+</address>
+</div>
+<div id="引言" class="section level1 unnumbered hasAnchor">
+<h1>引言<a href="#%E5%BC%95%E8%A8%80" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="bilibili-player" data-id="1fG411S7YL">
+
+</div>
+<p style="float:right; width:50%; margin-left:20px;">
+<img src="figs/fpp3_front_cover.jpg" width='100%'>
+<a href="购买打印版.html">
+<button type="submit" class="btn btn-success btn-lg">购买打印版</button>
+</a>
+</p>
+<p>欢迎阅读我们的在线预测教材。</p>
+<p>本书的目的是对预测方法进行全面的介绍，并让读者快速上手每一种预测方法。我们没有详细讨论每种方法背后的理论细节，但读者可以从每个章节最后的参考文献中找到这些细节。</p>
+<p>本书适合三类读者：（1）在业界想做预测但没有受过该领域专业教育的人；（2）读商科的本科生；（3）MBA学生。在澳大利亚莫纳什大学我们将该书用作商学本科三年级的课程教材。</p>
+<p>在大部分章节中，我们假设读者熟悉初级统计学以及高中代数。有几个章节需要矩阵知识，但我们已做了标记。</p>
+<p>在每个章节的最后，我们给出了“扩展阅读”。一般情况下，读者可以从“扩展阅读”中所列教材中找到更深层次或更详细的细节。如果没有合适的教材，我们给出了期刊文章，以提供给读者更多的参考信息。</p>
+<p>在整本书中我们使用R 语言，我们打算让学生学习如何用R进行预测。R是免费的，而且几乎适用于任何操作系统。R不仅适用于预测，而且还是所有统计分析的绝
+佳工具。对于如何安装和使用R，请参见附录中的<a href="#%E9%99%84%E5%BD%95%E4%BD%BF%E7%94%A8-r">使用R</a>。</p>
+<p>本书中的所有R示例都假设读者已首先加载了 <code>fpp3</code> 包：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fpp3)</span></code></pre></div>
+<pre><code>#&gt; ── Attaching packages ──────────────────────────────── fpp3 0.5 ──
+#&gt; ✔ tibble      3.2.1     ✔ tsibble     1.1.4
+#&gt; ✔ dplyr       1.1.4     ✔ tsibbledata 0.4.1
+#&gt; ✔ tidyr       1.3.1     ✔ feasts      0.3.2
+#&gt; ✔ lubridate   1.9.3     ✔ fable       0.3.4
+#&gt; ✔ ggplot2     3.5.1     ✔ fabletools  0.4.2
+#&gt; ── Conflicts ───────────────────────────────────── fpp3_conflicts ──
+#&gt; ✖ lubridate::date()    masks base::date()
+#&gt; ✖ dplyr::filter()      masks stats::filter()
+#&gt; ✖ tsibble::intersect() masks base::intersect()
+#&gt; ✖ tsibble::interval()  masks lubridate::interval()
+#&gt; ✖ dplyr::lag()         masks stats::lag()
+#&gt; ✖ tsibble::setdiff()   masks base::setdiff()
+#&gt; ✖ tsibble::union()     masks base::union()</code></pre>
+<p>这将加载相关的数据集，并加载上面列出的几个包。其中包括几个<a href="https://tidyverse.org"><code>tidyverse</code></a>软件包，以及在”tidy”框架中处理时间序列和预测的软件包。</p>
+<p>上面的输出也显示了我们在编译本书本版本时使用的软件包版本。本书中的一些示例可能不支持早期版本的软件包。</p>
+<p>最后，输出列出了一些冲突，显示了当多个包中有同名函数时将优先选择哪个函数。</p>
+<p>本书与其他预测教科书相比有以下几个鲜明特点：</p>
+<ul>
+<li>本书是免费的，并可以在线阅读，这使本书受众更广。</li>
+<li>本书使用R，R是免费的、开源的、极其强大的软件。</li>
+<li>本书的在线版本会持续更新。读者不需要等到下一版书的出版就可以看到书中的错误被纠正或者书中讨论了新的方法，因为我们将频繁在线更新本书。</li>
+<li>本书展示了许多真实数据示例，这些都是从我们自己的咨询实践中获取的资源。我们已与上百家企业合作帮助他们解决预测问题，这些经验直接促成了这里给出的许多例子，并指导了我们的预测理念。</li>
+<li>我们比大部分预测者更强调图形方法。我们通过图形来探索数据、分析模型的有效性并展示预测结果。</li>
+</ul>
+<div id="第三版的变化" class="section level3 unnumbered hasAnchor">
+<h3>第三版的变化<a href="#%E7%AC%AC%E4%B8%89%E7%89%88%E7%9A%84%E5%8F%98%E5%8C%96" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>本书第三版中最重要的变化是我们使用了<code>tsibble</code>和<code>fable</code>包，而不是<code>forecast</code>包。这允许我们与<code>tidyverse</code>系列的包紧密集成。因此，我们也更新了很多示例。</p>
+<p>我们还增加了一些关于时间序列特征的新内容，并重新组织了本书章节，因此第<a href="graphics-cn.html#graphics-cn">2</a>–<a href="features-cn.html#features-cn">4</a>章节在引入任何预测方法之前讨论了时间序列的探索性分析。这是因为在我们试图建立任何模型和做出任何预测之前，我们首先应该对要研究的时间序列、它们的模式和特征有一个很好的理解。</p>
+<p>这本书早期版本的热心读者已告知我们他们发现的许多笔误和错误。这些信息已同步在网上更新。毫无疑问，我们在不断更新教材内容的同时会引入一些新的错误，一旦发现，我们会尽快在线修改。当发现错误时请继续<a href="https://otexts.com/fpp3/report-an-error.html">让我们知晓</a>。</p>
+<p>在这本书的在线版本中，我们在大部分章节的开头都植入了一些原书作者的授课视频。这些视频旨在补充每一节中的书面材料。你可以在YouTube上查看<a href="https://www.youtube.com/playlist?list=PLyCNZ_xXGzpm7W9jLqbIyBAiSO5jDwJeE">整个播放列表</a>。</p>
+<p>如果你有关于使用本书中讨论的R包的问题，或者关于一般预测的问题，请在<a href="https://bit.ly/fpp3help">RStudio社区网站</a>上提问。</p>
+<p> </p>
+<p>快乐预测！</p>
+<p>Rob J Hyndman 和 George Athanasopoulos</p>
+<p>2021年5月</p>
+<hr />
+<p>如果引用本书的英文在线版本，请使用：</p>
+<blockquote>
+<p>Hyndman, R.J., &amp; Athanasopoulos, G. (2021) <em>Forecasting: principles and practice</em>, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fpp3. Accessed on <code>&lt;current date&gt;</code>.</p>
+</blockquote>
+<p> </p>
+<blockquote>
+<p>本书的中文在线版本最后一次更新于 2024-08-16。</p>
+<p>本书的英文纸质版（可于<a href="/fpp3/buy-a-print-version.html">亚马逊</a>购买）最后一次更新于2021年5月31日。</p>
+</blockquote>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro-cn.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

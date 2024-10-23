@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7.3 Evaluating the regression model | Forecasting: Principles and Practice (3rd ed)</title>
+  <meta name="description" content="3rd edition" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7.3 Evaluating the regression model | Forecasting: Principles and Practice (3rd ed)" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+  <meta property="og:description" content="3rd edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7.3 Evaluating the regression model | Forecasting: Principles and Practice (3rd ed)" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="3rd edition" />
+  <meta name="twitter:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="least-squares.html"/>
+<link rel="next" href="useful-predictors.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27933797-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-27933797-2');
+  gtag('config', 'G-JKBLG3XQGY');
+</script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Merriweather" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css">
+<script>
+  /*
+   * Light YouTube Embeds by @labnol
+   * Credit: https://www.labnol.org/
+   */
+
+  function labnolIframe(div) {
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('src', 'https://www.youtube.com/embed/' + div.dataset.id + '?autoplay=1');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowfullscreen', '1');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
+    div.parentNode.replaceChild(iframe, div);
+  }
+
+  function initYouTubeVideos() {
+    var playerElements = document.querySelectorAll('.youtube-player');
+    for (var n = 0; n < playerElements.length; n++) {
+      var videoId = playerElements[n].dataset.id;
+      var div = document.createElement('div');
+      div.setAttribute('data-id', videoId);
+      var thumbNode = document.createElement('img');
+      thumbNode.src = '//i.ytimg.com/vi/ID/hqdefault.jpg'.replace('ID', videoId);
+      div.appendChild(thumbNode);
+      var playButton = document.createElement('div');
+      playButton.setAttribute('class', 'play');
+      div.appendChild(playButton);
+      div.onclick = function () {
+        labnolIframe(this);
+      };
+      playerElements[n].appendChild(div);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initYouTubeVideos);
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="what-can-be-forecast.html"><a href="what-can-be-forecast.html"><i class="fa fa-check"></i><b>1.1</b> What can be forecast?</a></li>
+<li class="chapter" data-level="1.2" data-path="planning.html"><a href="planning.html"><i class="fa fa-check"></i><b>1.2</b> Forecasting, goals and planning</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> Determining what to forecast</a></li>
+<li class="chapter" data-level="1.4" data-path="data-methods.html"><a href="data-methods.html"><i class="fa fa-check"></i><b>1.4</b> Forecasting data and methods</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Some case studies</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-steps.html"><a href="basic-steps.html"><i class="fa fa-check"></i><b>1.6</b> The basic steps in a forecasting task</a></li>
+<li class="chapter" data-level="1.7" data-path="perspective.html"><a href="perspective.html"><i class="fa fa-check"></i><b>1.7</b> The statistical forecasting perspective</a></li>
+<li class="chapter" data-level="1.8" data-path="intro-exercises.html"><a href="intro-exercises.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+<li class="chapter" data-level="1.9" data-path="intro-reading.html"><a href="intro-reading.html"><i class="fa fa-check"></i><b>1.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>2</b> Time series graphics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tsibbles.html"><a href="tsibbles.html"><i class="fa fa-check"></i><b>2.1</b> <code>tsibble</code> objects</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots.html"><a href="time-plots.html"><i class="fa fa-check"></i><b>2.2</b> Time plots</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Time series patterns</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots.html"><a href="seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> Seasonal plots</a></li>
+<li class="chapter" data-level="2.5" data-path="subseries.html"><a href="subseries.html"><i class="fa fa-check"></i><b>2.5</b> Seasonal subseries plots</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots.html"><a href="scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> Scatterplots</a></li>
+<li class="chapter" data-level="2.7" data-path="lag-plots.html"><a href="lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> Lag plots</a></li>
+<li class="chapter" data-level="2.8" data-path="acf.html"><a href="acf.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelation</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise</a></li>
+<li class="chapter" data-level="2.10" data-path="graphics-exercises.html"><a href="graphics-exercises.html"><i class="fa fa-check"></i><b>2.10</b> Exercises</a></li>
+<li class="chapter" data-level="2.11" data-path="graphics-reading.html"><a href="graphics-reading.html"><i class="fa fa-check"></i><b>2.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="decomposition.html"><a href="decomposition.html"><i class="fa fa-check"></i><b>3</b> Time series decomposition</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.1</b> Transformations and adjustments</a></li>
+<li class="chapter" data-level="3.2" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>3.2</b> Time series components</a></li>
+<li class="chapter" data-level="3.3" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>3.3</b> Moving averages</a></li>
+<li class="chapter" data-level="3.4" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>3.4</b> Classical decomposition</a></li>
+<li class="chapter" data-level="3.5" data-path="methods-used-by-official-statistics-agencies.html"><a href="methods-used-by-official-statistics-agencies.html"><i class="fa fa-check"></i><b>3.5</b> Methods used by official statistics agencies</a></li>
+<li class="chapter" data-level="3.6" data-path="stl.html"><a href="stl.html"><i class="fa fa-check"></i><b>3.6</b> STL decomposition</a></li>
+<li class="chapter" data-level="3.7" data-path="decomposition-exercises.html"><a href="decomposition-exercises.html"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+<li class="chapter" data-level="3.8" data-path="decomposition-reading.html"><a href="decomposition-reading.html"><i class="fa fa-check"></i><b>3.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="features.html"><a href="features.html"><i class="fa fa-check"></i><b>4</b> Time series features</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="some-simple-statistics.html"><a href="some-simple-statistics.html"><i class="fa fa-check"></i><b>4.1</b> Some simple statistics</a></li>
+<li class="chapter" data-level="4.2" data-path="acf-features.html"><a href="acf-features.html"><i class="fa fa-check"></i><b>4.2</b> ACF features</a></li>
+<li class="chapter" data-level="4.3" data-path="stlfeatures.html"><a href="stlfeatures.html"><i class="fa fa-check"></i><b>4.3</b> STL Features</a></li>
+<li class="chapter" data-level="4.4" data-path="other-features.html"><a href="other-features.html"><i class="fa fa-check"></i><b>4.4</b> Other features</a></li>
+<li class="chapter" data-level="4.5" data-path="exploring-australian-tourism-data.html"><a href="exploring-australian-tourism-data.html"><i class="fa fa-check"></i><b>4.5</b> Exploring Australian tourism data</a></li>
+<li class="chapter" data-level="4.6" data-path="feast-exercises.html"><a href="feast-exercises.html"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+<li class="chapter" data-level="4.7" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>4.7</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="toolbox.html"><a href="toolbox.html"><i class="fa fa-check"></i><b>5</b> The forecaster’s toolbox</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="a-tidy-forecasting-workflow.html"><a href="a-tidy-forecasting-workflow.html"><i class="fa fa-check"></i><b>5.1</b> A tidy forecasting workflow</a></li>
+<li class="chapter" data-level="5.2" data-path="simple-methods.html"><a href="simple-methods.html"><i class="fa fa-check"></i><b>5.2</b> Some simple forecasting methods</a></li>
+<li class="chapter" data-level="5.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>5.3</b> Fitted values and residuals</a></li>
+<li class="chapter" data-level="5.4" data-path="diagnostics.html"><a href="diagnostics.html"><i class="fa fa-check"></i><b>5.4</b> Residual diagnostics</a></li>
+<li class="chapter" data-level="5.5" data-path="prediction-intervals.html"><a href="prediction-intervals.html"><i class="fa fa-check"></i><b>5.5</b> Distributional forecasts and prediction intervals</a></li>
+<li class="chapter" data-level="5.6" data-path="ftransformations.html"><a href="ftransformations.html"><i class="fa fa-check"></i><b>5.6</b> Forecasting using transformations</a></li>
+<li class="chapter" data-level="5.7" data-path="forecasting-decomposition.html"><a href="forecasting-decomposition.html"><i class="fa fa-check"></i><b>5.7</b> Forecasting with decomposition</a></li>
+<li class="chapter" data-level="5.8" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>5.8</b> Evaluating point forecast accuracy</a></li>
+<li class="chapter" data-level="5.9" data-path="distaccuracy.html"><a href="distaccuracy.html"><i class="fa fa-check"></i><b>5.9</b> Evaluating distributional forecast accuracy</a></li>
+<li class="chapter" data-level="5.10" data-path="tscv.html"><a href="tscv.html"><i class="fa fa-check"></i><b>5.10</b> Time series cross-validation</a></li>
+<li class="chapter" data-level="5.11" data-path="toolbox-exercises.html"><a href="toolbox-exercises.html"><i class="fa fa-check"></i><b>5.11</b> Exercises</a></li>
+<li class="chapter" data-level="5.12" data-path="basics-reading.html"><a href="basics-reading.html"><i class="fa fa-check"></i><b>5.12</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="judgmental.html"><a href="judgmental.html"><i class="fa fa-check"></i><b>6</b> Judgmental forecasts</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="judgmental-limitations.html"><a href="judgmental-limitations.html"><i class="fa fa-check"></i><b>6.1</b> Beware of limitations</a></li>
+<li class="chapter" data-level="6.2" data-path="judgmental-principles.html"><a href="judgmental-principles.html"><i class="fa fa-check"></i><b>6.2</b> Key principles</a></li>
+<li class="chapter" data-level="6.3" data-path="delphimethod.html"><a href="delphimethod.html"><i class="fa fa-check"></i><b>6.3</b> The Delphi method</a></li>
+<li class="chapter" data-level="6.4" data-path="analogies.html"><a href="analogies.html"><i class="fa fa-check"></i><b>6.4</b> Forecasting by analogy</a></li>
+<li class="chapter" data-level="6.5" data-path="scenarios.html"><a href="scenarios.html"><i class="fa fa-check"></i><b>6.5</b> Scenario forecasting</a></li>
+<li class="chapter" data-level="6.6" data-path="new-products.html"><a href="new-products.html"><i class="fa fa-check"></i><b>6.6</b> New product forecasting</a></li>
+<li class="chapter" data-level="6.7" data-path="judgmental-adjustments.html"><a href="judgmental-adjustments.html"><i class="fa fa-check"></i><b>6.7</b> Judgmental adjustments</a></li>
+<li class="chapter" data-level="6.8" data-path="judgmental-reading.html"><a href="judgmental-reading.html"><i class="fa fa-check"></i><b>6.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> Time series regression models</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="regression-intro.html"><a href="regression-intro.html"><i class="fa fa-check"></i><b>7.1</b> The linear model</a></li>
+<li class="chapter" data-level="7.2" data-path="least-squares.html"><a href="least-squares.html"><i class="fa fa-check"></i><b>7.2</b> Least squares estimation</a></li>
+<li class="chapter" data-level="7.3" data-path="regression-evaluation.html"><a href="regression-evaluation.html"><i class="fa fa-check"></i><b>7.3</b> Evaluating the regression model</a></li>
+<li class="chapter" data-level="7.4" data-path="useful-predictors.html"><a href="useful-predictors.html"><i class="fa fa-check"></i><b>7.4</b> Some useful predictors</a></li>
+<li class="chapter" data-level="7.5" data-path="selecting-predictors.html"><a href="selecting-predictors.html"><i class="fa fa-check"></i><b>7.5</b> Selecting predictors</a></li>
+<li class="chapter" data-level="7.6" data-path="forecasting-regression.html"><a href="forecasting-regression.html"><i class="fa fa-check"></i><b>7.6</b> Forecasting with regression</a></li>
+<li class="chapter" data-level="7.7" data-path="nonlinear-regression.html"><a href="nonlinear-regression.html"><i class="fa fa-check"></i><b>7.7</b> Nonlinear regression</a></li>
+<li class="chapter" data-level="7.8" data-path="causality.html"><a href="causality.html"><i class="fa fa-check"></i><b>7.8</b> Correlation, causation and forecasting</a></li>
+<li class="chapter" data-level="7.9" data-path="regression-matrices.html"><a href="regression-matrices.html"><i class="fa fa-check"></i><b>7.9</b> Matrix formulation</a></li>
+<li class="chapter" data-level="7.10" data-path="regression-exercises.html"><a href="regression-exercises.html"><i class="fa fa-check"></i><b>7.10</b> Exercises</a></li>
+<li class="chapter" data-level="7.11" data-path="regression-reading.html"><a href="regression-reading.html"><i class="fa fa-check"></i><b>7.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="expsmooth.html"><a href="expsmooth.html"><i class="fa fa-check"></i><b>8</b> Exponential smoothing</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ses.html"><a href="ses.html"><i class="fa fa-check"></i><b>8.1</b> Simple exponential smoothing</a></li>
+<li class="chapter" data-level="8.2" data-path="holt.html"><a href="holt.html"><i class="fa fa-check"></i><b>8.2</b> Methods with trend</a></li>
+<li class="chapter" data-level="8.3" data-path="holt-winters.html"><a href="holt-winters.html"><i class="fa fa-check"></i><b>8.3</b> Methods with seasonality</a></li>
+<li class="chapter" data-level="8.4" data-path="taxonomy.html"><a href="taxonomy.html"><i class="fa fa-check"></i><b>8.4</b> A taxonomy of exponential smoothing methods</a></li>
+<li class="chapter" data-level="8.5" data-path="ets.html"><a href="ets.html"><i class="fa fa-check"></i><b>8.5</b> Innovations state space models for exponential smoothing</a></li>
+<li class="chapter" data-level="8.6" data-path="ets-estimation.html"><a href="ets-estimation.html"><i class="fa fa-check"></i><b>8.6</b> Estimation and model selection</a></li>
+<li class="chapter" data-level="8.7" data-path="ets-forecasting.html"><a href="ets-forecasting.html"><i class="fa fa-check"></i><b>8.7</b> Forecasting with ETS models</a></li>
+<li class="chapter" data-level="8.8" data-path="expsmooth-exercises.html"><a href="expsmooth-exercises.html"><i class="fa fa-check"></i><b>8.8</b> Exercises</a></li>
+<li class="chapter" data-level="8.9" data-path="expsmooth-reading.html"><a href="expsmooth-reading.html"><i class="fa fa-check"></i><b>8.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="arima.html"><a href="arima.html"><i class="fa fa-check"></i><b>9</b> ARIMA models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="stationarity.html"><a href="stationarity.html"><i class="fa fa-check"></i><b>9.1</b> Stationarity and differencing</a></li>
+<li class="chapter" data-level="9.2" data-path="backshift.html"><a href="backshift.html"><i class="fa fa-check"></i><b>9.2</b> Backshift notation</a></li>
+<li class="chapter" data-level="9.3" data-path="AR.html"><a href="AR.html"><i class="fa fa-check"></i><b>9.3</b> Autoregressive models</a></li>
+<li class="chapter" data-level="9.4" data-path="MA.html"><a href="MA.html"><i class="fa fa-check"></i><b>9.4</b> Moving average models</a></li>
+<li class="chapter" data-level="9.5" data-path="non-seasonal-arima.html"><a href="non-seasonal-arima.html"><i class="fa fa-check"></i><b>9.5</b> Non-seasonal ARIMA models</a></li>
+<li class="chapter" data-level="9.6" data-path="arima-estimation.html"><a href="arima-estimation.html"><i class="fa fa-check"></i><b>9.6</b> Estimation and order selection</a></li>
+<li class="chapter" data-level="9.7" data-path="arima-r.html"><a href="arima-r.html"><i class="fa fa-check"></i><b>9.7</b> ARIMA modelling in <code>fable</code></a></li>
+<li class="chapter" data-level="9.8" data-path="arima-forecasting.html"><a href="arima-forecasting.html"><i class="fa fa-check"></i><b>9.8</b> Forecasting</a></li>
+<li class="chapter" data-level="9.9" data-path="seasonal-arima.html"><a href="seasonal-arima.html"><i class="fa fa-check"></i><b>9.9</b> Seasonal ARIMA models</a></li>
+<li class="chapter" data-level="9.10" data-path="arima-ets.html"><a href="arima-ets.html"><i class="fa fa-check"></i><b>9.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="9.11" data-path="arima-exercises.html"><a href="arima-exercises.html"><i class="fa fa-check"></i><b>9.11</b> Exercises</a></li>
+<li class="chapter" data-level="9.12" data-path="arima-reading.html"><a href="arima-reading.html"><i class="fa fa-check"></i><b>9.12</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dynamic.html"><a href="dynamic.html"><i class="fa fa-check"></i><b>10</b> Dynamic regression models</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>10.1</b> Estimation</a></li>
+<li class="chapter" data-level="10.2" data-path="regarima.html"><a href="regarima.html"><i class="fa fa-check"></i><b>10.2</b> Regression with ARIMA errors using <code>fable</code></a></li>
+<li class="chapter" data-level="10.3" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>10.3</b> Forecasting</a></li>
+<li class="chapter" data-level="10.4" data-path="stochastic-and-deterministic-trends.html"><a href="stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>10.4</b> Stochastic and deterministic trends</a></li>
+<li class="chapter" data-level="10.5" data-path="dhr.html"><a href="dhr.html"><i class="fa fa-check"></i><b>10.5</b> Dynamic harmonic regression</a></li>
+<li class="chapter" data-level="10.6" data-path="lagged-predictors.html"><a href="lagged-predictors.html"><i class="fa fa-check"></i><b>10.6</b> Lagged predictors</a></li>
+<li class="chapter" data-level="10.7" data-path="dynamic-exercises.html"><a href="dynamic-exercises.html"><i class="fa fa-check"></i><b>10.7</b> Exercises</a></li>
+<li class="chapter" data-level="10.8" data-path="dynamic-reading.html"><a href="dynamic-reading.html"><i class="fa fa-check"></i><b>10.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>11</b> Forecasting hierarchical and grouped time series</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hts.html"><a href="hts.html"><i class="fa fa-check"></i><b>11.1</b> Hierarchical and grouped time series</a></li>
+<li class="chapter" data-level="11.2" data-path="single-level.html"><a href="single-level.html"><i class="fa fa-check"></i><b>11.2</b> Single level approaches</a></li>
+<li class="chapter" data-level="11.3" data-path="reconciliation.html"><a href="reconciliation.html"><i class="fa fa-check"></i><b>11.3</b> Forecast reconciliation</a></li>
+<li class="chapter" data-level="11.4" data-path="tourism.html"><a href="tourism.html"><i class="fa fa-check"></i><b>11.4</b> Forecasting Australian domestic tourism</a></li>
+<li class="chapter" data-level="11.5" data-path="rec-prob.html"><a href="rec-prob.html"><i class="fa fa-check"></i><b>11.5</b> Reconciled distributional forecasts</a></li>
+<li class="chapter" data-level="11.6" data-path="prison.html"><a href="prison.html"><i class="fa fa-check"></i><b>11.6</b> Forecasting Australian prison population</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-exercises.html"><a href="hierarchical-exercises.html"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-reading.html"><a href="hierarchical-reading.html"><i class="fa fa-check"></i><b>11.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="advanced.html"><a href="advanced.html"><i class="fa fa-check"></i><b>12</b> Advanced forecasting methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="complexseasonality.html"><a href="complexseasonality.html"><i class="fa fa-check"></i><b>12.1</b> Complex seasonality</a></li>
+<li class="chapter" data-level="12.2" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>12.2</b> Prophet model</a></li>
+<li class="chapter" data-level="12.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>12.3</b> Vector autoregressions</a></li>
+<li class="chapter" data-level="12.4" data-path="nnetar.html"><a href="nnetar.html"><i class="fa fa-check"></i><b>12.4</b> Neural network models</a></li>
+<li class="chapter" data-level="12.5" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.5</b> Bootstrapping and bagging</a></li>
+<li class="chapter" data-level="12.6" data-path="advanced-exercises.html"><a href="advanced-exercises.html"><i class="fa fa-check"></i><b>12.6</b> Exercises</a></li>
+<li class="chapter" data-level="12.7" data-path="advanced-reading.html"><a href="advanced-reading.html"><i class="fa fa-check"></i><b>12.7</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="practical.html"><a href="practical.html"><i class="fa fa-check"></i><b>13</b> Some practical forecasting issues</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>13.1</b> Weekly, daily and sub-daily data</a></li>
+<li class="chapter" data-level="13.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>13.2</b> Time series of counts</a></li>
+<li class="chapter" data-level="13.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>13.3</b> Ensuring forecasts stay within limits</a></li>
+<li class="chapter" data-level="13.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>13.4</b> Forecast combinations</a></li>
+<li class="chapter" data-level="13.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>13.5</b> Prediction intervals for aggregates</a></li>
+<li class="chapter" data-level="13.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>13.6</b> Backcasting</a></li>
+<li class="chapter" data-level="13.7" data-path="long-short-ts.html"><a href="long-short-ts.html"><i class="fa fa-check"></i><b>13.7</b> Very long and very short time series</a></li>
+<li class="chapter" data-level="13.8" data-path="training-test.html"><a href="training-test.html"><i class="fa fa-check"></i><b>13.8</b> Forecasting on training and test sets</a></li>
+<li class="chapter" data-level="13.9" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>13.9</b> Dealing with outliers and missing values</a></li>
+<li class="chapter" data-level="13.10" data-path="further-reading-1.html"><a href="further-reading-1.html"><i class="fa fa-check"></i><b>13.10</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="appendix-using-r.html"><a href="appendix-using-r.html"><i class="fa fa-check"></i>Appendix: Using R</a></li>
+<li class="chapter" data-level="" data-path="appendix-for-instructors.html"><a href="appendix-for-instructors.html"><i class="fa fa-check"></i>Appendix: For instructors</a></li>
+<li class="chapter" data-level="" data-path="appendix-reviews.html"><a href="appendix-reviews.html"><i class="fa fa-check"></i>Appendix: Reviews</a></li>
+<li class="chapter" data-level="" data-path="translations.html"><a href="translations.html"><i class="fa fa-check"></i>Translations</a></li>
+<li class="chapter" data-level="" data-path="about-the-authors.html"><a href="about-the-authors.html"><i class="fa fa-check"></i>About the authors</a></li>
+<li class="chapter" data-level="" data-path="buy-a-print-version.html"><a href="buy-a-print-version.html"><i class="fa fa-check"></i>Buy a print version</a></li>
+<li class="chapter" data-level="" data-path="report-an-error.html"><a href="report-an-error.html"><i class="fa fa-check"></i>Report an error</a></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.com" target="blank">Published by OTexts™ with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice <font size=-1>(3rd ed)</font></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="regression-evaluation" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Evaluating the regression model<a href="regression-evaluation.html#regression-evaluation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="youtube-player" data-id="wslxCkd42v0">
+
+</div>
+<p>The differences between the observed <span class="math inline">\(y\)</span> values and the corresponding fitted <span class="math inline">\(\hat{y}\)</span> values are the training-set errors or “residuals” defined as,
+<span class="math display">\[\begin{align*}
+  e_t &amp;= y_t - \hat{y}_t \\
+      &amp;= y_t - \hat\beta_{0} - \hat\beta_{1} x_{1,t} - \hat\beta_{2} x_{2,t} - \cdots - \hat\beta_{k} x_{k,t}
+\end{align*}\]</span>
+for <span class="math inline">\(t=1,\dots,T\)</span>. Each residual is the unpredictable component of the associated observation.</p>
+<p>The residuals have some useful properties including the following two:
+<span class="math display">\[
+  \sum_{t=1}^{T}{e_t}=0 \quad\text{and}\quad \sum_{t=1}^{T}{x_{k,t}e_t}=0\qquad\text{for all $k$}.
+\]</span>
+As a result of these properties, it is clear that the average of the residuals is zero, and that the correlation between the residuals and the observations for the predictor variable is also zero. (This is not necessarily true when the intercept is omitted from the model.)</p>
+<p>After selecting the regression variables and fitting a regression model, it is necessary to plot the residuals to check that the assumptions of the model have been satisfied. There are a series of plots that should be produced in order to check different aspects of the fitted model and the underlying assumptions. We will now discuss each of them in turn.</p>
+<div id="acf-plot-of-residuals" class="section level3 unnumbered hasAnchor">
+<h3>ACF plot of residuals<a href="regression-evaluation.html#acf-plot-of-residuals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>With time series data, it is highly likely that the value of a variable observed in the current time period will be similar to its value in the previous period, or even the period before that, and so on. Therefore when fitting a regression model to time series data, it is common to find autocorrelation in the residuals. In this case, the estimated model violates the assumption of no autocorrelation in the errors, and our forecasts may be inefficient — there is some information left over which should be accounted for in the model in order to obtain better forecasts. The forecasts from a model with autocorrelated errors are still unbiased, and so they are not “wrong”, but they will usually have larger prediction intervals than they need to. Therefore we should always look at an ACF plot of the residuals.</p>
+<!-- Another useful test of autocorrelation in the residuals designed to take account for the regression model is the **Breusch-Godfrey**\index{Breusch-Godfrey test} test, also referred to as the LM (Lagrange Multiplier) test for serial correlation. It is used to test the joint hypothesis that there is no autocorrelation in the residuals up to a certain specified order. A small p-value indicates there is significant autocorrelation remaining in the residuals.
+
+The Breusch-Godfrey test is similar to the Ljung-Box test, but it is specifically designed for use with regression models. -->
+</div>
+<div id="histogram-of-residuals" class="section level3 unnumbered hasAnchor">
+<h3>Histogram of residuals<a href="regression-evaluation.html#histogram-of-residuals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It is always a good idea to check whether the residuals are normally distributed. As we explained earlier, this is not essential for forecasting, but it does make the calculation of prediction intervals much easier.</p>
+<div id="example" class="section level4 unnumbered hasAnchor">
+<h4>Example<a href="regression-evaluation.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- ?? GA: I see that we have not implemented the checkresiduals() function. Do we plan to build it again? I thought it was very useful.
+
+Also we do not have the Breusch-Godfrey test. I guess this also needs to be implemented?
+
+RJH: The graphics from check_residuals() has been replaced by gg_tsresiduals(). We are looking at making the LB test easier to produce. BG is model dependent so would need to be done within `fable` rather than `feasts`. That's probably not on the agenda in the near future. We might consider dropping it from the book???
+-->
+<p>Using the <code>gg_tsresiduals()</code> function introduced in Section <a href="residuals.html#residuals">5.3</a>, we can obtain all the useful residual diagnostics mentioned above.</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="regression-evaluation.html#cb141-1" tabindex="-1"></a>fit_consMR <span class="sc">|&gt;</span> <span class="fu">gg_tsresiduals</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:uschangeresidcheck"></span>
+<img src="fpp_files/figure-html/uschangeresidcheck-1.png" alt="Analysing the residuals from a regression model for US quarterly consumption." width="100%" />
+<p class="caption">
+Figure 7.8: Analysing the residuals from a regression model for US quarterly consumption.
+</p>
+</div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="regression-evaluation.html#cb142-1" tabindex="-1"></a><span class="fu">augment</span>(fit_consMR) <span class="sc">|&gt;</span></span>
+<span id="cb142-2"><a href="regression-evaluation.html#cb142-2" tabindex="-1"></a>  <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag =</span> <span class="dv">10</span>)</span>
+<span id="cb142-3"><a href="regression-evaluation.html#cb142-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span id="cb142-4"><a href="regression-evaluation.html#cb142-4" tabindex="-1"></a><span class="co">#&gt;   .model lb_stat lb_pvalue</span></span>
+<span id="cb142-5"><a href="regression-evaluation.html#cb142-5" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb142-6"><a href="regression-evaluation.html#cb142-6" tabindex="-1"></a><span class="co">#&gt; 1 tslm      18.9    0.0420</span></span></code></pre></div>
+<!-- Figure \@ref(fig:uschangeresidcheck) shows a time plot, the ACF and the histogram of the residuals from the multiple regression model fitted to the US quarterly consumption data, as well as the Breusch-Godfrey test for jointly testing up to 8th order autocorrelation. (The `checkresiduals()` function will use the Breusch-Godfrey test for regression models, but the Ljung-Box test otherwise.) -->
+<p>The time plot shows some changing variation over time, but is otherwise relatively unremarkable. This heteroscedasticity will potentially make the prediction interval coverage inaccurate.</p>
+<p>The histogram shows that the residuals seem to be slightly skewed, which may also affect the coverage probability of the prediction intervals.</p>
+<p>The autocorrelation plot shows a significant spike at lag 7, and a significant Ljung-Box test at the 5% level. However, the autocorrelation is not particularly large, and at lag 7 it is unlikely to have any noticeable impact on the forecasts or the prediction intervals. In Chapter <a href="dynamic.html#dynamic">10</a> we discuss dynamic regression models used for better capturing information left in the residuals.</p>
+</div>
+</div>
+<div id="residual-plots-against-predictors" class="section level3 unnumbered hasAnchor">
+<h3>Residual plots against predictors<a href="regression-evaluation.html#residual-plots-against-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We would expect the residuals to be randomly scattered without showing any systematic patterns. A simple and quick way to check this is to examine scatterplots of the residuals against each of the predictor variables. If these scatterplots show a pattern, then the relationship may be nonlinear and the model will need to be modified accordingly. See Section <a href="nonlinear-regression.html#nonlinear-regression">7.7</a> for a discussion of nonlinear regression.</p>
+<p>It is also necessary to plot the residuals against any predictors that are <em>not</em> in the model. If any of these show a pattern, then the corresponding predictor may need to be added to the model (possibly in a nonlinear form).</p>
+<div id="example-1" class="section level4 unnumbered hasAnchor">
+<h4>Example<a href="regression-evaluation.html#example-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The residuals from the multiple regression model for forecasting US consumption plotted against each predictor in Figure <a href="regression-evaluation.html#fig:resids">7.9</a> seem to be randomly scattered. Therefore we are satisfied with these in this case.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="regression-evaluation.html#cb143-1" tabindex="-1"></a>us_change <span class="sc">|&gt;</span></span>
+<span id="cb143-2"><a href="regression-evaluation.html#cb143-2" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">residuals</span>(fit_consMR), <span class="at">by =</span> <span class="st">&quot;Quarter&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb143-3"><a href="regression-evaluation.html#cb143-3" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(Income<span class="sc">:</span>Unemployment,</span>
+<span id="cb143-4"><a href="regression-evaluation.html#cb143-4" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;regressor&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;x&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb143-5"><a href="regression-evaluation.html#cb143-5" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb143-6"><a href="regression-evaluation.html#cb143-6" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb143-7"><a href="regression-evaluation.html#cb143-7" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(. <span class="sc">~</span> regressor, <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span>) <span class="sc">+</span></span>
+<span id="cb143-8"><a href="regression-evaluation.html#cb143-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:resids"></span>
+<img src="fpp_files/figure-html/resids-1.png" alt="Scatterplots of residuals versus each predictor." width="100%" />
+<p class="caption">
+Figure 7.9: Scatterplots of residuals versus each predictor.
+</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="residual-plots-against-fitted-values" class="section level3 unnumbered hasAnchor">
+<h3>Residual plots against fitted values<a href="regression-evaluation.html#residual-plots-against-fitted-values" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A plot of the residuals against the fitted values should also show no pattern. If a pattern is observed, there may be “heteroscedasticity” in the errors which means that the variance of the residuals may not be constant. If this problem occurs, a transformation of the forecast variable such as a logarithm or square root may be required (see Section <a href="transformations.html#transformations">3.1</a>).</p>
+<div id="example-2" class="section level4 unnumbered hasAnchor">
+<h4>Example<a href="regression-evaluation.html#example-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Continuing the previous example, Figure <a href="regression-evaluation.html#fig:resids2">7.10</a> shows the residuals plotted against the fitted values. The random scatter suggests the errors are homoscedastic.</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="regression-evaluation.html#cb144-1" tabindex="-1"></a><span class="fu">augment</span>(fit_consMR) <span class="sc">|&gt;</span></span>
+<span id="cb144-2"><a href="regression-evaluation.html#cb144-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid)) <span class="sc">+</span></span>
+<span id="cb144-3"><a href="regression-evaluation.html#cb144-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Fitted&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Residuals&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:resids2"></span>
+<img src="fpp_files/figure-html/resids2-1.png" alt="Scatterplots of residuals versus fitted values." width="100%" />
+<p class="caption">
+Figure 7.10: Scatterplots of residuals versus fitted values.
+</p>
+</div>
+</div>
+</div>
+<div id="outliers-and-influential-observations" class="section level3 unnumbered hasAnchor">
+<h3>Outliers and influential observations<a href="regression-evaluation.html#outliers-and-influential-observations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Observations that take extreme values compared to the majority of the data are called <strong>outliers</strong>. Observations that have a large influence on the estimated coefficients of a regression model are called <strong>influential observations</strong>. Usually, influential observations are also outliers that are extreme in the <span class="math inline">\(x\)</span> direction.</p>
+<p>There are formal methods for detecting outliers and influential observations that are beyond the scope of this textbook. As we suggested at the beginning of Chapter <a href="graphics.html#graphics">2</a>, becoming familiar with your data prior to performing any analysis is of vital importance. A scatter plot of <span class="math inline">\(y\)</span> against each <span class="math inline">\(x\)</span> is always a useful starting point in regression analysis, and often helps to identify unusual observations.</p>
+<p>One source of outliers is incorrect data entry. Simple descriptive statistics of your data can identify minima and maxima that are not sensible. If such an observation is identified, and it has been recorded incorrectly, it should be corrected or removed from the sample immediately.</p>
+<p>Outliers also occur when some observations are simply different. In this case it may not be wise for these observations to be removed. If an observation has been identified as a likely outlier, it is important to study it and analyse the possible reasons behind it. The decision to remove or retain an observation can be a challenging one (especially when outliers are influential observations). It is wise to report results both with and without the removal of such observations.</p>
+<div id="example-3" class="section level4 unnumbered hasAnchor">
+<h4>Example<a href="regression-evaluation.html#example-3" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Figure <a href="regression-evaluation.html#fig:outlier">7.11</a> highlights the effect of a single outlier when regressing US consumption on income (the example introduced in Section <a href="regression-intro.html#regression-intro">7.1</a>). In the left panel the outlier is only extreme in the direction of <span class="math inline">\(y\)</span>, as the percentage change in consumption has been incorrectly recorded as -4%. The orange line is the regression line fitted to the data which includes the outlier, compared to the black line which is the line fitted to the data without the outlier. In the right panel the outlier now is also extreme in the direction of <span class="math inline">\(x\)</span> with the 4% decrease in consumption corresponding to a 6% increase in income. In this case the outlier is extremely influential as the orange line now deviates substantially from the black line.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:outlier"></span>
+<img src="fpp_files/figure-html/outlier-1.png" alt="The effect of outliers and influential observations on regression" width="100%" />
+<p class="caption">
+Figure 7.11: The effect of outliers and influential observations on regression
+</p>
+</div>
+</div>
+</div>
+<div id="spurious-regression" class="section level3 unnumbered hasAnchor">
+<h3>Spurious regression<a href="regression-evaluation.html#spurious-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>More often than not, time series data are “non-stationary”; that is, the values of the time series do not fluctuate around a constant mean or with a constant variance. We will deal with time series stationarity in more detail in Chapter <a href="arima.html#arima">9</a>, but here we need to address the effect that non-stationary data can have on regression models.</p>
+<p>For example, consider the two variables plotted in Figure <a href="regression-evaluation.html#fig:spurious">7.12</a>. These appear to be related simply because they both trend upwards in the same manner. However, air passenger traffic in Australia has nothing to do with rice production in Guinea.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:spurious"></span>
+<img src="fpp_files/figure-html/spurious-1.png" alt="Trending time series data can appear to be related, as shown in this example where air passengers in Australia are regressed against rice production in Guinea." width="100%" />
+<p class="caption">
+Figure 7.12: Trending time series data can appear to be related, as shown in this example where air passengers in Australia are regressed against rice production in Guinea.
+</p>
+</div>
+<p>Regressing non-stationary time series can lead to spurious regressions. The output of regressing Australian air passengers on rice production in Guinea is shown in Figure <a href="regression-evaluation.html#fig:tslmspurious2">7.13</a>. High <span class="math inline">\(R^2\)</span> and high residual autocorrelation can be signs of spurious regression. Notice these features in the output below. We discuss the issues surrounding non-stationary data and spurious regressions in more detail in Chapter <a href="dynamic.html#dynamic">10</a>.</p>
+<p>Cases of spurious regression might appear to give reasonable short-term forecasts, but they will generally not continue to work into the future.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="regression-evaluation.html#cb145-1" tabindex="-1"></a>fit <span class="ot">&lt;-</span> aus_airpassengers <span class="sc">|&gt;</span></span>
+<span id="cb145-2"><a href="regression-evaluation.html#cb145-2" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">&lt;=</span> <span class="dv">2011</span>) <span class="sc">|&gt;</span></span>
+<span id="cb145-3"><a href="regression-evaluation.html#cb145-3" tabindex="-1"></a>  <span class="fu">left_join</span>(guinea_rice, <span class="at">by =</span> <span class="st">&quot;Year&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb145-4"><a href="regression-evaluation.html#cb145-4" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">TSLM</span>(Passengers <span class="sc">~</span> Production))</span>
+<span id="cb145-5"><a href="regression-evaluation.html#cb145-5" tabindex="-1"></a><span class="fu">report</span>(fit)</span>
+<span id="cb145-6"><a href="regression-evaluation.html#cb145-6" tabindex="-1"></a><span class="co">#&gt; Series: Passengers </span></span>
+<span id="cb145-7"><a href="regression-evaluation.html#cb145-7" tabindex="-1"></a><span class="co">#&gt; Model: TSLM </span></span>
+<span id="cb145-8"><a href="regression-evaluation.html#cb145-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb145-9"><a href="regression-evaluation.html#cb145-9" tabindex="-1"></a><span class="co">#&gt; Residuals:</span></span>
+<span id="cb145-10"><a href="regression-evaluation.html#cb145-10" tabindex="-1"></a><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></span>
+<span id="cb145-11"><a href="regression-evaluation.html#cb145-11" tabindex="-1"></a><span class="co">#&gt; -5.945 -1.892 -0.327  1.862 10.421 </span></span>
+<span id="cb145-12"><a href="regression-evaluation.html#cb145-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb145-13"><a href="regression-evaluation.html#cb145-13" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb145-14"><a href="regression-evaluation.html#cb145-14" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb145-15"><a href="regression-evaluation.html#cb145-15" tabindex="-1"></a><span class="co">#&gt; (Intercept)    -7.49       1.20   -6.23  2.3e-07 ***</span></span>
+<span id="cb145-16"><a href="regression-evaluation.html#cb145-16" tabindex="-1"></a><span class="co">#&gt; Production     40.29       1.34   30.13  &lt; 2e-16 ***</span></span>
+<span id="cb145-17"><a href="regression-evaluation.html#cb145-17" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb145-18"><a href="regression-evaluation.html#cb145-18" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb145-19"><a href="regression-evaluation.html#cb145-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb145-20"><a href="regression-evaluation.html#cb145-20" tabindex="-1"></a><span class="co">#&gt; Residual standard error: 3.24 on 40 degrees of freedom</span></span>
+<span id="cb145-21"><a href="regression-evaluation.html#cb145-21" tabindex="-1"></a><span class="co">#&gt; Multiple R-squared: 0.958,   Adjusted R-squared: 0.957</span></span>
+<span id="cb145-22"><a href="regression-evaluation.html#cb145-22" tabindex="-1"></a><span class="co">#&gt; F-statistic:  908 on 1 and 40 DF, p-value: &lt;2e-16</span></span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="regression-evaluation.html#cb146-1" tabindex="-1"></a>fit <span class="sc">|&gt;</span> <span class="fu">gg_tsresiduals</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:tslmspurious2"></span>
+<img src="fpp_files/figure-html/tslmspurious2-1.png" alt="Residuals from a spurious regression." width="100%" />
+<p class="caption">
+Figure 7.13: Residuals from a spurious regression.
+</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="least-squares.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="useful-predictors.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

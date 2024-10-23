@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>11.2 Single level approaches | Forecasting: Principles and Practice (3rd ed)</title>
+  <meta name="description" content="3rd edition" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="11.2 Single level approaches | Forecasting: Principles and Practice (3rd ed)" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+  <meta property="og:description" content="3rd edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="11.2 Single level approaches | Forecasting: Principles and Practice (3rd ed)" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="3rd edition" />
+  <meta name="twitter:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="hts.html"/>
+<link rel="next" href="reconciliation.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27933797-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-27933797-2');
+  gtag('config', 'G-JKBLG3XQGY');
+</script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Merriweather" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css">
+<script>
+  /*
+   * Light YouTube Embeds by @labnol
+   * Credit: https://www.labnol.org/
+   */
+
+  function labnolIframe(div) {
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('src', 'https://www.youtube.com/embed/' + div.dataset.id + '?autoplay=1');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowfullscreen', '1');
+    iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
+    div.parentNode.replaceChild(iframe, div);
+  }
+
+  function initYouTubeVideos() {
+    var playerElements = document.querySelectorAll('.youtube-player');
+    for (var n = 0; n < playerElements.length; n++) {
+      var videoId = playerElements[n].dataset.id;
+      var div = document.createElement('div');
+      div.setAttribute('data-id', videoId);
+      var thumbNode = document.createElement('img');
+      thumbNode.src = '//i.ytimg.com/vi/ID/hqdefault.jpg'.replace('ID', videoId);
+      div.appendChild(thumbNode);
+      var playButton = document.createElement('div');
+      playButton.setAttribute('class', 'play');
+      div.appendChild(playButton);
+      div.onclick = function () {
+        labnolIframe(this);
+      };
+      playerElements[n].appendChild(div);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initYouTubeVideos);
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Getting started</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="what-can-be-forecast.html"><a href="what-can-be-forecast.html"><i class="fa fa-check"></i><b>1.1</b> What can be forecast?</a></li>
+<li class="chapter" data-level="1.2" data-path="planning.html"><a href="planning.html"><i class="fa fa-check"></i><b>1.2</b> Forecasting, goals and planning</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> Determining what to forecast</a></li>
+<li class="chapter" data-level="1.4" data-path="data-methods.html"><a href="data-methods.html"><i class="fa fa-check"></i><b>1.4</b> Forecasting data and methods</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Some case studies</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-steps.html"><a href="basic-steps.html"><i class="fa fa-check"></i><b>1.6</b> The basic steps in a forecasting task</a></li>
+<li class="chapter" data-level="1.7" data-path="perspective.html"><a href="perspective.html"><i class="fa fa-check"></i><b>1.7</b> The statistical forecasting perspective</a></li>
+<li class="chapter" data-level="1.8" data-path="intro-exercises.html"><a href="intro-exercises.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+<li class="chapter" data-level="1.9" data-path="intro-reading.html"><a href="intro-reading.html"><i class="fa fa-check"></i><b>1.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>2</b> Time series graphics</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tsibbles.html"><a href="tsibbles.html"><i class="fa fa-check"></i><b>2.1</b> <code>tsibble</code> objects</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots.html"><a href="time-plots.html"><i class="fa fa-check"></i><b>2.2</b> Time plots</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Time series patterns</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots.html"><a href="seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> Seasonal plots</a></li>
+<li class="chapter" data-level="2.5" data-path="subseries.html"><a href="subseries.html"><i class="fa fa-check"></i><b>2.5</b> Seasonal subseries plots</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots.html"><a href="scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> Scatterplots</a></li>
+<li class="chapter" data-level="2.7" data-path="lag-plots.html"><a href="lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> Lag plots</a></li>
+<li class="chapter" data-level="2.8" data-path="acf.html"><a href="acf.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelation</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise</a></li>
+<li class="chapter" data-level="2.10" data-path="graphics-exercises.html"><a href="graphics-exercises.html"><i class="fa fa-check"></i><b>2.10</b> Exercises</a></li>
+<li class="chapter" data-level="2.11" data-path="graphics-reading.html"><a href="graphics-reading.html"><i class="fa fa-check"></i><b>2.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="decomposition.html"><a href="decomposition.html"><i class="fa fa-check"></i><b>3</b> Time series decomposition</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.1</b> Transformations and adjustments</a></li>
+<li class="chapter" data-level="3.2" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>3.2</b> Time series components</a></li>
+<li class="chapter" data-level="3.3" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>3.3</b> Moving averages</a></li>
+<li class="chapter" data-level="3.4" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>3.4</b> Classical decomposition</a></li>
+<li class="chapter" data-level="3.5" data-path="methods-used-by-official-statistics-agencies.html"><a href="methods-used-by-official-statistics-agencies.html"><i class="fa fa-check"></i><b>3.5</b> Methods used by official statistics agencies</a></li>
+<li class="chapter" data-level="3.6" data-path="stl.html"><a href="stl.html"><i class="fa fa-check"></i><b>3.6</b> STL decomposition</a></li>
+<li class="chapter" data-level="3.7" data-path="decomposition-exercises.html"><a href="decomposition-exercises.html"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+<li class="chapter" data-level="3.8" data-path="decomposition-reading.html"><a href="decomposition-reading.html"><i class="fa fa-check"></i><b>3.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="features.html"><a href="features.html"><i class="fa fa-check"></i><b>4</b> Time series features</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="some-simple-statistics.html"><a href="some-simple-statistics.html"><i class="fa fa-check"></i><b>4.1</b> Some simple statistics</a></li>
+<li class="chapter" data-level="4.2" data-path="acf-features.html"><a href="acf-features.html"><i class="fa fa-check"></i><b>4.2</b> ACF features</a></li>
+<li class="chapter" data-level="4.3" data-path="stlfeatures.html"><a href="stlfeatures.html"><i class="fa fa-check"></i><b>4.3</b> STL Features</a></li>
+<li class="chapter" data-level="4.4" data-path="other-features.html"><a href="other-features.html"><i class="fa fa-check"></i><b>4.4</b> Other features</a></li>
+<li class="chapter" data-level="4.5" data-path="exploring-australian-tourism-data.html"><a href="exploring-australian-tourism-data.html"><i class="fa fa-check"></i><b>4.5</b> Exploring Australian tourism data</a></li>
+<li class="chapter" data-level="4.6" data-path="feast-exercises.html"><a href="feast-exercises.html"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+<li class="chapter" data-level="4.7" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>4.7</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="toolbox.html"><a href="toolbox.html"><i class="fa fa-check"></i><b>5</b> The forecaster’s toolbox</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="a-tidy-forecasting-workflow.html"><a href="a-tidy-forecasting-workflow.html"><i class="fa fa-check"></i><b>5.1</b> A tidy forecasting workflow</a></li>
+<li class="chapter" data-level="5.2" data-path="simple-methods.html"><a href="simple-methods.html"><i class="fa fa-check"></i><b>5.2</b> Some simple forecasting methods</a></li>
+<li class="chapter" data-level="5.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>5.3</b> Fitted values and residuals</a></li>
+<li class="chapter" data-level="5.4" data-path="diagnostics.html"><a href="diagnostics.html"><i class="fa fa-check"></i><b>5.4</b> Residual diagnostics</a></li>
+<li class="chapter" data-level="5.5" data-path="prediction-intervals.html"><a href="prediction-intervals.html"><i class="fa fa-check"></i><b>5.5</b> Distributional forecasts and prediction intervals</a></li>
+<li class="chapter" data-level="5.6" data-path="ftransformations.html"><a href="ftransformations.html"><i class="fa fa-check"></i><b>5.6</b> Forecasting using transformations</a></li>
+<li class="chapter" data-level="5.7" data-path="forecasting-decomposition.html"><a href="forecasting-decomposition.html"><i class="fa fa-check"></i><b>5.7</b> Forecasting with decomposition</a></li>
+<li class="chapter" data-level="5.8" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>5.8</b> Evaluating point forecast accuracy</a></li>
+<li class="chapter" data-level="5.9" data-path="distaccuracy.html"><a href="distaccuracy.html"><i class="fa fa-check"></i><b>5.9</b> Evaluating distributional forecast accuracy</a></li>
+<li class="chapter" data-level="5.10" data-path="tscv.html"><a href="tscv.html"><i class="fa fa-check"></i><b>5.10</b> Time series cross-validation</a></li>
+<li class="chapter" data-level="5.11" data-path="toolbox-exercises.html"><a href="toolbox-exercises.html"><i class="fa fa-check"></i><b>5.11</b> Exercises</a></li>
+<li class="chapter" data-level="5.12" data-path="basics-reading.html"><a href="basics-reading.html"><i class="fa fa-check"></i><b>5.12</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="judgmental.html"><a href="judgmental.html"><i class="fa fa-check"></i><b>6</b> Judgmental forecasts</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="judgmental-limitations.html"><a href="judgmental-limitations.html"><i class="fa fa-check"></i><b>6.1</b> Beware of limitations</a></li>
+<li class="chapter" data-level="6.2" data-path="judgmental-principles.html"><a href="judgmental-principles.html"><i class="fa fa-check"></i><b>6.2</b> Key principles</a></li>
+<li class="chapter" data-level="6.3" data-path="delphimethod.html"><a href="delphimethod.html"><i class="fa fa-check"></i><b>6.3</b> The Delphi method</a></li>
+<li class="chapter" data-level="6.4" data-path="analogies.html"><a href="analogies.html"><i class="fa fa-check"></i><b>6.4</b> Forecasting by analogy</a></li>
+<li class="chapter" data-level="6.5" data-path="scenarios.html"><a href="scenarios.html"><i class="fa fa-check"></i><b>6.5</b> Scenario forecasting</a></li>
+<li class="chapter" data-level="6.6" data-path="new-products.html"><a href="new-products.html"><i class="fa fa-check"></i><b>6.6</b> New product forecasting</a></li>
+<li class="chapter" data-level="6.7" data-path="judgmental-adjustments.html"><a href="judgmental-adjustments.html"><i class="fa fa-check"></i><b>6.7</b> Judgmental adjustments</a></li>
+<li class="chapter" data-level="6.8" data-path="judgmental-reading.html"><a href="judgmental-reading.html"><i class="fa fa-check"></i><b>6.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> Time series regression models</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="regression-intro.html"><a href="regression-intro.html"><i class="fa fa-check"></i><b>7.1</b> The linear model</a></li>
+<li class="chapter" data-level="7.2" data-path="least-squares.html"><a href="least-squares.html"><i class="fa fa-check"></i><b>7.2</b> Least squares estimation</a></li>
+<li class="chapter" data-level="7.3" data-path="regression-evaluation.html"><a href="regression-evaluation.html"><i class="fa fa-check"></i><b>7.3</b> Evaluating the regression model</a></li>
+<li class="chapter" data-level="7.4" data-path="useful-predictors.html"><a href="useful-predictors.html"><i class="fa fa-check"></i><b>7.4</b> Some useful predictors</a></li>
+<li class="chapter" data-level="7.5" data-path="selecting-predictors.html"><a href="selecting-predictors.html"><i class="fa fa-check"></i><b>7.5</b> Selecting predictors</a></li>
+<li class="chapter" data-level="7.6" data-path="forecasting-regression.html"><a href="forecasting-regression.html"><i class="fa fa-check"></i><b>7.6</b> Forecasting with regression</a></li>
+<li class="chapter" data-level="7.7" data-path="nonlinear-regression.html"><a href="nonlinear-regression.html"><i class="fa fa-check"></i><b>7.7</b> Nonlinear regression</a></li>
+<li class="chapter" data-level="7.8" data-path="causality.html"><a href="causality.html"><i class="fa fa-check"></i><b>7.8</b> Correlation, causation and forecasting</a></li>
+<li class="chapter" data-level="7.9" data-path="regression-matrices.html"><a href="regression-matrices.html"><i class="fa fa-check"></i><b>7.9</b> Matrix formulation</a></li>
+<li class="chapter" data-level="7.10" data-path="regression-exercises.html"><a href="regression-exercises.html"><i class="fa fa-check"></i><b>7.10</b> Exercises</a></li>
+<li class="chapter" data-level="7.11" data-path="regression-reading.html"><a href="regression-reading.html"><i class="fa fa-check"></i><b>7.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="expsmooth.html"><a href="expsmooth.html"><i class="fa fa-check"></i><b>8</b> Exponential smoothing</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ses.html"><a href="ses.html"><i class="fa fa-check"></i><b>8.1</b> Simple exponential smoothing</a></li>
+<li class="chapter" data-level="8.2" data-path="holt.html"><a href="holt.html"><i class="fa fa-check"></i><b>8.2</b> Methods with trend</a></li>
+<li class="chapter" data-level="8.3" data-path="holt-winters.html"><a href="holt-winters.html"><i class="fa fa-check"></i><b>8.3</b> Methods with seasonality</a></li>
+<li class="chapter" data-level="8.4" data-path="taxonomy.html"><a href="taxonomy.html"><i class="fa fa-check"></i><b>8.4</b> A taxonomy of exponential smoothing methods</a></li>
+<li class="chapter" data-level="8.5" data-path="ets.html"><a href="ets.html"><i class="fa fa-check"></i><b>8.5</b> Innovations state space models for exponential smoothing</a></li>
+<li class="chapter" data-level="8.6" data-path="ets-estimation.html"><a href="ets-estimation.html"><i class="fa fa-check"></i><b>8.6</b> Estimation and model selection</a></li>
+<li class="chapter" data-level="8.7" data-path="ets-forecasting.html"><a href="ets-forecasting.html"><i class="fa fa-check"></i><b>8.7</b> Forecasting with ETS models</a></li>
+<li class="chapter" data-level="8.8" data-path="expsmooth-exercises.html"><a href="expsmooth-exercises.html"><i class="fa fa-check"></i><b>8.8</b> Exercises</a></li>
+<li class="chapter" data-level="8.9" data-path="expsmooth-reading.html"><a href="expsmooth-reading.html"><i class="fa fa-check"></i><b>8.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="arima.html"><a href="arima.html"><i class="fa fa-check"></i><b>9</b> ARIMA models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="stationarity.html"><a href="stationarity.html"><i class="fa fa-check"></i><b>9.1</b> Stationarity and differencing</a></li>
+<li class="chapter" data-level="9.2" data-path="backshift.html"><a href="backshift.html"><i class="fa fa-check"></i><b>9.2</b> Backshift notation</a></li>
+<li class="chapter" data-level="9.3" data-path="AR.html"><a href="AR.html"><i class="fa fa-check"></i><b>9.3</b> Autoregressive models</a></li>
+<li class="chapter" data-level="9.4" data-path="MA.html"><a href="MA.html"><i class="fa fa-check"></i><b>9.4</b> Moving average models</a></li>
+<li class="chapter" data-level="9.5" data-path="non-seasonal-arima.html"><a href="non-seasonal-arima.html"><i class="fa fa-check"></i><b>9.5</b> Non-seasonal ARIMA models</a></li>
+<li class="chapter" data-level="9.6" data-path="arima-estimation.html"><a href="arima-estimation.html"><i class="fa fa-check"></i><b>9.6</b> Estimation and order selection</a></li>
+<li class="chapter" data-level="9.7" data-path="arima-r.html"><a href="arima-r.html"><i class="fa fa-check"></i><b>9.7</b> ARIMA modelling in <code>fable</code></a></li>
+<li class="chapter" data-level="9.8" data-path="arima-forecasting.html"><a href="arima-forecasting.html"><i class="fa fa-check"></i><b>9.8</b> Forecasting</a></li>
+<li class="chapter" data-level="9.9" data-path="seasonal-arima.html"><a href="seasonal-arima.html"><i class="fa fa-check"></i><b>9.9</b> Seasonal ARIMA models</a></li>
+<li class="chapter" data-level="9.10" data-path="arima-ets.html"><a href="arima-ets.html"><i class="fa fa-check"></i><b>9.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="9.11" data-path="arima-exercises.html"><a href="arima-exercises.html"><i class="fa fa-check"></i><b>9.11</b> Exercises</a></li>
+<li class="chapter" data-level="9.12" data-path="arima-reading.html"><a href="arima-reading.html"><i class="fa fa-check"></i><b>9.12</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dynamic.html"><a href="dynamic.html"><i class="fa fa-check"></i><b>10</b> Dynamic regression models</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>10.1</b> Estimation</a></li>
+<li class="chapter" data-level="10.2" data-path="regarima.html"><a href="regarima.html"><i class="fa fa-check"></i><b>10.2</b> Regression with ARIMA errors using <code>fable</code></a></li>
+<li class="chapter" data-level="10.3" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>10.3</b> Forecasting</a></li>
+<li class="chapter" data-level="10.4" data-path="stochastic-and-deterministic-trends.html"><a href="stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>10.4</b> Stochastic and deterministic trends</a></li>
+<li class="chapter" data-level="10.5" data-path="dhr.html"><a href="dhr.html"><i class="fa fa-check"></i><b>10.5</b> Dynamic harmonic regression</a></li>
+<li class="chapter" data-level="10.6" data-path="lagged-predictors.html"><a href="lagged-predictors.html"><i class="fa fa-check"></i><b>10.6</b> Lagged predictors</a></li>
+<li class="chapter" data-level="10.7" data-path="dynamic-exercises.html"><a href="dynamic-exercises.html"><i class="fa fa-check"></i><b>10.7</b> Exercises</a></li>
+<li class="chapter" data-level="10.8" data-path="dynamic-reading.html"><a href="dynamic-reading.html"><i class="fa fa-check"></i><b>10.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>11</b> Forecasting hierarchical and grouped time series</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hts.html"><a href="hts.html"><i class="fa fa-check"></i><b>11.1</b> Hierarchical and grouped time series</a></li>
+<li class="chapter" data-level="11.2" data-path="single-level.html"><a href="single-level.html"><i class="fa fa-check"></i><b>11.2</b> Single level approaches</a></li>
+<li class="chapter" data-level="11.3" data-path="reconciliation.html"><a href="reconciliation.html"><i class="fa fa-check"></i><b>11.3</b> Forecast reconciliation</a></li>
+<li class="chapter" data-level="11.4" data-path="tourism.html"><a href="tourism.html"><i class="fa fa-check"></i><b>11.4</b> Forecasting Australian domestic tourism</a></li>
+<li class="chapter" data-level="11.5" data-path="rec-prob.html"><a href="rec-prob.html"><i class="fa fa-check"></i><b>11.5</b> Reconciled distributional forecasts</a></li>
+<li class="chapter" data-level="11.6" data-path="prison.html"><a href="prison.html"><i class="fa fa-check"></i><b>11.6</b> Forecasting Australian prison population</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-exercises.html"><a href="hierarchical-exercises.html"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-reading.html"><a href="hierarchical-reading.html"><i class="fa fa-check"></i><b>11.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="advanced.html"><a href="advanced.html"><i class="fa fa-check"></i><b>12</b> Advanced forecasting methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="complexseasonality.html"><a href="complexseasonality.html"><i class="fa fa-check"></i><b>12.1</b> Complex seasonality</a></li>
+<li class="chapter" data-level="12.2" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>12.2</b> Prophet model</a></li>
+<li class="chapter" data-level="12.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>12.3</b> Vector autoregressions</a></li>
+<li class="chapter" data-level="12.4" data-path="nnetar.html"><a href="nnetar.html"><i class="fa fa-check"></i><b>12.4</b> Neural network models</a></li>
+<li class="chapter" data-level="12.5" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.5</b> Bootstrapping and bagging</a></li>
+<li class="chapter" data-level="12.6" data-path="advanced-exercises.html"><a href="advanced-exercises.html"><i class="fa fa-check"></i><b>12.6</b> Exercises</a></li>
+<li class="chapter" data-level="12.7" data-path="advanced-reading.html"><a href="advanced-reading.html"><i class="fa fa-check"></i><b>12.7</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="practical.html"><a href="practical.html"><i class="fa fa-check"></i><b>13</b> Some practical forecasting issues</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>13.1</b> Weekly, daily and sub-daily data</a></li>
+<li class="chapter" data-level="13.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>13.2</b> Time series of counts</a></li>
+<li class="chapter" data-level="13.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>13.3</b> Ensuring forecasts stay within limits</a></li>
+<li class="chapter" data-level="13.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>13.4</b> Forecast combinations</a></li>
+<li class="chapter" data-level="13.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>13.5</b> Prediction intervals for aggregates</a></li>
+<li class="chapter" data-level="13.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>13.6</b> Backcasting</a></li>
+<li class="chapter" data-level="13.7" data-path="long-short-ts.html"><a href="long-short-ts.html"><i class="fa fa-check"></i><b>13.7</b> Very long and very short time series</a></li>
+<li class="chapter" data-level="13.8" data-path="training-test.html"><a href="training-test.html"><i class="fa fa-check"></i><b>13.8</b> Forecasting on training and test sets</a></li>
+<li class="chapter" data-level="13.9" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>13.9</b> Dealing with outliers and missing values</a></li>
+<li class="chapter" data-level="13.10" data-path="further-reading-1.html"><a href="further-reading-1.html"><i class="fa fa-check"></i><b>13.10</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="appendix-using-r.html"><a href="appendix-using-r.html"><i class="fa fa-check"></i>Appendix: Using R</a></li>
+<li class="chapter" data-level="" data-path="appendix-for-instructors.html"><a href="appendix-for-instructors.html"><i class="fa fa-check"></i>Appendix: For instructors</a></li>
+<li class="chapter" data-level="" data-path="appendix-reviews.html"><a href="appendix-reviews.html"><i class="fa fa-check"></i>Appendix: Reviews</a></li>
+<li class="chapter" data-level="" data-path="translations.html"><a href="translations.html"><i class="fa fa-check"></i>Translations</a></li>
+<li class="chapter" data-level="" data-path="about-the-authors.html"><a href="about-the-authors.html"><i class="fa fa-check"></i>About the authors</a></li>
+<li class="chapter" data-level="" data-path="buy-a-print-version.html"><a href="buy-a-print-version.html"><i class="fa fa-check"></i>Buy a print version</a></li>
+<li class="chapter" data-level="" data-path="report-an-error.html"><a href="report-an-error.html"><i class="fa fa-check"></i>Report an error</a></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.com" target="blank">Published by OTexts™ with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice <font size=-1>(3rd ed)</font></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="single-level" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Single level approaches<a href="single-level.html#single-level" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Traditionally, forecasts of hierarchical or grouped time series involved selecting one level of aggregation and generating forecasts for that level. These are then either aggregated for higher levels, or disaggregated for lower levels, to obtain a set of coherent forecasts for the rest of the structure.</p>
+<div id="the-bottom-up-approach" class="section level3 unnumbered hasAnchor">
+<h3>The bottom-up approach<a href="single-level.html#the-bottom-up-approach" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A simple method for generating coherent forecasts is the “bottom-up” approach. This approach involves first generating forecasts for each series at the bottom level, and then summing these to produce forecasts for all the series in the structure.</p>
+<p>For example, for the hierarchy of Figure <a href="hts.html#fig:HierTree">11.1</a>, we first generate <span class="math inline">\(h\)</span>-step-ahead forecasts for each of the bottom-level series:
+<span class="math display">\[
+  \yhat{AA}{h},~~\yhat{AB}{h},~~\yhat{AC}{h},~~ \yhat{BA}{h}~~\text{and}~~\yhat{BB}{h}.
+\]</span>
+(We have simplified the previously used notation of <span class="math inline">\(\hat{y}_{T+h|T}\)</span> for brevity.)</p>
+<p>Summing these, we get <span class="math inline">\(h\)</span>-step-ahead coherent forecasts for the rest of the series:
+<span class="math display">\[\begin{align*}
+  \tilde{y}_{h} &amp; =\yhat{AA}{h}+\yhat{AB}{h}+\yhat{AC}{h}+\yhat{BA}{h}+\yhat{BB}{h}, \\
+  \ytilde{A}{h} &amp; = \yhat{AA}{h}+\yhat{AB}{h}+\yhat{AC}{h}, \\
+\text{and}\quad
+  \ytilde{B}{h} &amp;= \yhat{BA}{h}+\yhat{BB}{h}.
+\end{align*}\]</span>
+(In this chapter, we will use the “tilde” notation to indicate coherent forecasts.)</p>
+<p>An advantage of this approach is that we are forecasting at the bottom level of a structure, and therefore no information is lost due to aggregation. On the other hand, bottom-level data can be quite noisy and more challenging to model and forecast.</p>
+<div id="example-generating-bottom-up-forecasts" class="section level4 unnumbered hasAnchor">
+<h4>Example: Generating bottom-up forecasts<a href="single-level.html#example-generating-bottom-up-forecasts" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p></p>
+<p>Suppose we want national and state forecasts for the Australian tourism data, but we aren’t interested in disaggregations using regions or the purpose of travel. So we first create a simple <code>tsibble</code> object containing only state and national trip totals for each quarter.</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="single-level.html#cb251-1" tabindex="-1"></a>tourism_states <span class="ot">&lt;-</span> tourism <span class="sc">|&gt;</span></span>
+<span id="cb251-2"><a href="single-level.html#cb251-2" tabindex="-1"></a>  <span class="fu">aggregate_key</span>(State, <span class="at">Trips =</span> <span class="fu">sum</span>(Trips))</span></code></pre></div>
+<p>We could generate the bottom-level state forecasts first, and then sum them to obtain the national forecasts.</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="single-level.html#cb252-1" tabindex="-1"></a>fcasts_state <span class="ot">&lt;-</span> tourism_states <span class="sc">|&gt;</span></span>
+<span id="cb252-2"><a href="single-level.html#cb252-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is_aggregated</span>(State)) <span class="sc">|&gt;</span></span>
+<span id="cb252-3"><a href="single-level.html#cb252-3" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">ets =</span> <span class="fu">ETS</span>(Trips)) <span class="sc">|&gt;</span></span>
+<span id="cb252-4"><a href="single-level.html#cb252-4" tabindex="-1"></a>  <span class="fu">forecast</span>()</span>
+<span id="cb252-5"><a href="single-level.html#cb252-5" tabindex="-1"></a></span>
+<span id="cb252-6"><a href="single-level.html#cb252-6" tabindex="-1"></a><span class="co"># Sum bottom-level forecasts to get top-level forecasts</span></span>
+<span id="cb252-7"><a href="single-level.html#cb252-7" tabindex="-1"></a>fcasts_national <span class="ot">&lt;-</span> fcasts_state <span class="sc">|&gt;</span></span>
+<span id="cb252-8"><a href="single-level.html#cb252-8" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">value =</span> <span class="fu">sum</span>(Trips), <span class="at">.mean =</span> <span class="fu">mean</span>(value))</span></code></pre></div>
+<p>However, we want a more general approach that will work with all the forecasting methods discussed in this chapter. So we will use the <code>reconcile()</code> function to specify how we want to compute coherent forecasts.</p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="single-level.html#cb253-1" tabindex="-1"></a>tourism_states <span class="sc">|&gt;</span></span>
+<span id="cb253-2"><a href="single-level.html#cb253-2" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">ets =</span> <span class="fu">ETS</span>(Trips)) <span class="sc">|&gt;</span></span>
+<span id="cb253-3"><a href="single-level.html#cb253-3" tabindex="-1"></a>  <span class="fu">reconcile</span>(<span class="at">bu =</span> <span class="fu">bottom_up</span>(ets)) <span class="sc">|&gt;</span></span>
+<span id="cb253-4"><a href="single-level.html#cb253-4" tabindex="-1"></a>  <span class="fu">forecast</span>()</span>
+<span id="cb253-5"><a href="single-level.html#cb253-5" tabindex="-1"></a><span class="co">#&gt; # A fable: 144 x 5 [1Q]</span></span>
+<span id="cb253-6"><a href="single-level.html#cb253-6" tabindex="-1"></a><span class="co">#&gt; # Key:     State, .model [18]</span></span>
+<span id="cb253-7"><a href="single-level.html#cb253-7" tabindex="-1"></a><span class="co">#&gt;    State  .model Quarter</span></span>
+<span id="cb253-8"><a href="single-level.html#cb253-8" tabindex="-1"></a><span class="co">#&gt;    &lt;chr*&gt; &lt;chr&gt;    &lt;qtr&gt;</span></span>
+<span id="cb253-9"><a href="single-level.html#cb253-9" tabindex="-1"></a><span class="co">#&gt;  1 ACT    ets    2018 Q1</span></span>
+<span id="cb253-10"><a href="single-level.html#cb253-10" tabindex="-1"></a><span class="co">#&gt;  2 ACT    ets    2018 Q2</span></span>
+<span id="cb253-11"><a href="single-level.html#cb253-11" tabindex="-1"></a><span class="co">#&gt;  3 ACT    ets    2018 Q3</span></span>
+<span id="cb253-12"><a href="single-level.html#cb253-12" tabindex="-1"></a><span class="co">#&gt;  4 ACT    ets    2018 Q4</span></span>
+<span id="cb253-13"><a href="single-level.html#cb253-13" tabindex="-1"></a><span class="co">#&gt;  5 ACT    ets    2019 Q1</span></span>
+<span id="cb253-14"><a href="single-level.html#cb253-14" tabindex="-1"></a><span class="co">#&gt;  6 ACT    ets    2019 Q2</span></span>
+<span id="cb253-15"><a href="single-level.html#cb253-15" tabindex="-1"></a><span class="co">#&gt;  7 ACT    ets    2019 Q3</span></span>
+<span id="cb253-16"><a href="single-level.html#cb253-16" tabindex="-1"></a><span class="co">#&gt;  8 ACT    ets    2019 Q4</span></span>
+<span id="cb253-17"><a href="single-level.html#cb253-17" tabindex="-1"></a><span class="co">#&gt;  9 ACT    bu     2018 Q1</span></span>
+<span id="cb253-18"><a href="single-level.html#cb253-18" tabindex="-1"></a><span class="co">#&gt; 10 ACT    bu     2018 Q2</span></span>
+<span id="cb253-19"><a href="single-level.html#cb253-19" tabindex="-1"></a><span class="co">#&gt; # ℹ 134 more rows</span></span>
+<span id="cb253-20"><a href="single-level.html#cb253-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 more variables: Trips &lt;dist&gt;, .mean &lt;dbl&gt;</span></span></code></pre></div>
+<p>The <code>reconcile()</code> step has created a new “model” to produce bottom-up forecasts. The <code>fable</code> object contains the <code>ets</code> forecasts as well as the coherent <code>bu</code> forecasts, for the 8 states and the national aggregate. At the state level, these forecasts are identical, but the national <code>ets</code> forecasts will be different from the national <code>bu</code> forecasts.</p>
+<p>For bottom-up forecasting, this is rather inefficient as we are not interested in the ETS model for the national total, and the resulting <code>fable</code> contains a lot of duplicates. But later we will introduce more advanced methods where we will need models for all levels of aggregation, and where the coherent forecasts are different from any of the original forecasts.</p>
+</div>
+<div id="workflow-for-forecasting-aggregation-structures" class="section level4 unnumbered hasAnchor">
+<h4>Workflow for forecasting aggregation structures<a href="single-level.html#workflow-for-forecasting-aggregation-structures" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The above code illustrates the general workflow for hierarchical and grouped forecasts. We use the following pipeline of functions.</p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="single-level.html#cb254-1" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">aggregate_key</span>() <span class="sc">|&gt;</span> <span class="fu">model</span>() <span class="sc">|&gt;</span></span>
+<span id="cb254-2"><a href="single-level.html#cb254-2" tabindex="-1"></a>  <span class="fu">reconcile</span>() <span class="sc">|&gt;</span> <span class="fu">forecast</span>()</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Begin with a <code>tsibble</code> object (here labelled <code>data</code>) containing the individual bottom-level series.</li>
+<li>Define in <code>aggregate_key()</code> the aggregation structure and build a <code>tsibble</code> object that also contains the aggregate series.</li>
+<li>Identify a <code>model()</code> for each series, at all levels of aggregation.</li>
+<li>Specify in <code>reconcile()</code> how the coherent forecasts are to be generated from the selected models.</li>
+<li>Use the <code>forecast()</code> function to generate forecasts for the whole aggregation structure.</li>
+</ol>
+</div>
+</div>
+<div id="top-down-approaches" class="section level3 unnumbered hasAnchor">
+<h3>Top-down approaches<a href="single-level.html#top-down-approaches" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Top-down approaches involve first generating forecasts for the Total series <span class="math inline">\(y_t\)</span>, and then disaggregating these down the hierarchy.</p>
+<p>Let <span class="math inline">\(p_1,\dots,p_{m}\)</span> denote a set of disaggregation proportions which determine how the forecasts of the Total series are to be distributed to obtain forecasts for each series at the bottom level of the structure. For example, for the hierarchy of Figure <a href="hts.html#fig:HierTree">11.1</a>, using proportions <span class="math inline">\(p_1,\dots,p_{5}\)</span> we get
+<span class="math display">\[
+  \ytilde{AA}{t}=p_1\hat{y}_t,~~~\ytilde{AB}{t}=p_2\hat{y}_t,~~~\ytilde{AC}{t}=p_3\hat{y}_t,~~~\ytilde{BA}{t}=p_4\hat{y}_t~~~\text{and}~~~~~~\ytilde{BB}{t}=p_5\hat{y}_t.
+\]</span>
+Once the bottom-level <span class="math inline">\(h\)</span>-step-ahead forecasts have been generated, these are aggregated to generate coherent forecasts for the rest of the series.</p>
+<p>Top-down forecasts can be generated using <code>top_down()</code> within the <code>reconcile()</code> function.</p>
+<p>There are several possible top-down methods that can be specified. The two most common top-down approaches specify disaggregation proportions based on the historical proportions of the data. These performed well in the study of <span class="citation">Gross &amp; Sohl (<a href="#ref-GroSoh1990">1990</a>)</span>.</p>
+<div id="average-historical-proportions" class="section level4 unnumbered hasAnchor">
+<h4>Average historical proportions<a href="single-level.html#average-historical-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><span class="math display">\[
+  p_j=\frac{1}{T}\sum_{t=1}^{T}\frac{y_{j,t}}{{y_t}}
+\]</span>
+for <span class="math inline">\(j=1,\dots,m\)</span>. Each proportion <span class="math inline">\(p_j\)</span> reflects the average of the historical proportions of the bottom-level series <span class="math inline">\(y_{j,t}\)</span> over the period <span class="math inline">\(t=1,\dots,T\)</span> relative to the total aggregate <span class="math inline">\(y_t\)</span>.</p>
+<p>This approach is implemented in the <code>top_down()</code> function by setting <code>method = "average_proportions"</code>.</p>
+</div>
+<div id="proportions-of-the-historical-averages" class="section level4 unnumbered hasAnchor">
+<h4>Proportions of the historical averages<a href="single-level.html#proportions-of-the-historical-averages" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><span class="math display">\[
+  p_j={\sum_{t=1}^{T}\frac{y_{j,t}}{T}}\Big/{\sum_{t=1}^{T}\frac{y_t}{T}}
+\]</span>
+for <span class="math inline">\(j=1,\dots,m\)</span>. Each proportion <span class="math inline">\(p_j\)</span> captures the average historical value of the bottom-level series <span class="math inline">\(y_{j,t}\)</span> relative to the average value of the total aggregate <span class="math inline">\(y_t\)</span>.</p>
+<p>This approach is implemented in the <code>top_down()</code> function by setting <code>method = "proportion_averages"</code>.</p>
+<p>A convenient attribute of such top-down approaches is their simplicity. One only needs to model and generate forecasts for the most aggregated top-level series. In general, these approaches seem to produce quite reliable forecasts for the aggregate levels and they are useful with low count data. On the other hand, one disadvantage is the loss of information due to aggregation. Using such top-down approaches, we are unable to capture and take advantage of individual series characteristics such as time dynamics, special events, different seasonal patterns, etc.</p>
+</div>
+<div id="forecast-proportions" class="section level4 unnumbered hasAnchor">
+<h4>Forecast proportions<a href="single-level.html#forecast-proportions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Because historical proportions used for disaggregation do not take account of how those proportions may change over time, top-down approaches based on historical proportions tend to produce less accurate forecasts at lower levels of the hierarchy than bottom-up approaches. To address this issue, proportions based on forecasts rather than historical data can be used <span class="citation">(<a href="#ref-AthEtAl2009">G. Athanasopoulos et al., 2009</a>)</span>.</p>
+<p>Consider a one level hierarchy. We first generate <span class="math inline">\(h\)</span>-step-ahead forecasts for all of the series. We don’t use these forecasts directly, and they are not coherent (they don’t add up correctly). Let’s call these “initial” forecasts. We calculate the proportion of each <span class="math inline">\(h\)</span>-step-ahead initial forecast at the bottom level, to the aggregate of all the <span class="math inline">\(h\)</span>-step-ahead initial forecasts at this level. We refer to these as the forecast proportions, and we use them to disaggregate the top-level <span class="math inline">\(h\)</span>-step-ahead initial forecast in order to generate coherent forecasts for the whole of the hierarchy.</p>
+<p>For a <span class="math inline">\(K\)</span>-level hierarchy, this process is repeated for each node, going from the top to the bottom level. Applying this process leads to the following general rule for obtaining the forecast proportions:
+<span class="math display">\[
+  p_j=\prod^{K-1}_{\ell=0}\frac{\hat{y}_{j,h}^{(\ell)}}{\hat{S}_{j,h}^{(\ell+1)}}
+\]</span>
+where <span class="math inline">\(j=1,2,\dots,m\)</span>, <span class="math inline">\(\hat{y}_{j,h}^{(\ell)}\)</span> is the <span class="math inline">\(h\)</span>-step-ahead initial forecast of the series that corresponds to the node which is <span class="math inline">\(\ell\)</span> levels above <span class="math inline">\(j\)</span>, and <span class="math inline">\(\hat{S}_{j,h}^{(\ell)}\)</span> is the sum of the <span class="math inline">\(h\)</span>-step-ahead initial forecasts below the node that is <span class="math inline">\(\ell\)</span> levels above node <span class="math inline">\(j\)</span> and are directly connected to that node. These forecast proportions disaggregate the <span class="math inline">\(h\)</span>-step-ahead initial forecast of the Total series to get <span class="math inline">\(h\)</span>-step-ahead coherent forecasts of the bottom-level series.</p>
+<p>We will use the hierarchy of Figure <a href="hts.html#fig:HierTree">11.1</a> to explain this notation and to demonstrate how this general rule is reached. Assume we have generated initial forecasts for each series in the hierarchy. Recall that for the top-level “Total” series, <span class="math inline">\(\tilde{y}_{h}=\hat{y}_{h}\)</span>, for any top-down approach. Here are some examples using the above notation:</p>
+<ul>
+<li><span class="math inline">\(\hat{y}_{\text{A},h}^{(1)}=\hat{y}_{\text{B},h}^{(1)}=\hat{y}_{h}= \tilde{y}_{h}\)</span>;</li>
+<li><span class="math inline">\(\hat{y}_{\text{AA},h}^{(1)}=\hat{y}_{\text{AB},h}^{(1)}=\hat{y}_{\text{AC},h}^{(1)}= \hat{y}_{\text{A},h}\)</span>;</li>
+<li><span class="math inline">\(\hat{y}_{\text{AA},h}^{(2)}=\hat{y}_{\text{AB},h}^{(2)}= \hat{y}_{\text{AC},h}^{(2)}=\hat{y}_{\text{BA},h}^{(2)}= \hat{y}_{\text{BB},h}^{(2)}=\hat{y}_{h}= \tilde{y}_{h}\)</span>;</li>
+<li><span class="math inline">\(\Shat{AA}{h}{1} = \Shat{AB}{h}{1}= \Shat{AC}{h}{1}= \yhat{AA}{h}+\yhat{AB}{h}+\yhat{AC}{h}\)</span>;</li>
+<li><span class="math inline">\(\Shat{AA}{h}{2} = \Shat{AB}{h}{2}= \Shat{AC}{h}{2}= \Shat{A}{h}{1} = \Shat{B}{h}{1}= \hat{S}_{h}= \yhat{A}{h}+\yhat{B}{h}\)</span>.</li>
+</ul>
+<p>Moving down the farthest left branch of the hierarchy, coherent forecasts are given by
+<span class="math display">\[
+  \ytilde{A}{h} = \Bigg(\frac{\yhat{A}{h}}{\Shat{A}{h}{1}}\Bigg) \tilde{y}_{h} =
+  \Bigg(\frac{\yhat{AA}{h}^{(1)}}{\Shat{AA}{h}{2}}\Bigg) \tilde{y}_{h}
+\]</span>
+and
+<span class="math display">\[
+  \ytilde{AA}{h} = \Bigg(\frac{\yhat{AA}{h}}{\Shat{AA}{h}{1}}\Bigg) \ytilde{A}{h}
+  =\Bigg(\frac{\yhat{AA}{h}}{\Shat{AA}{h}{1}}\Bigg) \Bigg(\frac{\yhat{AA}{h}^{(1)}}{\Shat{AA}{h}{2}}\Bigg)\tilde{y}_{h}.
+\]</span>
+Consequently,
+<span class="math display">\[
+  p_1=\Bigg(\frac{\yhat{AA}{h}}{\Shat{AA}{h}{1}}\Bigg) \Bigg(\frac{\yhat{AA}{h}^{(1)}}{\Shat{AA}{h}{2}}\Bigg).
+\]</span>
+The other proportions can be obtained similarly.</p>
+<p>This approach is implemented in the <code>top_down()</code> function by setting <code>method = "forecast_proportions"</code>. Because this approach tends to work better than other top-down methods, it is the default choice in the <code>top_down()</code> function when no <code>method</code> argument is specified.</p>
+<p>One disadvantage of all top-down approaches, is that they do not produce unbiased coherent forecasts <span class="citation">(<a href="#ref-HynEtAl2011">Hyndman et al., 2011</a>)</span> even if the base forecasts are unbiased.</p>
+</div>
+</div>
+<div id="middle-out-approach" class="section level3 unnumbered hasAnchor">
+<h3>Middle-out approach<a href="single-level.html#middle-out-approach" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The middle-out approach combines bottom-up and top-down approaches. Again, it can only be used for strictly hierarchical aggregation structures.</p>
+<p>First, a “middle” level is chosen and forecasts are generated for all the series at this level. For the series above the middle level, coherent forecasts are generated using the bottom-up approach by aggregating the “middle-level” forecasts upwards. For the series below the “middle level”, coherent forecasts are generated using a top-down approach by disaggregating the “middle level” forecasts downwards.</p>
+<p>This approach is implemented in the <code>middle_out()</code> function by specifying the appropriate middle level via the <code>level</code> argument and selecting the top-down approach with the <code>method</code> argument.</p>
+</div>
+</div>
+<h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-AthEtAl2009" class="csl-entry">
+Athanasopoulos, G., Ahmed, R. A., &amp; Hyndman, R. J. (2009). Hierarchical forecasts for <span>Australian</span> domestic tourism. <em>International Journal of Forecasting</em>, <em>25</em>, 146–166. <a href="https://doi.org/10.1016/j.ijforecast.2008.07.004">[DOI]</a>
+</div>
+<div id="ref-GroSoh1990" class="csl-entry">
+Gross, C. W., &amp; Sohl, J. E. (1990). Disaggregation methods to expedite product line forecasting. <em>Journal of Forecasting</em>, <em>9</em>, 233–254. <a href="https://doi.org/10.1002/for.3980090304">[DOI]</a>
+</div>
+<div id="ref-HynEtAl2011" class="csl-entry">
+Hyndman, R. J., Ahmed, R. A., Athanasopoulos, G., &amp; Shang, H. L. (2011). Optimal combination forecasts for hierarchical time series. <em>Computational Statistics and Data Analysis</em>, <em>55</em>(9), 2579–2589. <a href="https://doi.org/10.1016/j.csda.2011.03.006">[DOI]</a>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="hts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="reconciliation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

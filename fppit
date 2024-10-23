@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Previsione: principi e pratica (III ediz.)</title>
+  <meta name="description" content="3rd edition" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Previsione: principi e pratica (III ediz.)" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+  <meta property="og:description" content="3rd edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Previsione: principi e pratica (III ediz.)" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="3rd edition" />
+  <meta name="twitter:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="intro.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27933797-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-27933797-2');
+</script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Merriweather" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css">
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Previsione: principi e pratica</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prefazione</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduzione</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="cosa-è-possibile-prevedere.html"><a href="cosa-è-possibile-prevedere.html"><i class="fa fa-check"></i><b>1.1</b> Cosa è possibile prevedere?</a></li>
+<li class="chapter" data-level="1.2" data-path="planning.html"><a href="planning.html"><i class="fa fa-check"></i><b>1.2</b> Previsione, obiettivi e pianificazione</a></li>
+<li class="chapter" data-level="1.3" data-path="determinare-cosa-prevedere.html"><a href="determinare-cosa-prevedere.html"><i class="fa fa-check"></i><b>1.3</b> Determinare cosa prevedere</a></li>
+<li class="chapter" data-level="1.4" data-path="data-methods.html"><a href="data-methods.html"><i class="fa fa-check"></i><b>1.4</b> Dati e metodi per la previsione</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Alcuni casi studio</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-steps.html"><a href="basic-steps.html"><i class="fa fa-check"></i><b>1.6</b> Le fasi fondamentali in un processo di previsione</a></li>
+<li class="chapter" data-level="1.7" data-path="perspective.html"><a href="perspective.html"><i class="fa fa-check"></i><b>1.7</b> La prospettiva statistica della previsione</a></li>
+<li class="chapter" data-level="1.8" data-path="intro-exercises.html"><a href="intro-exercises.html"><i class="fa fa-check"></i><b>1.8</b> Esercizi</a></li>
+<li class="chapter" data-level="1.9" data-path="intro-reading.html"><a href="intro-reading.html"><i class="fa fa-check"></i><b>1.9</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>2</b> Grafici per serie storiche</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tsibbles.html"><a href="tsibbles.html"><i class="fa fa-check"></i><b>2.1</b> Oggetti <code>tsibble</code></a></li>
+<li class="chapter" data-level="2.2" data-path="grafici-temporali.html"><a href="grafici-temporali.html"><i class="fa fa-check"></i><b>2.2</b> Grafici temporali</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Componenti delle serie storiche</a></li>
+<li class="chapter" data-level="2.4" data-path="grafici-stagionali.html"><a href="grafici-stagionali.html"><i class="fa fa-check"></i><b>2.4</b> Grafici stagionali</a></li>
+<li class="chapter" data-level="2.5" data-path="subseries.html"><a href="subseries.html"><i class="fa fa-check"></i><b>2.5</b> Grafici stagionali di sotto-serie</a></li>
+<li class="chapter" data-level="2.6" data-path="diagrammi-di-dispersione-scatterplot.html"><a href="diagrammi-di-dispersione-scatterplot.html"><i class="fa fa-check"></i><b>2.6</b> Diagrammi di dispersione (scatterplot)</a></li>
+<li class="chapter" data-level="2.7" data-path="grafici-delle-serie-ritardate-lag-plot.html"><a href="grafici-delle-serie-ritardate-lag-plot.html"><i class="fa fa-check"></i><b>2.7</b> Grafici delle serie ritardate (lag plot)</a></li>
+<li class="chapter" data-level="2.8" data-path="acf.html"><a href="acf.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelazione</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise (Rumore bianco)</a></li>
+<li class="chapter" data-level="2.10" data-path="graphics-exercises.html"><a href="graphics-exercises.html"><i class="fa fa-check"></i><b>2.10</b> Esercizi</a></li>
+<li class="chapter" data-level="2.11" data-path="graphics-reading.html"><a href="graphics-reading.html"><i class="fa fa-check"></i><b>2.11</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="decomposition.html"><a href="decomposition.html"><i class="fa fa-check"></i><b>3</b> La decomposizione delle serie storiche</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.1</b> Trasformazioni e aggiustamenti</a></li>
+<li class="chapter" data-level="3.2" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>3.2</b> Componenti delle serie storiche</a></li>
+<li class="chapter" data-level="3.3" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>3.3</b> Medie mobili</a></li>
+<li class="chapter" data-level="3.4" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>3.4</b> Metodo di decomposizione classica</a></li>
+<li class="chapter" data-level="3.5" data-path="metodi-utilizzati-dagli-istituti-ufficiali-di-statistica.html"><a href="metodi-utilizzati-dagli-istituti-ufficiali-di-statistica.html"><i class="fa fa-check"></i><b>3.5</b> Metodi utilizzati dagli Istituti ufficiali di statistica</a></li>
+<li class="chapter" data-level="3.6" data-path="stl.html"><a href="stl.html"><i class="fa fa-check"></i><b>3.6</b> Decomposizione STL</a></li>
+<li class="chapter" data-level="3.7" data-path="decomposition-exercises.html"><a href="decomposition-exercises.html"><i class="fa fa-check"></i><b>3.7</b> Esercizi</a></li>
+<li class="chapter" data-level="3.8" data-path="decomposition-reading.html"><a href="decomposition-reading.html"><i class="fa fa-check"></i><b>3.8</b> Approfondimenti</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="features.html"><a href="features.html"><i class="fa fa-check"></i><b>4</b> Caratteristiche delle serie storiche</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="alcune-semplici-statistiche.html"><a href="alcune-semplici-statistiche.html"><i class="fa fa-check"></i><b>4.1</b> Alcune semplici statistiche</a></li>
+<li class="chapter" data-level="4.2" data-path="la-funzione-di-autocorrelazione.html"><a href="la-funzione-di-autocorrelazione.html"><i class="fa fa-check"></i><b>4.2</b> La funzione di autocorrelazione</a></li>
+<li class="chapter" data-level="4.3" data-path="stlfeatures.html"><a href="stlfeatures.html"><i class="fa fa-check"></i><b>4.3</b> Caratteristiche della decomposizione STL</a></li>
+<li class="chapter" data-level="4.4" data-path="altre-caratteristiche.html"><a href="altre-caratteristiche.html"><i class="fa fa-check"></i><b>4.4</b> Altre caratteristiche</a></li>
+<li class="chapter" data-level="4.5" data-path="analisi-dei-dati-australiani-sul-turismo.html"><a href="analisi-dei-dati-australiani-sul-turismo.html"><i class="fa fa-check"></i><b>4.5</b> Analisi dei dati australiani sul turismo</a></li>
+<li class="chapter" data-level="4.6" data-path="feast-exercises.html"><a href="feast-exercises.html"><i class="fa fa-check"></i><b>4.6</b> Esercizi</a></li>
+<li class="chapter" data-level="4.7" data-path="approfondimenti.html"><a href="approfondimenti.html"><i class="fa fa-check"></i><b>4.7</b> Approfondimenti</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="toolbox.html"><a href="toolbox.html"><i class="fa fa-check"></i><b>5</b> Gli strumenti del previsore</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="la-procedura-di-previsione-per-passi.html"><a href="la-procedura-di-previsione-per-passi.html"><i class="fa fa-check"></i><b>5.1</b> La procedura di previsione per passi</a></li>
+<li class="chapter" data-level="5.2" data-path="simple-methods.html"><a href="simple-methods.html"><i class="fa fa-check"></i><b>5.2</b> Alcuni semplici metodi di previsione</a></li>
+<li class="chapter" data-level="5.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>5.3</b> Valori stimati e residui</a></li>
+<li class="chapter" data-level="5.4" data-path="diagnostics.html"><a href="diagnostics.html"><i class="fa fa-check"></i><b>5.4</b> Diagnostica sui residui</a></li>
+<li class="chapter" data-level="5.5" data-path="prediction-intervals.html"><a href="prediction-intervals.html"><i class="fa fa-check"></i><b>5.5</b> Previsione della distribuzione e previsione intervallare</a></li>
+<li class="chapter" data-level="5.6" data-path="ftransformations.html"><a href="ftransformations.html"><i class="fa fa-check"></i><b>5.6</b> Previsione usando trasformazioni</a></li>
+<li class="chapter" data-level="5.7" data-path="forecasting-decomposition.html"><a href="forecasting-decomposition.html"><i class="fa fa-check"></i><b>5.7</b> Prevedere con la scomposizione</a></li>
+<li class="chapter" data-level="5.8" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>5.8</b> Valutare l’accuratezza della previsione puntuale</a></li>
+<li class="chapter" data-level="5.9" data-path="distaccuracy.html"><a href="distaccuracy.html"><i class="fa fa-check"></i><b>5.9</b> Valutazione dell’accuratezza della previsione della distribuzione</a></li>
+<li class="chapter" data-level="5.10" data-path="tscv.html"><a href="tscv.html"><i class="fa fa-check"></i><b>5.10</b> Cross-validation per serie storiche</a></li>
+<li class="chapter" data-level="5.11" data-path="toolbox-exercises.html"><a href="toolbox-exercises.html"><i class="fa fa-check"></i><b>5.11</b> Esercizi</a></li>
+<li class="chapter" data-level="5.12" data-path="basics-reading.html"><a href="basics-reading.html"><i class="fa fa-check"></i><b>5.12</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="judgmental.html"><a href="judgmental.html"><i class="fa fa-check"></i><b>6</b> Previsioni discrezionali</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="judgmental-limitations.html"><a href="judgmental-limitations.html"><i class="fa fa-check"></i><b>6.1</b> Attenzione alle limitazioni</a></li>
+<li class="chapter" data-level="6.2" data-path="judgmental-principles.html"><a href="judgmental-principles.html"><i class="fa fa-check"></i><b>6.2</b> Principi chiave</a></li>
+<li class="chapter" data-level="6.3" data-path="delphimethod.html"><a href="delphimethod.html"><i class="fa fa-check"></i><b>6.3</b> Il metodo Delphi</a></li>
+<li class="chapter" data-level="6.4" data-path="analogies.html"><a href="analogies.html"><i class="fa fa-check"></i><b>6.4</b> Previsioni per analogia</a></li>
+<li class="chapter" data-level="6.5" data-path="previsioni-di-scenario.html"><a href="previsioni-di-scenario.html"><i class="fa fa-check"></i><b>6.5</b> Previsioni di scenario</a></li>
+<li class="chapter" data-level="6.6" data-path="new-products.html"><a href="new-products.html"><i class="fa fa-check"></i><b>6.6</b> Previsione delle vendite di un nuovo prodotto</a></li>
+<li class="chapter" data-level="6.7" data-path="judgmental-adjustments.html"><a href="judgmental-adjustments.html"><i class="fa fa-check"></i><b>6.7</b> Aggiustamenti discrezionali</a></li>
+<li class="chapter" data-level="6.8" data-path="judgmental-reading.html"><a href="judgmental-reading.html"><i class="fa fa-check"></i><b>6.8</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> Modelli di regressione per serie storiche</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="regression-intro.html"><a href="regression-intro.html"><i class="fa fa-check"></i><b>7.1</b> Il modello di regressione lineare</a></li>
+<li class="chapter" data-level="7.2" data-path="least-squares.html"><a href="least-squares.html"><i class="fa fa-check"></i><b>7.2</b> Stimatore dei minimi quadrati</a></li>
+<li class="chapter" data-level="7.3" data-path="regression-evaluation.html"><a href="regression-evaluation.html"><i class="fa fa-check"></i><b>7.3</b> Valutazione del modello di regressione</a></li>
+<li class="chapter" data-level="7.4" data-path="useful-predictors.html"><a href="useful-predictors.html"><i class="fa fa-check"></i><b>7.4</b> Alcuni predittori utili</a></li>
+<li class="chapter" data-level="7.5" data-path="selecting-predictors.html"><a href="selecting-predictors.html"><i class="fa fa-check"></i><b>7.5</b> La selezione dei predittori</a></li>
+<li class="chapter" data-level="7.6" data-path="forecasting-regression.html"><a href="forecasting-regression.html"><i class="fa fa-check"></i><b>7.6</b> Previsione utilizzando la regressione</a></li>
+<li class="chapter" data-level="7.7" data-path="nonlinear-regression.html"><a href="nonlinear-regression.html"><i class="fa fa-check"></i><b>7.7</b> Regressione non lineare</a></li>
+<li class="chapter" data-level="7.8" data-path="causality.html"><a href="causality.html"><i class="fa fa-check"></i><b>7.8</b> Correlazione, causalità e previsione</a></li>
+<li class="chapter" data-level="7.9" data-path="regression-matrices.html"><a href="regression-matrices.html"><i class="fa fa-check"></i><b>7.9</b> Formulazione matriciale</a></li>
+<li class="chapter" data-level="7.10" data-path="regression-exercises.html"><a href="regression-exercises.html"><i class="fa fa-check"></i><b>7.10</b> Esercizi</a></li>
+<li class="chapter" data-level="7.11" data-path="regression-reading.html"><a href="regression-reading.html"><i class="fa fa-check"></i><b>7.11</b> Letture consigliate</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="expsmooth.html"><a href="expsmooth.html"><i class="fa fa-check"></i><b>8</b> Il lisciamento esponenziale</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ses.html"><a href="ses.html"><i class="fa fa-check"></i><b>8.1</b> Il lisciamento esponenziale semplice</a></li>
+<li class="chapter" data-level="8.2" data-path="holt.html"><a href="holt.html"><i class="fa fa-check"></i><b>8.2</b> Metodi che utilizzano un trend</a></li>
+<li class="chapter" data-level="8.3" data-path="holt-winters.html"><a href="holt-winters.html"><i class="fa fa-check"></i><b>8.3</b> Metodi che utilizzano la stagionalità</a></li>
+<li class="chapter" data-level="8.4" data-path="taxonomy.html"><a href="taxonomy.html"><i class="fa fa-check"></i><b>8.4</b> Una tassonomia dei metodi di lisciamento esponenziale</a></li>
+<li class="chapter" data-level="8.5" data-path="ets.html"><a href="ets.html"><i class="fa fa-check"></i><b>8.5</b> Modelli delle innovazioni nello spazio degli stati per il lisciamento esponenziale</a></li>
+<li class="chapter" data-level="8.6" data-path="ets-estimation.html"><a href="ets-estimation.html"><i class="fa fa-check"></i><b>8.6</b> Stima e selezione del modello</a></li>
+<li class="chapter" data-level="8.7" data-path="ets-forecasting.html"><a href="ets-forecasting.html"><i class="fa fa-check"></i><b>8.7</b> Prevedere con i modelli ETS</a></li>
+<li class="chapter" data-level="8.8" data-path="expsmooth-esercizi.html"><a href="expsmooth-esercizi.html"><i class="fa fa-check"></i><b>8.8</b> Esercizi</a></li>
+<li class="chapter" data-level="8.9" data-path="expsmooth-letture.html"><a href="expsmooth-letture.html"><i class="fa fa-check"></i><b>8.9</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="arima.html"><a href="arima.html"><i class="fa fa-check"></i><b>9</b> Modelli ARIMA</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="stationarity.html"><a href="stationarity.html"><i class="fa fa-check"></i><b>9.1</b> Stazionarietà e differenziazione</a></li>
+<li class="chapter" data-level="9.2" data-path="backshift.html"><a href="backshift.html"><i class="fa fa-check"></i><b>9.2</b> Operatore ritardo (backshift)</a></li>
+<li class="chapter" data-level="9.3" data-path="AR.html"><a href="AR.html"><i class="fa fa-check"></i><b>9.3</b> Modelli Autoregressivi</a></li>
+<li class="chapter" data-level="9.4" data-path="MA.html"><a href="MA.html"><i class="fa fa-check"></i><b>9.4</b> Modelli a media mobile</a></li>
+<li class="chapter" data-level="9.5" data-path="non-seasonal-arima.html"><a href="non-seasonal-arima.html"><i class="fa fa-check"></i><b>9.5</b> Modelli ARIMA non stagionali</a></li>
+<li class="chapter" data-level="9.6" data-path="arima-estimation.html"><a href="arima-estimation.html"><i class="fa fa-check"></i><b>9.6</b> Stima e selezione dell’ordine</a></li>
+<li class="chapter" data-level="9.7" data-path="arima-r.html"><a href="arima-r.html"><i class="fa fa-check"></i><b>9.7</b> Modellazione ARIMA con <code>fable</code></a></li>
+<li class="chapter" data-level="9.8" data-path="arima-forecasting.html"><a href="arima-forecasting.html"><i class="fa fa-check"></i><b>9.8</b> Previsioni</a></li>
+<li class="chapter" data-level="9.9" data-path="seasonal-arima.html"><a href="seasonal-arima.html"><i class="fa fa-check"></i><b>9.9</b> Modelli ARIMA stagionali</a></li>
+<li class="chapter" data-level="9.10" data-path="arima-ets.html"><a href="arima-ets.html"><i class="fa fa-check"></i><b>9.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="9.11" data-path="arima-exercises.html"><a href="arima-exercises.html"><i class="fa fa-check"></i><b>9.11</b> Esercizi</a></li>
+<li class="chapter" data-level="9.12" data-path="arima-reading.html"><a href="arima-reading.html"><i class="fa fa-check"></i><b>9.12</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dynamic.html"><a href="dynamic.html"><i class="fa fa-check"></i><b>10</b> Modelli di regressione dinamica</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="stima.html"><a href="stima.html"><i class="fa fa-check"></i><b>10.1</b> Stima</a></li>
+<li class="chapter" data-level="10.2" data-path="regarima.html"><a href="regarima.html"><i class="fa fa-check"></i><b>10.2</b> Regressione con errori di tipo ARMA usando <code>fable</code></a></li>
+<li class="chapter" data-level="10.3" data-path="previsione.html"><a href="previsione.html"><i class="fa fa-check"></i><b>10.3</b> Previsione</a></li>
+<li class="chapter" data-level="10.4" data-path="trend-di-tipo-deterministico-e-stocastico.html"><a href="trend-di-tipo-deterministico-e-stocastico.html"><i class="fa fa-check"></i><b>10.4</b> Trend di tipo deterministico e stocastico</a></li>
+<li class="chapter" data-level="10.5" data-path="dhr.html"><a href="dhr.html"><i class="fa fa-check"></i><b>10.5</b> Regressione dinamica armonica</a></li>
+<li class="chapter" data-level="10.6" data-path="predittori-ritardati.html"><a href="predittori-ritardati.html"><i class="fa fa-check"></i><b>10.6</b> Predittori ritardati</a></li>
+<li class="chapter" data-level="10.7" data-path="dynamic-exercises.html"><a href="dynamic-exercises.html"><i class="fa fa-check"></i><b>10.7</b> Esercizi</a></li>
+<li class="chapter" data-level="10.8" data-path="dynamic-reading.html"><a href="dynamic-reading.html"><i class="fa fa-check"></i><b>10.8</b> Letture consigliate</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>11</b> La previsione di serie gerarchiche e raggruppate</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hts.html"><a href="hts.html"><i class="fa fa-check"></i><b>11.1</b> Serie storiche gerarchiche e raggruppate</a></li>
+<li class="chapter" data-level="11.2" data-path="livello-singolo.html"><a href="livello-singolo.html"><i class="fa fa-check"></i><b>11.2</b> Approcci per livello singolo</a></li>
+<li class="chapter" data-level="11.3" data-path="riconciliazione.html"><a href="riconciliazione.html"><i class="fa fa-check"></i><b>11.3</b> Riconciliazione delle previsioni</a></li>
+<li class="chapter" data-level="11.4" data-path="tourism.html"><a href="tourism.html"><i class="fa fa-check"></i><b>11.4</b> La previsione del turismo interno australiano</a></li>
+<li class="chapter" data-level="11.5" data-path="rec-prob.html"><a href="rec-prob.html"><i class="fa fa-check"></i><b>11.5</b> Riconciliazione di distribuzioni previsive</a></li>
+<li class="chapter" data-level="11.6" data-path="prison.html"><a href="prison.html"><i class="fa fa-check"></i><b>11.6</b> Prevedere la popolazione carceraria australiana</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-exercises.html"><a href="hierarchical-exercises.html"><i class="fa fa-check"></i><b>11.7</b> Esercizi</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-reading.html"><a href="hierarchical-reading.html"><i class="fa fa-check"></i><b>11.8</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="advanced.html"><a href="advanced.html"><i class="fa fa-check"></i><b>12</b> Metodi di previsione avanzati</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="complexseasonality.html"><a href="complexseasonality.html"><i class="fa fa-check"></i><b>12.1</b> Stagionalità complessa</a></li>
+<li class="chapter" data-level="12.2" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>12.2</b> Il modello Prophet</a></li>
+<li class="chapter" data-level="12.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>12.3</b> I modelli VAR</a></li>
+<li class="chapter" data-level="12.4" data-path="nnetar.html"><a href="nnetar.html"><i class="fa fa-check"></i><b>12.4</b> Le reti neurali</a></li>
+<li class="chapter" data-level="12.5" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.5</b> Bootstrap e bagging</a></li>
+<li class="chapter" data-level="12.6" data-path="advanced-exercises.html"><a href="advanced-exercises.html"><i class="fa fa-check"></i><b>12.6</b> Esercizi</a></li>
+<li class="chapter" data-level="12.7" data-path="advanced-reading.html"><a href="advanced-reading.html"><i class="fa fa-check"></i><b>12.7</b> Ulteriori letture</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="practical.html"><a href="practical.html"><i class="fa fa-check"></i><b>13</b> Alcuni aspetti pratici sulla previsione</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>13.1</b> Dati settimanali, giornalieri e infra-giornalieri</a></li>
+<li class="chapter" data-level="13.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>13.2</b> Serie storiche di conteggi</a></li>
+<li class="chapter" data-level="13.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>13.3</b> Previsioni vincolate a stare entro certi limiti</a></li>
+<li class="chapter" data-level="13.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>13.4</b> Combinazione di previsioni</a></li>
+<li class="chapter" data-level="13.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>13.5</b> Intervalli di previsione per aggregazioni</a></li>
+<li class="chapter" data-level="13.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>13.6</b> Previsione all’indietro</a></li>
+<li class="chapter" data-level="13.7" data-path="long-short-ts.html"><a href="long-short-ts.html"><i class="fa fa-check"></i><b>13.7</b> Serie storiche molto lunhe e molto corte</a></li>
+<li class="chapter" data-level="13.8" data-path="training-test.html"><a href="training-test.html"><i class="fa fa-check"></i><b>13.8</b> Previsione su un insieme di apprendimento e su un insieme di verifica</a></li>
+<li class="chapter" data-level="13.9" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>13.9</b> Valori anomali e valori mancanti</a></li>
+<li class="chapter" data-level="13.10" data-path="letture-ulteriori.html"><a href="letture-ulteriori.html"><i class="fa fa-check"></i><b>13.10</b> Letture ulteriori</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="appendice-usare-r.html"><a href="appendice-usare-r.html"><i class="fa fa-check"></i>Appendice: Usare R</a></li>
+<li class="chapter" data-level="" data-path="appendice-per-i-docenti.html"><a href="appendice-per-i-docenti.html"><i class="fa fa-check"></i>Appendice: Per i docenti</a></li>
+<li class="chapter" data-level="" data-path="appendice-rassegne.html"><a href="appendice-rassegne.html"><i class="fa fa-check"></i>Appendice: Rassegne</a></li>
+<li class="chapter" data-level="" data-path="traduzioni.html"><a href="traduzioni.html"><i class="fa fa-check"></i>Traduzioni</a></li>
+<li class="chapter" data-level="" data-path="notizie-sugli-autori.html"><a href="notizie-sugli-autori.html"><i class="fa fa-check"></i>Notizie sugli autori</a></li>
+<li class="chapter" data-level="" data-path="notizie-sui-curatori-della-versione-italiana.html"><a href="notizie-sui-curatori-della-versione-italiana.html"><i class="fa fa-check"></i>Notizie sui curatori della versione italiana</a></li>
+<li class="chapter" data-level="" data-path="acquista-una-versione-a-stampa.html"><a href="acquista-una-versione-a-stampa.html"><i class="fa fa-check"></i>Acquista una versione a stampa</a></li>
+<li class="chapter" data-level="" data-path="segnalare-un-errore.html"><a href="segnalare-un-errore.html"><i class="fa fa-check"></i>Segnalare un errore</a></li>
+<li class="chapter" data-level="" data-path="bibliografia.html"><a href="bibliografia.html"><i class="fa fa-check"></i>Bibliografia</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.com" target="blank">Pubblicato da OTexts™ con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Previsione: principi e pratica <font size=-1>(III ediz.)</font></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Previsione: principi e pratica <font size=-1>(III ediz.)</font></h1>
+<p class="author multi-author"><em>Rob J Hyndman e George Athanasopoulos</em></p>
+<address class="author_afil">
+Monash University, Australia<br>
+</address>
+</div>
+<div id="prefazione" class="section level1 unnumbered hasAnchor">
+<h1>Prefazione<a href="index.html#prefazione" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<iframe width="750" height="422" src="https://www.youtube.com/embed/7TglVxNgbKQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p style="float:right; width:50%; margin-left:20px;">
+<img src="figs/fpp3_front_cover.jpg" width='100%'>
+<a href="acquista-una-versione-a-stampa.html">
+<button type="submit" class="btn btn-success btn-lg">Compra una versione cartacea della III edizione inglese</button>
+</a>
+</p>
+<p>Benvenuti nel nostro libro online sulle previsioni.</p>
+<p>Questo testo si propone di fornire un’introduzione completa ai metodi di previsione e di dare informazioni sufficienti su ciascun metodo affinché i lettori possano utilizzarli in modo sensato. Non viene offerta una discussione approfondita dei dettagli teorici che stanno alla base di ogni metodo, anche se molti di questi dettagli sono disponibili nei riferimenti presenti alla fine di ogni capitolo.</p>
+<p>Il libro si rivolge a tre tipologie di pubblico: (1) professionisti chiamati a fare previsioni in azienda senza aver ricevuto una formazione specifica in materia; (2) studenti universitari di economia; (3) studenti di master impegnati in un corso di previsione. Noi stessi lo utilizziamo per gli studenti di master e per gli studenti del terzo anno della Monash University, in Australia.
+Per la maggior parte del materiale presentato si presuppone solo che i lettori abbiano familiarità con la statistica di base e con la matematica delle scuole secondarie di secondo grado. Ci sono un paio di paragrafi che richiedono anche la conoscenza delle matrici, ma sono adeguatamente segnalati.</p>
+<p>Alla fine di ogni capitolo viene fornito un elenco di “ulteriori letture”. In generale, questi elenchi comprendono libri di testo che offrono una trattazione più avanzata o dettagliata dell’argomento. Se non esiste un libro di testo adatto, suggeriamo articoli di riviste che forniscono maggiori informazioni.</p>
+<p>Utilizziamo R in tutto il libro e ci proponiamo che gli studenti imparino a fare previsioni con R. R è gratuito e disponibile su quasi tutti i sistemi operativi. È un ottimo strumento per tutte le analisi statistiche, non solo per le previsioni. Per istruzioni sull’installazione e l’utilizzo di R, si può consultare l’appendice <a href="appendice-usare-r.html#appendice-usare-r">Usare R</a>.</p>
+<p>Tutti gli esempi in R contenuti nel libro presuppongono che sia stato caricato prima il package <code>fpp3</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fpp3)</span></code></pre></div>
+<pre><code>#&gt; Registered S3 method overwritten by &#39;tsibble&#39;:
+#&gt;   method               from 
+#&gt;   as_tibble.grouped_df dplyr
+#&gt; ── Attaching packages ──────────────────────────────── fpp3 1.0.0 ──
+#&gt; ✔ tibble      3.2.1     ✔ tsibble     1.1.5
+#&gt; ✔ dplyr       1.1.4     ✔ tsibbledata 0.4.1
+#&gt; ✔ tidyr       1.3.1     ✔ feasts      0.3.2
+#&gt; ✔ lubridate   1.9.3     ✔ fable       0.3.4
+#&gt; ✔ ggplot2     3.5.1     ✔ fabletools  0.4.2
+#&gt; ── Conflicts ───────────────────────────────────── fpp3_conflicts ──
+#&gt; ✖ lubridate::date()    masks base::date()
+#&gt; ✖ dplyr::filter()      masks stats::filter()
+#&gt; ✖ tsibble::intersect() masks base::intersect()
+#&gt; ✖ tsibble::interval()  masks lubridate::interval()
+#&gt; ✖ dplyr::lag()         masks stats::lag()
+#&gt; ✖ tsibble::setdiff()   masks base::setdiff()
+#&gt; ✖ tsibble::union()     masks base::union()</code></pre>
+<p>Il comando <code>library(fpp3)</code> caricherà i dataset rilevanti e le diverse librerie (package) sopra elencati.
+Queste includono diverse librerie <a href="https://tidyverse.org"><code>tidyverse</code></a>, insieme a librerie per gestire le serie temporali e le previsioni in un contesto <code>tidy</code>.</p>
+<p>L’output generato dallo script riporta anche le versioni delle librerie utilizzate per la compilazione di questa edizione del libro. Si tenga presente che alcuni esempi contenuti nel libro potrebbero non funzionare con versioni precedenti dei package.</p>
+<p>Infine, l’output elenca alcuni conflitti e mostra quale funzione sarà preferita quando una funzione con lo stesso nome è presente in più pacchetti.</p>
+<p>Il libro si differenzia da altri manuali di previsione per diversi aspetti.</p>
+<ul>
+<li>È gratuito ed online, il che lo rende accessibile ad un vasto pubblico.</li>
+<li>Utilizza R, un software gratuito ed open-source estremamente potente.</li>
+<li>La versione online è continuamente aggiornata. Non è necessario aspettare l’edizione successiva per eliminare gli errori o discutere nuovi metodi. Il libro verrà aggiornato frequentemente.</li>
+<li>Ci sono decine di esempi di dati reali tratti dalla nostra attività di consulenza. Abbiamo lavorato con centinaia di aziende ed enti per aiutarli a risolvere problemi di previsione, e questa esperienza è confluita direttamente in molti degli esempi qui riportati, oltre a guidare la nostra filosofia generale di previsione.</li>
+<li>Poniamo l’accento sui metodi grafici più di quanto non faccia la maggior parte dei previsori. Utilizziamo i grafici per esplorare i dati, analizzare la validità dei modelli applicati e presentare i risultati delle previsioni.</li>
+</ul>
+<div id="cambiamenti-nella-terza-edizione" class="section level3 unnumbered hasAnchor">
+<h3>Cambiamenti nella terza edizione<a href="index.html#cambiamenti-nella-terza-edizione" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Il cambiamento più importante nella terza edizione del libro è l’utilizzo dei pacchetti <code>tsibble</code> e <code>fable</code> anziché del pacchetto <code>forecast.</code> Questo permette una stretta integrazione con la collezione di pacchetti <code>tidyverse.</code> Di conseguenza, abbiamo sostituito molti esempi per sfruttare le nuove funzionalità.</p>
+<p>Abbiamo anche aggiunto del nuovo materiale sulle funzioni delle serie temporali e riorganizzato il contenuto in modo che i capitoli <a href="graphics.html#graphics">2</a>–<a href="features.html#features">4</a> trattino l’analisi esplorativa delle serie temporali, prima di introdurre i metodi di previsione. Questo perché è necessario avere una buona comprensione delle serie temporali, dei loro schemi e delle loro caratteristiche, prima di tentare di costruire modelli e produrre previsioni.</p>
+<p>I lettori più attenti delle versioni precedenti del libro ci hanno segnalato i refusi che avevano riscontrato. Questi sono stati immediatamente aggiornati online. Sicuramente abbiamo introdotto nuovi errori, che correggeremo online non appena anch’essi verranno individuati. Vi preghiamo di continuare a <a href="https://bit.ly/fpptypo">segnalarci</a> questi errori.</p>
+<p>Se avete domande sull’uso delle librerie R discusse in questo libro o sulle previsioni in generale, chiedete pure sul sito web della <a href="https://bit.ly/fpp3help">comunità RStudio</a>.</p>
+<p> </p>
+<p>Buona previsione!</p>
+<p>Rob J Hyndman e George Athanasopoulos</p>
+<p>Settembre 2022</p>
+<hr />
+<p>i
+Per citare la versione online di questo libro, si prega di utilizzare il seguente riferimento:</p>
+<blockquote>
+<p>Hyndman, R.J., &amp; Athanasopoulos, G. (2021) <em>Forecasting: principles and practice</em>, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fpp3. Consultato il giorno <code>&lt;current date&gt;</code>.</p>
+</blockquote>
+<p> </p>
+<blockquote>
+<p>Questa versione online del libro è stata aggiornata l’ultima volta il 28 July 2024.</p>
+<p>La versione inglese a stampa del libro (<a href="/fpp3/buy-a-print-version.html">disponibile su Amazon</a>) è stata aggiornata l’ultima volta il 31 maggio 2021.</p>
+</blockquote>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

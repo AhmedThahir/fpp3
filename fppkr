@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Forecasting: Principles and Practice</title>
+  <meta name="description" content="2nd edition" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Forecasting: Principles and Practice" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://Otexts.com/fpp2//fpp2_cover.jpg" />
+  <meta property="og:description" content="2nd edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Forecasting: Principles and Practice" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="2nd edition" />
+  <meta name="twitter:image" content="https://Otexts.com/fpp2//fpp2_cover.jpg" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="intro.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27933797-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-27933797-2');
+  gtag('config', 'G-JKBLG3XQGY');
+</script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Merriweather" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css">
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>서문</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> 시작하기</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="예측-될-수-있는-것이란.html"><a href="예측-될-수-있는-것이란.html"><i class="fa fa-check"></i><b>1.1</b> 예측 될 수 있는 것이란?</a></li>
+<li class="chapter" data-level="1.2" data-path="planning.html"><a href="planning.html"><i class="fa fa-check"></i><b>1.2</b> 예측, 계획 그리고 목표</a></li>
+<li class="chapter" data-level="1.3" data-path="intro-determining-what-to-forecast.html"><a href="intro-determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> 어떤 것을 예측할 지 결정하기</a></li>
+<li class="chapter" data-level="1.4" data-path="data-methods.html"><a href="data-methods.html"><i class="fa fa-check"></i><b>1.4</b> 예측 데이터와 기법</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> 몇 가지 사례 연구</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-steps.html"><a href="basic-steps.html"><i class="fa fa-check"></i><b>1.6</b> 예측 작업의 기본 단계</a></li>
+<li class="chapter" data-level="1.7" data-path="perspective.html"><a href="perspective.html"><i class="fa fa-check"></i><b>1.7</b> 통계적 예측 관점</a></li>
+<li class="chapter" data-level="1.8" data-path="intro-exercises.html"><a href="intro-exercises.html"><i class="fa fa-check"></i><b>1.8</b> 연습문제</a></li>
+<li class="chapter" data-level="1.9" data-path="intro-reading.html"><a href="intro-reading.html"><i class="fa fa-check"></i><b>1.9</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>2</b> 시계열 시각화</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="graphics-ts-objects.html"><a href="graphics-ts-objects.html"><i class="fa fa-check"></i><b>2.1</b> <code>ts</code> 객체</a></li>
+<li class="chapter" data-level="2.2" data-path="graphics-time-plots.html"><a href="graphics-time-plots.html"><i class="fa fa-check"></i><b>2.2</b> 시간 그래프</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> 시계열 패턴</a></li>
+<li class="chapter" data-level="2.4" data-path="graphics-seasonal-plots.html"><a href="graphics-seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> 계절성 그래프</a></li>
+<li class="chapter" data-level="2.5" data-path="graphics-seasonal-subseries-plots.html"><a href="graphics-seasonal-subseries-plots.html"><i class="fa fa-check"></i><b>2.5</b> 계절성 부시계열 그래프</a></li>
+<li class="chapter" data-level="2.6" data-path="graphics-scatterplots.html"><a href="graphics-scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> 산점도</a></li>
+<li class="chapter" data-level="2.7" data-path="graphics-lag-plots.html"><a href="graphics-lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> 시차 그래프</a></li>
+<li class="chapter" data-level="2.8" data-path="graphics-autocorrelation.html"><a href="graphics-autocorrelation.html"><i class="fa fa-check"></i><b>2.8</b> 자기상관</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> 백색잡음</a></li>
+<li class="chapter" data-level="2.10" data-path="graphics-exercises.html"><a href="graphics-exercises.html"><i class="fa fa-check"></i><b>2.10</b> 연습문제</a></li>
+<li class="chapter" data-level="2.11" data-path="graphics-reading.html"><a href="graphics-reading.html"><i class="fa fa-check"></i><b>2.11</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toolbox.html"><a href="toolbox.html"><i class="fa fa-check"></i><b>3</b> 예측가의 도구 상자</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="simple-methods.html"><a href="simple-methods.html"><i class="fa fa-check"></i><b>3.1</b> 몇 가지 단순한 예측 기법</a></li>
+<li class="chapter" data-level="3.2" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.2</b> 변환과 조정</a></li>
+<li class="chapter" data-level="3.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>3.3</b> 잔차 진단</a></li>
+<li class="chapter" data-level="3.4" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>3.4</b> 예측 정확도 평가</a></li>
+<li class="chapter" data-level="3.5" data-path="prediction-intervals.html"><a href="prediction-intervals.html"><i class="fa fa-check"></i><b>3.5</b> 예측 구간</a></li>
+<li class="chapter" data-level="3.6" data-path="r의-forecast-패키지.html"><a href="r의-forecast-패키지.html"><i class="fa fa-check"></i><b>3.6</b> R의 <code>forecast</code> 패키지</a></li>
+<li class="chapter" data-level="3.7" data-path="toolbox-exercises.html"><a href="toolbox-exercises.html"><i class="fa fa-check"></i><b>3.7</b> 연습문제</a></li>
+<li class="chapter" data-level="3.8" data-path="toolbox-reading.html"><a href="toolbox-reading.html"><i class="fa fa-check"></i><b>3.8</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="judgmental.html"><a href="judgmental.html"><i class="fa fa-check"></i><b>4</b> 판단 예측</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="judgmental-limitations.html"><a href="judgmental-limitations.html"><i class="fa fa-check"></i><b>4.1</b> 한계점에 주의하기</a></li>
+<li class="chapter" data-level="4.2" data-path="judgmental-principles.html"><a href="judgmental-principles.html"><i class="fa fa-check"></i><b>4.2</b> 핵심 원리</a></li>
+<li class="chapter" data-level="4.3" data-path="delphimethod.html"><a href="delphimethod.html"><i class="fa fa-check"></i><b>4.3</b> 델파이 기법</a></li>
+<li class="chapter" data-level="4.4" data-path="analogies.html"><a href="analogies.html"><i class="fa fa-check"></i><b>4.4</b> 유사점으로 예측하기</a></li>
+<li class="chapter" data-level="4.5" data-path="scenarios.html"><a href="scenarios.html"><i class="fa fa-check"></i><b>4.5</b> 시나리오 예측</a></li>
+<li class="chapter" data-level="4.6" data-path="new-products.html"><a href="new-products.html"><i class="fa fa-check"></i><b>4.6</b> 신제품 예측</a></li>
+<li class="chapter" data-level="4.7" data-path="judgmental-adjustments.html"><a href="judgmental-adjustments.html"><i class="fa fa-check"></i><b>4.7</b> 판단 조정</a></li>
+<li class="chapter" data-level="4.8" data-path="judgmental-reading.html"><a href="judgmental-reading.html"><i class="fa fa-check"></i><b>4.8</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>5</b> 시계열 회귀 모델</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="regression-intro.html"><a href="regression-intro.html"><i class="fa fa-check"></i><b>5.1</b> 선형 모델</a></li>
+<li class="chapter" data-level="5.2" data-path="least-squares.html"><a href="least-squares.html"><i class="fa fa-check"></i><b>5.2</b> 최소 제곱 추정</a></li>
+<li class="chapter" data-level="5.3" data-path="regression-evaluation.html"><a href="regression-evaluation.html"><i class="fa fa-check"></i><b>5.3</b> 회귀 모델 평가</a></li>
+<li class="chapter" data-level="5.4" data-path="useful-predictors.html"><a href="useful-predictors.html"><i class="fa fa-check"></i><b>5.4</b> 몇 가지 유용한 예측변수</a></li>
+<li class="chapter" data-level="5.5" data-path="selecting-predictors.html"><a href="selecting-predictors.html"><i class="fa fa-check"></i><b>5.5</b> 예측변수 선택</a></li>
+<li class="chapter" data-level="5.6" data-path="forecasting-regression.html"><a href="forecasting-regression.html"><i class="fa fa-check"></i><b>5.6</b> 회귀로 예측하기</a></li>
+<li class="chapter" data-level="5.7" data-path="regression-matrices.html"><a href="regression-matrices.html"><i class="fa fa-check"></i><b>5.7</b> 행렬 정식화</a></li>
+<li class="chapter" data-level="5.8" data-path="nonlinear-regression.html"><a href="nonlinear-regression.html"><i class="fa fa-check"></i><b>5.8</b> 비선형 회귀</a></li>
+<li class="chapter" data-level="5.9" data-path="causality.html"><a href="causality.html"><i class="fa fa-check"></i><b>5.9</b> 상관관계, 인과관계, 그리고 예측</a></li>
+<li class="chapter" data-level="5.10" data-path="regression-exercises.html"><a href="regression-exercises.html"><i class="fa fa-check"></i><b>5.10</b> 연습문제</a></li>
+<li class="chapter" data-level="5.11" data-path="regression-reading.html"><a href="regression-reading.html"><i class="fa fa-check"></i><b>5.11</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="decomposition.html"><a href="decomposition.html"><i class="fa fa-check"></i><b>6</b> 시계열 분해</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>6.1</b> 시계열 성분</a></li>
+<li class="chapter" data-level="6.2" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>6.2</b> 이동평균</a></li>
+<li class="chapter" data-level="6.3" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>6.3</b> 고전적인 분해법</a></li>
+<li class="chapter" data-level="6.4" data-path="x11.html"><a href="x11.html"><i class="fa fa-check"></i><b>6.4</b> X11 분해</a></li>
+<li class="chapter" data-level="6.5" data-path="seats.html"><a href="seats.html"><i class="fa fa-check"></i><b>6.5</b> SEATS 분해</a></li>
+<li class="chapter" data-level="6.6" data-path="stl.html"><a href="stl.html"><i class="fa fa-check"></i><b>6.6</b> STL 분해</a></li>
+<li class="chapter" data-level="6.7" data-path="seasonal-strength.html"><a href="seasonal-strength.html"><i class="fa fa-check"></i><b>6.7</b> 추세와 계절성의 강도를 측정하기</a></li>
+<li class="chapter" data-level="6.8" data-path="forecasting-decomposition.html"><a href="forecasting-decomposition.html"><i class="fa fa-check"></i><b>6.8</b> 분해법으로 예측하기</a></li>
+<li class="chapter" data-level="6.9" data-path="decomposition-exercises.html"><a href="decomposition-exercises.html"><i class="fa fa-check"></i><b>6.9</b> 연습문제</a></li>
+<li class="chapter" data-level="6.10" data-path="decomposition-reading.html"><a href="decomposition-reading.html"><i class="fa fa-check"></i><b>6.10</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="expsmooth.html"><a href="expsmooth.html"><i class="fa fa-check"></i><b>7</b> 지수평활</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ses.html"><a href="ses.html"><i class="fa fa-check"></i><b>7.1</b> 단순 지수평활</a></li>
+<li class="chapter" data-level="7.2" data-path="holt.html"><a href="holt.html"><i class="fa fa-check"></i><b>7.2</b> 추세 기법</a></li>
+<li class="chapter" data-level="7.3" data-path="holt-winters.html"><a href="holt-winters.html"><i class="fa fa-check"></i><b>7.3</b> 홀트-윈터스의 계절성 기법</a></li>
+<li class="chapter" data-level="7.4" data-path="taxonomy.html"><a href="taxonomy.html"><i class="fa fa-check"></i><b>7.4</b> 지수 평활 기법 분류 체계</a></li>
+<li class="chapter" data-level="7.5" data-path="ets.html"><a href="ets.html"><i class="fa fa-check"></i><b>7.5</b> 지수 평활에 대한 혁신 상태 공간 모델</a></li>
+<li class="chapter" data-level="7.6" data-path="expsmooth-estimation-and-model-selection.html"><a href="expsmooth-estimation-and-model-selection.html"><i class="fa fa-check"></i><b>7.6</b> 추정과 모델 선택</a></li>
+<li class="chapter" data-level="7.7" data-path="ets-forecasting.html"><a href="ets-forecasting.html"><i class="fa fa-check"></i><b>7.7</b> ETS 모델로 예측하기</a></li>
+<li class="chapter" data-level="7.8" data-path="expsmooth-exercises.html"><a href="expsmooth-exercises.html"><i class="fa fa-check"></i><b>7.8</b> 연습문제</a></li>
+<li class="chapter" data-level="7.9" data-path="expsmooth-reading.html"><a href="expsmooth-reading.html"><i class="fa fa-check"></i><b>7.9</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="arima.html"><a href="arima.html"><i class="fa fa-check"></i><b>8</b> ARIMA 모델</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="stationarity.html"><a href="stationarity.html"><i class="fa fa-check"></i><b>8.1</b> 정상성과 차분</a></li>
+<li class="chapter" data-level="8.2" data-path="backshift.html"><a href="backshift.html"><i class="fa fa-check"></i><b>8.2</b> 후방이동 기호</a></li>
+<li class="chapter" data-level="8.3" data-path="AR.html"><a href="AR.html"><i class="fa fa-check"></i><b>8.3</b> 자기회귀 모델</a></li>
+<li class="chapter" data-level="8.4" data-path="MA.html"><a href="MA.html"><i class="fa fa-check"></i><b>8.4</b> 이동 평균 모델</a></li>
+<li class="chapter" data-level="8.5" data-path="non-seasonal-arima.html"><a href="non-seasonal-arima.html"><i class="fa fa-check"></i><b>8.5</b> 비-계절성 ARIMA 모델</a></li>
+<li class="chapter" data-level="8.6" data-path="arima-estimation.html"><a href="arima-estimation.html"><i class="fa fa-check"></i><b>8.6</b> 추정과 차수 선택</a></li>
+<li class="chapter" data-level="8.7" data-path="arima-r.html"><a href="arima-r.html"><i class="fa fa-check"></i><b>8.7</b> R에서 ARIMA 모델링</a></li>
+<li class="chapter" data-level="8.8" data-path="arima-forecasting.html"><a href="arima-forecasting.html"><i class="fa fa-check"></i><b>8.8</b> 예측하기</a></li>
+<li class="chapter" data-level="8.9" data-path="seasonal-arima.html"><a href="seasonal-arima.html"><i class="fa fa-check"></i><b>8.9</b> 계절성 ARIMA 모델들</a></li>
+<li class="chapter" data-level="8.10" data-path="arima-ets.html"><a href="arima-ets.html"><i class="fa fa-check"></i><b>8.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="8.11" data-path="arima-exercises.html"><a href="arima-exercises.html"><i class="fa fa-check"></i><b>8.11</b> 연습문제</a></li>
+<li class="chapter" data-level="8.12" data-path="arima-reading.html"><a href="arima-reading.html"><i class="fa fa-check"></i><b>8.12</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="dynamic.html"><a href="dynamic.html"><i class="fa fa-check"></i><b>9</b> 동적 회귀 모델</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="dynamic-regression-estimation.html"><a href="dynamic-regression-estimation.html"><i class="fa fa-check"></i><b>9.1</b> 추정</a></li>
+<li class="chapter" data-level="9.2" data-path="regarima.html"><a href="regarima.html"><i class="fa fa-check"></i><b>9.2</b> R에서 ARIMA 오차를 고려하는 회귀</a></li>
+<li class="chapter" data-level="9.3" data-path="dynamic-regression-forecasting.html"><a href="dynamic-regression-forecasting.html"><i class="fa fa-check"></i><b>9.3</b> 예측하기</a></li>
+<li class="chapter" data-level="9.4" data-path="dynamic-regression-stochastic-and-deterministic-trends.html"><a href="dynamic-regression-stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>9.4</b> 확률적 추세와 확정적 추세</a></li>
+<li class="chapter" data-level="9.5" data-path="dhr.html"><a href="dhr.html"><i class="fa fa-check"></i><b>9.5</b> 동적 조화 회귀</a></li>
+<li class="chapter" data-level="9.6" data-path="dynamic-regression-lagged-predictors.html"><a href="dynamic-regression-lagged-predictors.html"><i class="fa fa-check"></i><b>9.6</b> 시차 예측변수</a></li>
+<li class="chapter" data-level="9.7" data-path="dynamic-exercises.html"><a href="dynamic-exercises.html"><i class="fa fa-check"></i><b>9.7</b> 연습문제</a></li>
+<li class="chapter" data-level="9.8" data-path="dynamic-reading.html"><a href="dynamic-reading.html"><i class="fa fa-check"></i><b>9.8</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>10</b> 계층적 시계열 또는 그룹화된 시계열을 예측하기</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="hts.html"><a href="hts.html"><i class="fa fa-check"></i><b>10.1</b> 계층적 시계열</a></li>
+<li class="chapter" data-level="10.2" data-path="gts.html"><a href="gts.html"><i class="fa fa-check"></i><b>10.2</b> 그룹화된 시계열</a></li>
+<li class="chapter" data-level="10.3" data-path="bottom-up.html"><a href="bottom-up.html"><i class="fa fa-check"></i><b>10.3</b> 상향식 접근 방식</a></li>
+<li class="chapter" data-level="10.4" data-path="top-down.html"><a href="top-down.html"><i class="fa fa-check"></i><b>10.4</b> 하향식 접근 방식</a></li>
+<li class="chapter" data-level="10.5" data-path="middle-out.html"><a href="middle-out.html"><i class="fa fa-check"></i><b>10.5</b> 중간 접근 방식</a></li>
+<li class="chapter" data-level="10.6" data-path="mapping-matrices.html"><a href="mapping-matrices.html"><i class="fa fa-check"></i><b>10.6</b> 사상 행렬</a></li>
+<li class="chapter" data-level="10.7" data-path="reconciliation.html"><a href="reconciliation.html"><i class="fa fa-check"></i><b>10.7</b> 최적 조정 접근법</a></li>
+<li class="chapter" data-level="10.8" data-path="hierarchical-exercises.html"><a href="hierarchical-exercises.html"><i class="fa fa-check"></i><b>10.8</b> 연습문제</a></li>
+<li class="chapter" data-level="10.9" data-path="hierarchical-reading.html"><a href="hierarchical-reading.html"><i class="fa fa-check"></i><b>10.9</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="advanced.html"><a href="advanced.html"><i class="fa fa-check"></i><b>11</b> 고급 예측 기법</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="complexseasonality.html"><a href="complexseasonality.html"><i class="fa fa-check"></i><b>11.1</b> 복잡한 계절성</a></li>
+<li class="chapter" data-level="11.2" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>11.2</b> 벡터 자기회귀</a></li>
+<li class="chapter" data-level="11.3" data-path="nnetar.html"><a href="nnetar.html"><i class="fa fa-check"></i><b>11.3</b> 신경망 모델</a></li>
+<li class="chapter" data-level="11.4" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>11.4</b> 붓스트랩과 배깅</a></li>
+<li class="chapter" data-level="11.5" data-path="advanced-exercises.html"><a href="advanced-exercises.html"><i class="fa fa-check"></i><b>11.5</b> 연습 문제</a></li>
+<li class="chapter" data-level="11.6" data-path="advanced-reading.html"><a href="advanced-reading.html"><i class="fa fa-check"></i><b>11.6</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="practical.html"><a href="practical.html"><i class="fa fa-check"></i><b>12</b> 몇 가지 실제 예측 문제</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>12.1</b> 주별, 일별, 그리고 일별 이하의 데이터</a></li>
+<li class="chapter" data-level="12.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>12.2</b> 개수를 세서 만든 시계열</a></li>
+<li class="chapter" data-level="12.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>12.3</b> 예측값이 반드시 범위 안에 있도록 만들기</a></li>
+<li class="chapter" data-level="12.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>12.4</b> 예측조합</a></li>
+<li class="chapter" data-level="12.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>12.5</b> 합산 값에 대한 예측 구간</a></li>
+<li class="chapter" data-level="12.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>12.6</b> 과거 재구성</a></li>
+<li class="chapter" data-level="12.7" data-path="long-short-ts.html"><a href="long-short-ts.html"><i class="fa fa-check"></i><b>12.7</b> 아주 긴 시계열과 아주 짧은 시계열</a></li>
+<li class="chapter" data-level="12.8" data-path="forecast-training-and-test-set.html"><a href="forecast-training-and-test-set.html"><i class="fa fa-check"></i><b>12.8</b> 학습 데이터와 테스트 데이터 예측하기</a></li>
+<li class="chapter" data-level="12.9" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>12.9</b> 결측값과 이상값 다루기</a></li>
+<li class="chapter" data-level="12.10" data-path="practical-reading.html"><a href="practical-reading.html"><i class="fa fa-check"></i><b>12.10</b> 더 읽을 거리</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="usingR.html"><a href="usingR.html"><i class="fa fa-check"></i>부록: R 사용하기</a></li>
+<li class="chapter" data-level="" data-path="appendix-for-instructors.html"><a href="appendix-for-instructors.html"><i class="fa fa-check"></i>부록: 강사를 위한 내용</a></li>
+<li class="chapter" data-level="" data-path="Appendix-reviews.html"><a href="Appendix-reviews.html"><i class="fa fa-check"></i>부록: 리뷰</a></li>
+<li class="chapter" data-level="" data-path="번역본.html"><a href="번역본.html"><i class="fa fa-check"></i>번역본</a></li>
+<li class="chapter" data-level="" data-path="about-authors.html"><a href="about-authors.html"><i class="fa fa-check"></i>저자 소개</a></li>
+<li class="chapter" data-level="" data-path="buy-a-print-or-downloadable-version.html"><a href="buy-a-print-or-downloadable-version.html"><i class="fa fa-check"></i>책 또는 내려받을 수 있는 버전을 구매하세요</a></li>
+<li class="chapter" data-level="" data-path="Appendix-Help.html"><a href="Appendix-Help.html"><i class="fa fa-check"></i>Help</a></li>
+<li class="chapter" data-level="" data-path="Bibliography.html"><a href="Bibliography.html"><i class="fa fa-check"></i>참고 문헌</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.com" target="blank">Published by OTexts™ with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Forecasting: Principles and Practice</h1>
+<p class="author multi-author"><em>Rob J Hyndman and George Athanasopoulos</em></p>
+<address class="author_afil">
+Monash University, Australia<br>
+</address>
+</div>
+<div id="서문" class="section level1 unnumbered hasAnchor">
+<h1>서문<a href="index.html#서문" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p style="float:right; width:50%; margin-left:20px;">
+<img src="fpp2_cover.jpg" width='100%'>
+<a href="buy-a-print-or-downloadable-version.html">
+<button type="submit" class="btn btn-success btn-lg">인쇄본 또는 내려받을 수 있는 버전을 구입하세요</button>
+</a>
+</p>
+<p>온라인 예측 교과서로 만나뵙게되어 반갑습니다.</p>
+<p>이 교과서의 목적은 예측 기법을 종합적으로 소개하는 것과 읽는 사람이 기법을 적절하게 사용할 수 있도록 충분한 정보를 제공하는 것입니다. 각 기법의 이론적인 세부 사항은 각 장의 마지막에 첨부하는 참고문헌으로 대신하고 엄밀하게 다루지는 않으려고 합니다.</p>
+<p>이 책은 주로 세 종류의 독자를 대상으로 합니다. (1) 예측 분야에서 체계적인 훈련을 받지 않았지만 경영 목적으로 예측을 하려는 사람. (2) 경영을 공부하는 학부생. (3) 예측 관련 과목을 수강하는 MBA 학생. 이 책은 호주의 모나쉬(Monash) 대학에서 상업 학사 학위(a Bachelor of Commerce degree) 과정을 밟는 2학년 학생이 듣는 과목의 교재입니다.</p>
+<p>대부분의 절(section)에서, 독자가 고등학교 대수학(algebra)과 통계학 개론에 익숙하다는 것만 가정하고 있습니다. 몇몇 절에서는 행렬 관련 지식도 필요한데, 이 경우는 따로 표시하였습니다.</p>
+<p>각 장의 마지막에 “더 읽을거리” 목록을 두었습니다. 이 목록의 대부분은 더 어렵거나 자세한 내용이 있는 교과서입니다. 적절한 교과서가 없는 경우에는, 더 자세한 내용을 담고 있는 논문으로 대신하였습니다.</p>
+<p>이 책 전반에 걸쳐 R을 사용하니, R로 예측하는 방법을 익히길 바랍니다. R은 무료이고 거의 모든 운영 체제에서 사용할 수 있습니다. 단순히 예측만이 아니라, 모든 통계 분석을 위한 훌륭한 도구입니다. R을 설치하는 방법과 기본적인 사용법은 <a href="https://otexts.com/fppkr/usingR.html">부록: R 사용하기</a> 페이지를 참조하시길 바랍니다.</p>
+<p>이 책의 모든 R 예제에서는 여러분이 <strong>fpp2</strong> 패키지를 사용하고 있다고 가정합니다. <strong>fpp2</strong> 패키지는 CRAN에서 받을 수 있고 <code>library(fpp2)</code>로 사용할 수 있습니다. 이 패키지는 <strong>forecast</strong>와 <strong>ggplot2</strong>를 포함한 몇몇 다른 패키지와 이 책에서 사용하는 데이터를 자동으로 불러옵니다. 이 책을 준비하는 과정에서는 <strong>forecast</strong> 패키지 버전 v8.16과 <strong>fpp2</strong> 패키지 버전 v2.4을 사용했습니다. CRAN을 이용하여 이 패키지를 설치할 수 있습니다. 이 패키지의 이전 버전을 사용하면 이 책에서 보이는 것과 같이 결과가 나오지 않을 수 있습니다.</p>
+<p>그림을 그릴 때 항상 <strong>ggplot2</strong> 패키지를 사용할 것입니다. 그래프를 수정하는 방법이나 이 책에 있는 예제와 다른 여러분만의 ggplot2 그림을 그리는 방법을 배우고 싶다면, ggplot2 책 <span class="citation">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham, 2016</a>)</span> 또는 온라인 교육 플랫폼인 데이터캠프(DataCamp)의 <a href="http://bit.ly/dcggplot2">ggplot2 코스</a>를 참조하길 바랍니다.</p>
+<p><a href="http://bit.ly/dcforecasting">이 책을 가지고 진행하는 데이터캠프(DataCamp) 코스</a>도 있습니다. 이 강의에서는 2, 3, 7, 8 장의 몇몇 내용을 소개하고 9, 11장의 몇 가지 주제를 간단하게 다룹니다.</p>
+<p>이 책은 몇 가지 측면에서 기존의 예측 교과서와 다릅니다.</p>
+<ul>
+<li>폭넓은 독자층이 볼 수 있도록 온라인에서 무료로 볼 수 있게 하였습니다.</li>
+<li>무료이고, 오픈소스이며, 엄청나게 강력한 소프트웨어인 R을 사용합니다.</li>
+<li>온라인 판은 꾸준하게 개정됩니다. 잘못된 부분 교정이나 새로운 기법 설명 때문에 다음 판을 기다릴 필요가 없습니다. 우리는 이 책을 자주 개정할 것입니다.</li>
+<li>우리가 컨설팅 작업에서 사용했던 많은 실제 데이터 예제를 담고 있습니다. 수백개의 회사나 단체와 일하며, 예측 관련 문제를 해결하는데 도움을 주었고, 이러한 경험과 예측할 때 사용하는 일반적인 원칙을 이 책에 첨부한 많은 예제에 직접 담았습니다.</li>
+<li>대부분의 경우에 예측기법 자체보다는 시각적인 기법을 강조하였습니다. 데이터를 살피고, 모델의 타당성을 분석하고 예측 결과를 나타낼 때 그래프를 사용하였습니다.</li>
+</ul>
+<div style="page-break-after: always;"></div>
+<div id="판에서-달라진-부분" class="section level3 unnumbered hasAnchor">
+<h3>2판에서 달라진 부분<a href="index.html#판에서-달라진-부분" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>2판에서 가장 중요한 변화는 <em>시계열 예측</em>에 초점을 맞췄다는 것입니다. 즉, 횡단면적 예측 문제(cross-sectional prediction)를 더이상 다루지 않습니다. 대신, 이 책에서는 과거에 수집한 관측값으로 미래 시점의 데이터를 예측하는 문제를 다룹니다.</p>
+<p>지수 평활 관련 장을 간략하게 다듬었고, 동적회귀(dynamic regression)와 계층적 예측(hierarchical forecasting) 그리고 실제적인 예측 문제를 다루는 새로운 장을 추가하였습니다. 예측값을 결합하는 방법, 복잡한 계절성 패턴을 다루는 방법, 시간별, 일별, 주별 데이터를 다루는 방법, 계수 시계열(count time series) 예측을 다루는 새로운 절, 그리고 다양한 새로운 예제를 추가하였습니다. 기존의 모든 장을 최신 연구 결과를 반영하여 개정하였고, 가능한 더 나은 설명, 더 새로운 참고 문헌, 더 많은 예제 등을 포함하고 R 코드를 간결하게 하기 위해 모든 장을 주의깊게 검토하였습니다.</p>
+<p>이 책의 초기 버전의 발견하신 오탈자를 몇몇 독자분이 저희에게 기꺼이 알려주셨습니다. 온라인에서 즉시 갱신하였고 이러한 모든 교정을 통해 인쇄본이 나올 수 있었습니다. 몇몇 새로운 실수가 없다고 생각하지 않으니 발견 후 알려주시면 바로 수정하도록 하겠습니다. 이러한 부분을 발견하시면 저희에게 계속 <a href="http://bit.ly/fpptypo">알려주시길</a> 바랍니다.</p>
+<p>이 책에서 다룬 R 패키지 사용법에 관한 질문이 있거나, 예측 전반에 대한 질문이 있으면, <a href="http://rstd.io/forecast-package">RStudio 커뮤니티 웹사이트</a>에서 질문 주시길 바랍니다.
+ </p>
+<p>즐거운 예측 작업이 되길 바라며!</p>
+<p>롭 힌드만(Rob J Hyndman)과 조지 아타나소풀로스(George Athanasopoulos)</p>
+<p>2018년 4월</p>
+<hr />
+<p>이 책의 온라인 판을 인용할 때는 아래와 같이 하시길 바랍니다:</p>
+<blockquote>
+<p>Hyndman, R.J., &amp; Athanasopoulos, G. (2018) <em>Forecasting: principles and practice</em>, 2nd edition, OTexts: Melbourne, Australia. OTexts.com/fpp2. Accessed on <code>&lt;current date&gt;</code>.</p>
+</blockquote>
+<p> </p>
+<blockquote>
+<p>이 책의 온라인 판은 10 September 2022에 마지막으로 업데이트하였습니다.<br>
+이 책의 인쇄본은 (<a href="/fpp2/buy-a-print-or-downloadable-version.html">영문 원서를 아마존(Amazon)과 구글(Google)에서 구입할 수 있습니다</a>) 2018년 5월 8일에 마지막으로 업데이트하였습니다.</p>
+</blockquote>
+<hr />
+</div>
+<div id="옮긴이-서문" class="section level3 unnumbered hasAnchor">
+<h3>옮긴이 서문<a href="index.html#옮긴이-서문" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>먼저, <a href="http://otexts.org/fpp2/">영어로 된 2판 원서</a>를 한글로 옮기는 것을 기꺼이 허락해주신 원 저자 두 분께 감사의 말씀을 드립니다. 2017년 1월 <a href="https://robjhyndman.com/about/">롭 힌드만(Rob J Hyndman)</a> 교수님의 깃헙(GitHub) 저장소에서 포크(fork)하여 한글로 옮기기를 시작한 것이 드디어 빛을 봅니다. 원서의 온라인판은 2018년 4월에 공개되었고 인쇄본은 2018년 5월에 공개되었으나, 한글판은 옮긴이의 게으름으로 2019년 2월이 되어서야 온라인에 공개하게 되었습니다. 업무와 번역 작업을 병행하는 것이 정말 쉽지 않았다는 것은 핑계 같지만, 그래도 끝을 보게되어 뿌듯합니다.</p>
+<p>읽으시다가 맞춤법에 맞지 않는 표현을 발견하시거나 잘못 옮긴 부분 또는 어색한 부분이 있으면 언제든지 알려주시길 부탁드립니다.</p>
+<p>특별히 한국통계학회 용어집을 추천해주시고 애매한 표현이 있을 때 조언해주신 모나쉬(Monash) 대학의 구본수(Bonsoo Koo) 교수님께 감사드립니다.</p>
+<p>수학적인 의미를 더 잘 전달하는 표현 및 더 자연스러운 우리말 표현 등을 자발적으로 제안하여 주신 신중훈 님께 감사드립니다.</p>
+<p>오탈자를 교정해주신 한국전자통신연구원 선임연구원 최종우 님과 김가영 님께 감사드립니다.</p>
+<p>빠진 수식을 교정해주신 김재정 님께 감사드립니다.</p>
+<p>옮기는 과정에서 생긴 수식 오류를 발견하여 알려주신 KAIST 물리학과 석박사통합과정 이상윤 님께 감사드립니다.</p>
+<p>이 모든 분의 기여 덕분에 미처 챙기지 못했던 부족한 부분을 보완할 수 있었습니다.</p>
+<p>2019년 2월</p>
+<p><a href="https://www.linkedin.com/in/danielyounghokim/">김영호</a></p>
+
+</div>
+</div>
+<h3>참고 문헌<a href="Bibliography.html#Bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ggplot2" class="csl-entry">
+Wickham, H. (2016). <em><span class="nocase">ggplot2</span>: Elegant graphics for data analysis</em> (2nd ed). Springer.  <a href="http://buy.geni.us/Proxy.ashx?TSID=140570&GR_URL=http%3A%2F%2Fwww.amazon.com%2Fdp%2F331924275X">[Amazon]</a>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
