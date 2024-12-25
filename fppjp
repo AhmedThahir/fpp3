@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>予測: 原理と実践 (第3版)</title>
+  <meta name="description" content="3rd edition" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="予測: 原理と実践 (第3版)" />
+  <meta property="og:type" content="book" />
+  <meta property="og:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+  <meta property="og:description" content="3rd edition" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="予測: 原理と実践 (第3版)" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="3rd edition" />
+  <meta name="twitter:image" content="https://Otexts.com/fpp3///figs/fpp3_front_cover.jpg" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="intro.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27933797-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-27933797-2');
+  gtag('config', 'G-JKBLG3XQGY');
+</script>
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans|Merriweather" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3/build/web/hack-subset.css">
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">予測: 原理と実践</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>まえがき</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> はじめに</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="何が予測可能なのか.html"><a href="何が予測可能なのか.html"><i class="fa fa-check"></i><b>1.1</b> 何が予測可能なのか？</a></li>
+<li class="chapter" data-level="1.2" data-path="planning.html"><a href="planning.html"><i class="fa fa-check"></i><b>1.2</b> 予測、目標、計画</a></li>
+<li class="chapter" data-level="1.3" data-path="何を予測するかの決定.html"><a href="何を予測するかの決定.html"><i class="fa fa-check"></i><b>1.3</b> 何を予測するかの決定</a></li>
+<li class="chapter" data-level="1.4" data-path="data-methods.html"><a href="data-methods.html"><i class="fa fa-check"></i><b>1.4</b> 予測に用いるデータと手法</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> ケース・スタディ</a></li>
+<li class="chapter" data-level="1.6" data-path="basic-steps.html"><a href="basic-steps.html"><i class="fa fa-check"></i><b>1.6</b> 予測業務の基本的なステップ</a></li>
+<li class="chapter" data-level="1.7" data-path="perspective.html"><a href="perspective.html"><i class="fa fa-check"></i><b>1.7</b> 統計的予測の視点</a></li>
+<li class="chapter" data-level="1.8" data-path="intro-exercises.html"><a href="intro-exercises.html"><i class="fa fa-check"></i><b>1.8</b> 演習</a></li>
+<li class="chapter" data-level="1.9" data-path="intro-reading.html"><a href="intro-reading.html"><i class="fa fa-check"></i><b>1.9</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="graphics.html"><a href="graphics.html"><i class="fa fa-check"></i><b>2</b> 時系列グラフ</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tsibbles.html"><a href="tsibbles.html"><i class="fa fa-check"></i><b>2.1</b> <code>tsibble</code>オブジェクト</a></li>
+<li class="chapter" data-level="2.2" data-path="時間プロット.html"><a href="時間プロット.html"><i class="fa fa-check"></i><b>2.2</b> 時間プロット</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> 時系列データのパターン</a></li>
+<li class="chapter" data-level="2.4" data-path="季節プロット.html"><a href="季節プロット.html"><i class="fa fa-check"></i><b>2.4</b> 季節プロット</a></li>
+<li class="chapter" data-level="2.5" data-path="subseries.html"><a href="subseries.html"><i class="fa fa-check"></i><b>2.5</b> 季節別時間プロット (Seasonal Subseries Plot)</a></li>
+<li class="chapter" data-level="2.6" data-path="散布図.html"><a href="散布図.html"><i class="fa fa-check"></i><b>2.6</b> 散布図</a></li>
+<li class="chapter" data-level="2.7" data-path="ラグプロット.html"><a href="ラグプロット.html"><i class="fa fa-check"></i><b>2.7</b> ラグ・プロット</a></li>
+<li class="chapter" data-level="2.8" data-path="acf.html"><a href="acf.html"><i class="fa fa-check"></i><b>2.8</b> 自己相関</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> ホワイトノイズ</a></li>
+<li class="chapter" data-level="2.10" data-path="graphics-exercises.html"><a href="graphics-exercises.html"><i class="fa fa-check"></i><b>2.10</b> 演習</a></li>
+<li class="chapter" data-level="2.11" data-path="graphics-reading.html"><a href="graphics-reading.html"><i class="fa fa-check"></i><b>2.11</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="decomposition.html"><a href="decomposition.html"><i class="fa fa-check"></i><b>3</b> 時系列分解</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="transformations.html"><a href="transformations.html"><i class="fa fa-check"></i><b>3.1</b> 変換と調整</a></li>
+<li class="chapter" data-level="3.2" data-path="components.html"><a href="components.html"><i class="fa fa-check"></i><b>3.2</b> 時系列の成分</a></li>
+<li class="chapter" data-level="3.3" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>3.3</b> 移動平均</a></li>
+<li class="chapter" data-level="3.4" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>3.4</b> 古典的分解</a></li>
+<li class="chapter" data-level="3.5" data-path="政府統計局が利用する手法.html"><a href="政府統計局が利用する手法.html"><i class="fa fa-check"></i><b>3.5</b> 政府統計局が利用する手法</a></li>
+<li class="chapter" data-level="3.6" data-path="stl.html"><a href="stl.html"><i class="fa fa-check"></i><b>3.6</b> STL分解</a></li>
+<li class="chapter" data-level="3.7" data-path="decomposition-exercises.html"><a href="decomposition-exercises.html"><i class="fa fa-check"></i><b>3.7</b> 演習</a></li>
+<li class="chapter" data-level="3.8" data-path="decomposition-reading.html"><a href="decomposition-reading.html"><i class="fa fa-check"></i><b>3.8</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="features.html"><a href="features.html"><i class="fa fa-check"></i><b>4</b> 時系列の特徴量</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="いくつかの簡単な統計量.html"><a href="いくつかの簡単な統計量.html"><i class="fa fa-check"></i><b>4.1</b> いくつかの簡単な統計量</a></li>
+<li class="chapter" data-level="4.2" data-path="acf特徴量.html"><a href="acf特徴量.html"><i class="fa fa-check"></i><b>4.2</b> ACF特徴量</a></li>
+<li class="chapter" data-level="4.3" data-path="stlfeatures.html"><a href="stlfeatures.html"><i class="fa fa-check"></i><b>4.3</b> STL特徴量</a></li>
+<li class="chapter" data-level="4.4" data-path="その他の特徴量.html"><a href="その他の特徴量.html"><i class="fa fa-check"></i><b>4.4</b> その他の特徴量</a></li>
+<li class="chapter" data-level="4.5" data-path="オーストラリア旅行データを探索.html"><a href="オーストラリア旅行データを探索.html"><i class="fa fa-check"></i><b>4.5</b> オーストラリア旅行データを探索</a></li>
+<li class="chapter" data-level="4.6" data-path="feast-exercises.html"><a href="feast-exercises.html"><i class="fa fa-check"></i><b>4.6</b> 演習</a></li>
+<li class="chapter" data-level="4.7" data-path="さらに学習するために.html"><a href="さらに学習するために.html"><i class="fa fa-check"></i><b>4.7</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="toolbox.html"><a href="toolbox.html"><i class="fa fa-check"></i><b>5</b> 予測者の道具箱</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="tidyな予測ワークフロー.html"><a href="tidyな予測ワークフロー.html"><i class="fa fa-check"></i><b>5.1</b> tidyな予測ワークフロー</a></li>
+<li class="chapter" data-level="5.2" data-path="simple-methods.html"><a href="simple-methods.html"><i class="fa fa-check"></i><b>5.2</b> いくつかの単純な予測手法</a></li>
+<li class="chapter" data-level="5.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>5.3</b> 当てはめ値と残差</a></li>
+<li class="chapter" data-level="5.4" data-path="diagnostics.html"><a href="diagnostics.html"><i class="fa fa-check"></i><b>5.4</b> 残差診断</a></li>
+<li class="chapter" data-level="5.5" data-path="prediction-intervals.html"><a href="prediction-intervals.html"><i class="fa fa-check"></i><b>5.5</b> 予測の分布と区間予測</a></li>
+<li class="chapter" data-level="5.6" data-path="ftransformations.html"><a href="ftransformations.html"><i class="fa fa-check"></i><b>5.6</b> 変数変換を用いた予測</a></li>
+<li class="chapter" data-level="5.7" data-path="forecasting-decomposition.html"><a href="forecasting-decomposition.html"><i class="fa fa-check"></i><b>5.7</b> 分解を用いた予測</a></li>
+<li class="chapter" data-level="5.8" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>5.8</b> 点予測の正確性評価</a></li>
+<li class="chapter" data-level="5.9" data-path="distaccuracy.html"><a href="distaccuracy.html"><i class="fa fa-check"></i><b>5.9</b> 予測の分布の正確性評価</a></li>
+<li class="chapter" data-level="5.10" data-path="tscv.html"><a href="tscv.html"><i class="fa fa-check"></i><b>5.10</b> 時系列交差検証</a></li>
+<li class="chapter" data-level="5.11" data-path="toolbox-exercises.html"><a href="toolbox-exercises.html"><i class="fa fa-check"></i><b>5.11</b> 演習</a></li>
+<li class="chapter" data-level="5.12" data-path="basics-reading.html"><a href="basics-reading.html"><i class="fa fa-check"></i><b>5.12</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="judgmental.html"><a href="judgmental.html"><i class="fa fa-check"></i><b>6</b> 判断による予測</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="judgmental-limitations.html"><a href="judgmental-limitations.html"><i class="fa fa-check"></i><b>6.1</b> 限界を知る</a></li>
+<li class="chapter" data-level="6.2" data-path="judgmental-principles.html"><a href="judgmental-principles.html"><i class="fa fa-check"></i><b>6.2</b> 鍵となる原理</a></li>
+<li class="chapter" data-level="6.3" data-path="delphimethod.html"><a href="delphimethod.html"><i class="fa fa-check"></i><b>6.3</b> Delphi手法</a></li>
+<li class="chapter" data-level="6.4" data-path="analogies.html"><a href="analogies.html"><i class="fa fa-check"></i><b>6.4</b> 類似からの予測</a></li>
+<li class="chapter" data-level="6.5" data-path="scenarios.html"><a href="scenarios.html"><i class="fa fa-check"></i><b>6.5</b> シナリオ予測</a></li>
+<li class="chapter" data-level="6.6" data-path="new-products.html"><a href="new-products.html"><i class="fa fa-check"></i><b>6.6</b> 新製品予測</a></li>
+<li class="chapter" data-level="6.7" data-path="judgmental-adjustments.html"><a href="judgmental-adjustments.html"><i class="fa fa-check"></i><b>6.7</b> 判断による調整</a></li>
+<li class="chapter" data-level="6.8" data-path="judgmental-reading.html"><a href="judgmental-reading.html"><i class="fa fa-check"></i><b>6.8</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> 時系列回帰モデル</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="regression-intro.html"><a href="regression-intro.html"><i class="fa fa-check"></i><b>7.1</b> 線形モデル</a></li>
+<li class="chapter" data-level="7.2" data-path="least-squares.html"><a href="least-squares.html"><i class="fa fa-check"></i><b>7.2</b> 最小2乗法</a></li>
+<li class="chapter" data-level="7.3" data-path="regression-evaluation.html"><a href="regression-evaluation.html"><i class="fa fa-check"></i><b>7.3</b> 回帰モデルの審査</a></li>
+<li class="chapter" data-level="7.4" data-path="useful-predictors.html"><a href="useful-predictors.html"><i class="fa fa-check"></i><b>7.4</b> 役に立つ予測変数</a></li>
+<li class="chapter" data-level="7.5" data-path="selecting-predictors.html"><a href="selecting-predictors.html"><i class="fa fa-check"></i><b>7.5</b> 予測変数の選択</a></li>
+<li class="chapter" data-level="7.6" data-path="forecasting-regression.html"><a href="forecasting-regression.html"><i class="fa fa-check"></i><b>7.6</b> 回帰による予測</a></li>
+<li class="chapter" data-level="7.7" data-path="nonlinear-regression.html"><a href="nonlinear-regression.html"><i class="fa fa-check"></i><b>7.7</b> 非線形回帰</a></li>
+<li class="chapter" data-level="7.8" data-path="causality.html"><a href="causality.html"><i class="fa fa-check"></i><b>7.8</b> 相関、因果関係と予測</a></li>
+<li class="chapter" data-level="7.9" data-path="regression-matrices.html"><a href="regression-matrices.html"><i class="fa fa-check"></i><b>7.9</b> 行列表記</a></li>
+<li class="chapter" data-level="7.10" data-path="regression-exercises.html"><a href="regression-exercises.html"><i class="fa fa-check"></i><b>7.10</b> 演習</a></li>
+<li class="chapter" data-level="7.11" data-path="regression-reading.html"><a href="regression-reading.html"><i class="fa fa-check"></i><b>7.11</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="expsmooth.html"><a href="expsmooth.html"><i class="fa fa-check"></i><b>8</b> 指数平滑化</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ses.html"><a href="ses.html"><i class="fa fa-check"></i><b>8.1</b> 単純指数平滑化</a></li>
+<li class="chapter" data-level="8.2" data-path="holt.html"><a href="holt.html"><i class="fa fa-check"></i><b>8.2</b> トレンドのある手法</a></li>
+<li class="chapter" data-level="8.3" data-path="holt-winters.html"><a href="holt-winters.html"><i class="fa fa-check"></i><b>8.3</b> 季節性のある手法</a></li>
+<li class="chapter" data-level="8.4" data-path="taxonomy.html"><a href="taxonomy.html"><i class="fa fa-check"></i><b>8.4</b> 指数平滑化法の分類学</a></li>
+<li class="chapter" data-level="8.5" data-path="ets.html"><a href="ets.html"><i class="fa fa-check"></i><b>8.5</b> イノベーション状態空間モデル</a></li>
+<li class="chapter" data-level="8.6" data-path="ets-estimation.html"><a href="ets-estimation.html"><i class="fa fa-check"></i><b>8.6</b> モデルの推計と選択</a></li>
+<li class="chapter" data-level="8.7" data-path="ets-forecasting.html"><a href="ets-forecasting.html"><i class="fa fa-check"></i><b>8.7</b> ETSモデルによる予測</a></li>
+<li class="chapter" data-level="8.8" data-path="expsmooth-exercises.html"><a href="expsmooth-exercises.html"><i class="fa fa-check"></i><b>8.8</b> 演習</a></li>
+<li class="chapter" data-level="8.9" data-path="expsmooth-reading.html"><a href="expsmooth-reading.html"><i class="fa fa-check"></i><b>8.9</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="arima.html"><a href="arima.html"><i class="fa fa-check"></i><b>9</b> ARIMAモデル</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="stationarity.html"><a href="stationarity.html"><i class="fa fa-check"></i><b>9.1</b> 定常性と差分化</a></li>
+<li class="chapter" data-level="9.2" data-path="backshift.html"><a href="backshift.html"><i class="fa fa-check"></i><b>9.2</b> 後方シフト表記</a></li>
+<li class="chapter" data-level="9.3" data-path="AR.html"><a href="AR.html"><i class="fa fa-check"></i><b>9.3</b> 自己回帰モデル</a></li>
+<li class="chapter" data-level="9.4" data-path="MA.html"><a href="MA.html"><i class="fa fa-check"></i><b>9.4</b> 移動平均モデル</a></li>
+<li class="chapter" data-level="9.5" data-path="non-seasonal-arima.html"><a href="non-seasonal-arima.html"><i class="fa fa-check"></i><b>9.5</b> 非季節性ARIMAモデル</a></li>
+<li class="chapter" data-level="9.6" data-path="arima-estimation.html"><a href="arima-estimation.html"><i class="fa fa-check"></i><b>9.6</b> 推計と次数選択</a></li>
+<li class="chapter" data-level="9.7" data-path="arima-r.html"><a href="arima-r.html"><i class="fa fa-check"></i><b>9.7</b> <code>fable</code>によるARIMAモデル化</a></li>
+<li class="chapter" data-level="9.8" data-path="arima-forecasting.html"><a href="arima-forecasting.html"><i class="fa fa-check"></i><b>9.8</b> 予測</a></li>
+<li class="chapter" data-level="9.9" data-path="seasonal-arima.html"><a href="seasonal-arima.html"><i class="fa fa-check"></i><b>9.9</b> 季節性ARIMAモデル</a></li>
+<li class="chapter" data-level="9.10" data-path="arima-ets.html"><a href="arima-ets.html"><i class="fa fa-check"></i><b>9.10</b> ARIMA 対 ETS</a></li>
+<li class="chapter" data-level="9.11" data-path="arima-exercises.html"><a href="arima-exercises.html"><i class="fa fa-check"></i><b>9.11</b> 演習</a></li>
+<li class="chapter" data-level="9.12" data-path="arima-reading.html"><a href="arima-reading.html"><i class="fa fa-check"></i><b>9.12</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dynamic.html"><a href="dynamic.html"><i class="fa fa-check"></i><b>10</b> 動学的回帰モデル</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="推計.html"><a href="推計.html"><i class="fa fa-check"></i><b>10.1</b> 推計</a></li>
+<li class="chapter" data-level="10.2" data-path="regarima.html"><a href="regarima.html"><i class="fa fa-check"></i><b>10.2</b> <code>fable</code>でのARIMA誤差を持つ回帰</a></li>
+<li class="chapter" data-level="10.3" data-path="予測.html"><a href="予測.html"><i class="fa fa-check"></i><b>10.3</b> 予測</a></li>
+<li class="chapter" data-level="10.4" data-path="確率的トレンドと確定的トレンド.html"><a href="確率的トレンドと確定的トレンド.html"><i class="fa fa-check"></i><b>10.4</b> 確率的トレンドと確定的トレンド</a></li>
+<li class="chapter" data-level="10.5" data-path="dhr.html"><a href="dhr.html"><i class="fa fa-check"></i><b>10.5</b> 動学的ハーモニック回帰</a></li>
+<li class="chapter" data-level="10.6" data-path="ラグにした予測変数.html"><a href="ラグにした予測変数.html"><i class="fa fa-check"></i><b>10.6</b> ラグにした予測変数</a></li>
+<li class="chapter" data-level="10.7" data-path="dynamic-exercises.html"><a href="dynamic-exercises.html"><i class="fa fa-check"></i><b>10.7</b> 演習</a></li>
+<li class="chapter" data-level="10.8" data-path="dynamic-reading.html"><a href="dynamic-reading.html"><i class="fa fa-check"></i><b>10.8</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>11</b> 階層化、グループ化時系列の予測</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="hts.html"><a href="hts.html"><i class="fa fa-check"></i><b>11.1</b> 階層化時系列とグループ化時系列</a></li>
+<li class="chapter" data-level="11.2" data-path="single-level.html"><a href="single-level.html"><i class="fa fa-check"></i><b>11.2</b> 単一レベルからのアプローチ</a></li>
+<li class="chapter" data-level="11.3" data-path="reconciliation.html"><a href="reconciliation.html"><i class="fa fa-check"></i><b>11.3</b> 予測の和解</a></li>
+<li class="chapter" data-level="11.4" data-path="tourism.html"><a href="tourism.html"><i class="fa fa-check"></i><b>11.4</b> オーストラリア国内旅行の予測</a></li>
+<li class="chapter" data-level="11.5" data-path="rec-prob.html"><a href="rec-prob.html"><i class="fa fa-check"></i><b>11.5</b> 予測の分布の和解</a></li>
+<li class="chapter" data-level="11.6" data-path="prison.html"><a href="prison.html"><i class="fa fa-check"></i><b>11.6</b> オーストラリア囚人数の予測</a></li>
+<li class="chapter" data-level="11.7" data-path="hierarchical-exercises.html"><a href="hierarchical-exercises.html"><i class="fa fa-check"></i><b>11.7</b> 演習</a></li>
+<li class="chapter" data-level="11.8" data-path="hierarchical-reading.html"><a href="hierarchical-reading.html"><i class="fa fa-check"></i><b>11.8</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="advanced.html"><a href="advanced.html"><i class="fa fa-check"></i><b>12</b> 高度な予測手法</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="complexseasonality.html"><a href="complexseasonality.html"><i class="fa fa-check"></i><b>12.1</b> 複雑な季節性</a></li>
+<li class="chapter" data-level="12.2" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>12.2</b> Prophet(預言者)モデル</a></li>
+<li class="chapter" data-level="12.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>12.3</b> ベクトル自己回帰</a></li>
+<li class="chapter" data-level="12.4" data-path="nnetar.html"><a href="nnetar.html"><i class="fa fa-check"></i><b>12.4</b> ニューラルネットワーク・モデル</a></li>
+<li class="chapter" data-level="12.5" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.5</b> ブートストラップとバギング</a></li>
+<li class="chapter" data-level="12.6" data-path="advanced-exercises.html"><a href="advanced-exercises.html"><i class="fa fa-check"></i><b>12.6</b> 演習</a></li>
+<li class="chapter" data-level="12.7" data-path="advanced-reading.html"><a href="advanced-reading.html"><i class="fa fa-check"></i><b>12.7</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="practical.html"><a href="practical.html"><i class="fa fa-check"></i><b>13</b> 予測に関する実務的問題</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>13.1</b> 週次、日次、日次より細かいデータ</a></li>
+<li class="chapter" data-level="13.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>13.2</b> カウント数の時系列</a></li>
+<li class="chapter" data-level="13.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>13.3</b> 予測をある範囲内に収める</a></li>
+<li class="chapter" data-level="13.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>13.4</b> 予測の組み合わせ</a></li>
+<li class="chapter" data-level="13.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>13.5</b> 時期合計の区間予測</a></li>
+<li class="chapter" data-level="13.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>13.6</b> バックキャスト</a></li>
+<li class="chapter" data-level="13.7" data-path="long-short-ts.html"><a href="long-short-ts.html"><i class="fa fa-check"></i><b>13.7</b> 超長期と超短期の時系列</a></li>
+<li class="chapter" data-level="13.8" data-path="training-test.html"><a href="training-test.html"><i class="fa fa-check"></i><b>13.8</b> 訓練セットとテストセットでの予測</a></li>
+<li class="chapter" data-level="13.9" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>13.9</b> 外れ値と欠損値の扱い</a></li>
+<li class="chapter" data-level="13.10" data-path="さらに学習するために-1.html"><a href="さらに学習するために-1.html"><i class="fa fa-check"></i><b>13.10</b> さらに学習するために</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="付録-rの使用.html"><a href="付録-rの使用.html"><i class="fa fa-check"></i>付録: Rの使用</a></li>
+<li class="chapter" data-level="" data-path="付録-インストラクターへ.html"><a href="付録-インストラクターへ.html"><i class="fa fa-check"></i>付録: インストラクターへ</a></li>
+<li class="chapter" data-level="" data-path="付録-レビュー.html"><a href="付録-レビュー.html"><i class="fa fa-check"></i>付録: レビュー</a></li>
+<li class="chapter" data-level="" data-path="翻訳.html"><a href="翻訳.html"><i class="fa fa-check"></i>翻訳</a></li>
+<li class="chapter" data-level="" data-path="著者紹介.html"><a href="著者紹介.html"><i class="fa fa-check"></i>著者紹介</a></li>
+<li class="chapter" data-level="" data-path="訳者紹介.html"><a href="訳者紹介.html"><i class="fa fa-check"></i>訳者紹介</a></li>
+<li class="chapter" data-level="" data-path="間違いを報告する.html"><a href="間違いを報告する.html"><i class="fa fa-check"></i>間違いを報告する</a></li>
+<li class="chapter" data-level="" data-path="参考文献.html"><a href="参考文献.html"><i class="fa fa-check"></i>参考文献</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.com" target="blank">Published by OTexts™ with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">予測: 原理と実践 <font size=-1>(第3版)</font></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">予測: 原理と実践 <font size=-1>(第3版)</font></h1>
+<p class="author multi-author"><em>Rob J Hyndman と George Athanasopoulos</em></p>
+<address class="author_afil">
+オーストラリア　モナシュ大学<br>
+</address>
+</div>
+<div id="まえがき" class="section level1 unnumbered hasAnchor">
+<h1>まえがき<a href="index.html#まえがき" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<iframe width="750" height="422" src="https://www.youtube.com/embed/7TglVxNgbKQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p style="float:right; width:50%; margin-left:20px;">
+<img src="figs/fpp3_front_cover.jpg" width='100%'>
+</p>
+<p>予測についての私たちのオンライン教科書へようこそ。</p>
+<p>この教科書は、さまざまな予測手法を網羅的に紹介し、読者が分別をもって活用できるよう、各手法につき十分な情報を提供することを意図しています。各手法の背景にある理論的詳細については深く議論しませんが、それら詳細の多くを満たす参考文献を各章の最後に置いています。</p>
+<p>この教科書が想定している読者層は、
+(1) 予測について正式な訓練を受けていないのに、ともかくもビジネスの中で予測することになった人たち、
+(2) ビジネスを学習している大学生、
+(3) 予測を選択科目として選んだMBAの学生、の3種類です。</p>
+<p>実際、オーストラリアのモナシュ大学では大学院生と大学3年生を対象に、私たち自身この教科書を使っています。</p>
+<p>大半のパートは、初歩的な統計学と高校レベルの数学に馴染んでいれば理解できるようにしています。行列の知識が必要なパートがいくつかありますが、印を付けてそれと分かるようにしてあります。</p>
+<p>各章の最後に置いた「さらに学習するために」では文献をリストしています。大概は、各章の内容についてより高度もしくは詳細な教科書のリストになっています。そうした適当な教科書がない場合、さらなる情報を提供している学術誌論文をリストしています。</p>
+<p>この教科書を通じて R を使用していきます。読者にはRを使った予測を学んでもらいます。Rは無料で、ほとんど全てのOSで動作します。予測だけでなく、全ての統計分析に使える素晴らしい道具です。Rをインストールし使えるようにするための手順は、 <a href="付録-rの使用.html#付録-rの使用">付録: Rの使用</a> を参照してください。</p>
+<p>この教科書の全てのRコード例は、以下のようにして最初に <code>fpp3</code> package がロードされていることを前提としています。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fpp3)</span></code></pre></div>
+<pre><code>#&gt; Registered S3 method overwritten by &#39;tsibble&#39;:
+#&gt;   method               from 
+#&gt;   as_tibble.grouped_df dplyr
+#&gt; ── Attaching packages ──────────────────────────────── fpp3 1.0.0 ──
+#&gt; ✔ tibble      3.2.1     ✔ tsibble     1.1.5
+#&gt; ✔ dplyr       1.1.4     ✔ tsibbledata 0.4.1
+#&gt; ✔ tidyr       1.3.1     ✔ feasts      0.3.2
+#&gt; ✔ lubridate   1.9.3     ✔ fable       0.3.4
+#&gt; ✔ ggplot2     3.5.1     ✔ fabletools  0.4.2
+#&gt; ── Conflicts ───────────────────────────────────── fpp3_conflicts ──
+#&gt; ✖ lubridate::date()    masks base::date()
+#&gt; ✖ dplyr::filter()      masks stats::filter()
+#&gt; ✖ tsibble::intersect() masks base::intersect()
+#&gt; ✖ tsibble::interval()  masks lubridate::interval()
+#&gt; ✖ dplyr::lag()         masks stats::lag()
+#&gt; ✖ tsibble::setdiff()   masks base::setdiff()
+#&gt; ✖ tsibble::union()     masks base::union()</code></pre>
+<p>こうすることで、必要なデータセットと、上記出力にある複数のパッケージが利用可能になります。それらパッケージの中には、<a href="https://tidyverse.org"><code>tidyverse</code></a> と総称されるパッケージ群のいくつかと、それが提唱する “tidy” なフレームワークの中で時系列と予測を扱うパッケージ を含んでいます。</p>
+<p>上記出力はまた、本書のこの版を編集したときに使用した各パッケージのバージョンを示しています。本書のRコード例の中には、このバージョンより古いバージョンを使うと動作しないことがあります。</p>
+<p>上記出力のConflictsには、複数のパッケージで同じ関数名が用いられているときに、どちらのパッケージの関数が優先されるか、がリストされています。</p>
+<p>本書は他の予測に関する教科書といくつかの点で異なっています。</p>
+<ul>
+<li>本書は無料でオンラインで読め、広い読者層にアクセス可能にしています。</li>
+<li>Rを使用しています。Rは無料で、オープンソース、そしてとても強力なソフトウェアです。</li>
+<li>オンライン版は継続的にアップデートしていきます。過ちの除去や新しい手法の議論を次の版まで待つ必要はありません。頻繁にアップデートするつもりです。</li>
+<li>私たち自身が実践したコンサルティングから持って来た実際のデータが何十とあります。何百もの会社や組織の予測を手伝ってきました。その経験は、本書で用いる事例の多くを直接もたらしてくれましたし、私たちの予測哲学を広く導いてくれています。</li>
+<li>他のほとんどの予測者よりもグラフを用いた手法を強調しています。データを探索するにも、適合させたモデルの有効性を分析するにも、予測結果を提示するにも、グラフを用いています。</li>
+</ul>
+<div id="第3版における変更点" class="section level3 unnumbered hasAnchor">
+<h3>第3版における変更点<a href="index.html#第3版における変更点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>第3版で最も重要な変更点は <code>forecast</code> パッケージよりも <code>tsibble</code> と <code>fable</code> パッケージを使うようになったことです。この変更により、<code>tidyverse</code> パッケージ群と密接に統合できるようになりました。結果として、それら新しい道具 を活用できるよう多くの事例を入れ替えました。</p>
+<p>また、時系列データの特徴量について新しい題材をいくつか追加し、予測手法を紹介する前に時系列の探索的分析を議論する章 <a href="graphics.html#graphics">2</a>–<a href="features.html#features">4</a> が来るよう、章立てを再編しました。モデル構築や予測生成を試みる前に、まずは手元にある時系列データとそのパターンや特徴を良く理解するべきだと考えたからです。</p>
+<p>本書の以前の版では、読者が見つけた誤字脱字や誤りを私たちに知らせて助けてくれました。それらはオンライン版では直ちに修正しました。この第3版にも新しい誤りがあることに疑いの余地はありません。見つけ次第オンライン版で修正していくつもりです。何か見つけたら、今後とも<a href="https://bit.ly/fpptypo">私たちに知らせてください</a>。</p>
+<p>本書で議論するRパッケージの使用法について、あるいは、予測全般について、質問がある場合、 <a href="https://bit.ly/fpp3help">RStudio Community website</a> で尋ねてください.</p>
+<p> </p>
+<p>楽しく予測しましょう！</p>
+<p>Rob J Hyndman と George Athanasopoulos</p>
+<p>2021年5月</p>
+<hr />
+<p>本書のオンライン版を引用する場合、以下を用いてください。</p>
+<blockquote>
+<p>Hyndman, R.J., &amp; Athanasopoulos, G. (2021) <em>Forecasting: principles and practice</em>, 3rd edition, OTexts: Melbourne, Australia. OTexts.com/fppjp. Accessed on <code>&lt;current date&gt;</code>.</p>
+</blockquote>
+<p> </p>
+<blockquote>
+<p>This online version of the book was last updated on 14 July 2024.</p>
+<p>The print version of the book (<a href="/fpp3/buy-a-print-version.html">available from Amazon</a>) was last updated on 31 May 2021.</p>
+</blockquote>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
